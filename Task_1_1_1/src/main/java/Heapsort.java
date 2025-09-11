@@ -1,5 +1,3 @@
-package main.java;
-
 public class Heapsort {
     public void sort(int arr[])
     {
