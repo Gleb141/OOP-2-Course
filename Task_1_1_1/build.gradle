@@ -3,9 +3,6 @@ plugins {
     id 'jacoco'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
-
 repositories { mavenCentral() }
 
 dependencies {
@@ -15,9 +12,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    outputs.upToDateWhen { false }
-    outputs.cacheIf { false }
-    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
@@ -26,7 +20,6 @@ jacocoTestReport {
         xml.required = true
         html.required = true
     }
-    executionData fileTree(buildDir).include(
-            "jacoco/*.exec", "jacoco/*.ec", "jacoco/test.exec", "jacoco/test/*.exec", "jacoco/test/*.ec"
-    )
 }
+
+tasks.named("build") { finalizedBy("jacocoTestReport") }
