@@ -27,3 +27,8 @@ jacocoTestReport {
         html.required = true
     }
 }
+
+tasks.named("build") {
+    dependsOn("test")
+    finalizedBy("jacocoTestReport")
+}
