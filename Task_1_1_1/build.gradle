@@ -6,23 +6,18 @@ plugins {
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testRuntimeOnly  'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 }
 
 test {
     useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    outputs.cacheIf { false }
     finalizedBy jacocoTestReport
-}
-
-jacoco {
-    toolVersion = '0.8.12'
 }
 
 jacocoTestReport {
@@ -32,14 +27,6 @@ jacocoTestReport {
         html.required = true
     }
     executionData fileTree(buildDir).include(
-            "jacoco/test.exec",
-            "jacoco/*.exec",
-            "jacoco/*.ec",
-            "jacoco/test/*.exec",
-            "jacoco/test/*.ec"
+            "jacoco/*.exec", "jacoco/*.ec", "jacoco/test.exec", "jacoco/test/*.exec", "jacoco/test/*.ec"
     )
-}
-
-tasks.named("check") {
-    dependsOn(jacocoTestReport)
 }
