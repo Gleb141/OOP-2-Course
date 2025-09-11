@@ -1,0 +1,12 @@
+plugins { id 'base' }
+
+
+tasks.named('clean') { dependsOn ':task:clean' }
+tasks.named('check') { dependsOn ':task:check' }
+tasks.named('build') { dependsOn ':task:build' }
+
+
+tasks.register('test') { dependsOn ':task:test' }
+
+tasks.register('checkstyleMain') { dependsOn ':task:checkstyleMain' }
+tasks.register('checkstyleTest') { dependsOn ':task:checkstyleTest' }
