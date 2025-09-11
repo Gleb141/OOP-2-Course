@@ -7,14 +7,14 @@ public class HeapsortTest {
     @Test
     void emptyArray() {
         int[] a = {};
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(new int[]{}, a);
     }
 
     @Test
     void singleElement() {
         int[] a = {42};
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(new int[]{42}, a);
     }
 
@@ -22,7 +22,7 @@ public class HeapsortTest {
     void alreadySorted() {
         int[] a = {1, 2, 3, 4, 5};
         int[] expected = a.clone();
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(expected, a);
     }
 
@@ -31,7 +31,7 @@ public class HeapsortTest {
         int[] a = {9, 7, 5, 3, 1};
         int[] expected = a.clone();
         Arrays.sort(expected);
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(expected, a);
     }
 
@@ -40,7 +40,7 @@ public class HeapsortTest {
         int[] a = {3, 3, 1, 2, 2, 3, 1};
         int[] expected = a.clone();
         Arrays.sort(expected);
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(expected, a);
     }
 
@@ -49,14 +49,14 @@ public class HeapsortTest {
         int[] a = {Integer.MAX_VALUE, 0, -1, Integer.MIN_VALUE, 5};
         int[] expected = a.clone();
         Arrays.sort(expected);
-        new Heapsort().sort(a);
+        new main.java.Heapsort().sort(a);
         assertArrayEquals(expected, a);
     }
 
     @Test
     void heapifyProducesMaxAtRoot() {
         int[] a = {1, 3, 2};
-        new Heapsort().heapify(a, a.length, 0);
+        new main.java.Heapsort().heapify(a, a.length, 0);
         assertTrue(a[0] >= a[1] && a[0] >= a[2]);
     }
 }
