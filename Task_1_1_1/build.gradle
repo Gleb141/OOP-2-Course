@@ -18,6 +18,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = '0.8.12'
 }
 
 jacocoTestReport {
@@ -26,9 +31,15 @@ jacocoTestReport {
         xml.required = true
         html.required = true
     }
+    executionData fileTree(buildDir).include(
+            "jacoco/test.exec",
+            "jacoco/*.exec",
+            "jacoco/*.ec",
+            "jacoco/test/*.exec",
+            "jacoco/test/*.ec"
+    )
 }
 
-tasks.named("build") {
-    dependsOn("test")
-    finalizedBy("jacocoTestReport")
+tasks.named("check") {
+    dependsOn(jacocoTestReport)
 }
