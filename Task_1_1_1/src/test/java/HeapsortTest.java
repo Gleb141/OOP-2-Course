@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HeapsortTest {
     @Test
@@ -58,5 +58,18 @@ public class HeapsortTest {
         int[] a = {1, 3, 2};
         Heapsort.heapify(a, a.length, 0);
         assertTrue(a[0] >= a[1] && a[0] >= a[2]);
+    }
+
+    @Test
+    void heapifyDoesNothingWhenRootAlreadyLargest() {
+        int[] a = {9, 4, 3};
+        int[] copy = a.clone();
+        Heapsort.heapify(a, a.length, 0);
+        assertArrayEquals(copy, a);
+    }
+
+    @Test
+    void mainTest() {
+        Heapsort.main(new String[0]);
     }
 }
