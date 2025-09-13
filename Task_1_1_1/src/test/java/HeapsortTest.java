@@ -79,4 +79,33 @@ public class HeapsortTest {
         Heapsort.heapify(a, a.length, 0);
         assertEquals(4, a[0]);
     }
+
+    @Test
+    void sortTwoElementsCoversEdgeIEqualsZero() {
+        int[] a = {2, 1};
+        Heapsort.sort(a);
+        assertArrayEquals(new int[]{1, 2}, a);
+    }
+
+    @Test
+    void printArrayCoversLoopAndNewline() {
+        Heapsort.printArray(new int[]{});
+        Heapsort.printArray(new int[]{1, 2, 3});
+    }
+
+    @Test
+    void heapifyLeftChildDeepRecursion() {
+        int[] a = {1, 9, 2, 10, 0, 0, 0};
+        Heapsort.heapify(a, a.length, 0);
+        assertArrayEquals(new int[]{9, 10, 2, 1, 0, 0, 0}, a);
+        assertEquals(9, a[0]);
+    }
+
+    @Test
+    void heapifyRightChildDeepRecursion() {
+        int[] a = {1, 2, 5, 0, 0, 9, 8};
+        Heapsort.heapify(a, a.length, 0);
+        assertArrayEquals(new int[]{5, 2, 9, 0, 0, 1, 8}, a);
+        assertEquals(5, a[0]);
+    }
 }
