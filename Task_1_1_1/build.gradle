@@ -11,7 +11,9 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'perf'
+    }
 }
 
 jacocoTestReport {
@@ -23,3 +25,13 @@ jacocoTestReport {
 }
 
 tasks.named("build") { finalizedBy("jacocoTestReport") }
+
+tasks.register('perfTest', Test) {
+    description = 'Runs performance-tagged tests and generates CSV reports.'
+    group = 'verification'
+    useJUnitPlatform {
+        includeTags 'perf'
+    }
+    shouldRunAfter test
+    jacoco.enabled = false
+}
