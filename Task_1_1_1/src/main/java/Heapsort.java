@@ -12,8 +12,9 @@ public class Heapsort {
         int n = arr.length;
 
         //Строительство кучи
-        for (int i = n / 2 - 1; i >= 0; i--)
+        for (int i = n / 2 - 1; i >= 0; i--) {
             heapify(arr, n, i);
+        }
 
         //Экстракция элементов
         for (int i = n - 1; i >= 0; i--) {
@@ -42,10 +43,14 @@ public class Heapsort {
         int r = 2 * i + 2; // Правый элемент
 
         // Если левый больше корня
-        if (l < n && arr[l] > arr[largest]) largest = l;
+        if (l < n && arr[l] > arr[largest]) {
+            largest = l;
+        }
 
         // Если правый больше большего
-        if (r < n && arr[r] > arr[largest]) largest = r;
+        if (r < n && arr[r] > arr[largest]) {
+            largest = r;
+        }
 
         // Если самый большой - не корень
         if (largest != i) {
@@ -64,7 +69,9 @@ public class Heapsort {
      * @param arr массив для печати
      */
     static void printArray(int[] arr) {
-        for (int j : arr) System.out.print(j + " ");
+        for (int j : arr) {
+            System.out.print(j + " ");
+        }
         System.out.println();
     }
 
