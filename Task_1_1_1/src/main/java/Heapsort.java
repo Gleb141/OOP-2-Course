@@ -45,7 +45,6 @@ public class Heapsort {
 
     /* Печать массива */
     static void printArray(int[] arr) {
-        int n = arr.length;
         for (int j : arr) System.out.print(j + " ");
         System.out.println();
     }
@@ -53,7 +52,6 @@ public class Heapsort {
     // Главный код
     public static void main(String[] args) {
         int[] arr = {12, 11, 13, 5, 6, 7}; //тест
-        int n = arr.length;
 
         Heapsort.sort(arr);
 
