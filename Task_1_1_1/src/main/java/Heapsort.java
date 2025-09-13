@@ -44,18 +44,18 @@ public class Heapsort {
     }
 
     /* Печать массива */
-    static void printArray(int[] arr) {
-        for (int j : arr) System.out.print(j + " ");
-        System.out.println();
-    }
+//    static void printArray(int[] arr) {
+//        for (int j : arr) System.out.print(j + " ");
+//        System.out.println();
+//    }
 
     // Главный код
-    public static void main(String[] args) {
-        int[] arr = {12, 11, 13, 5, 6, 7}; //тест
-
-        Heapsort.sort(arr);
-
-        System.out.println("Вывод:");
-        printArray(arr);
-    }
+//    public static void main(String[] args) {
+//        int[] arr = {12, 11, 13, 5, 6, 7}; //тест
+//
+//        Heapsort.sort(arr);
+//
+//        System.out.println("Вывод:");
+//        printArray(arr);
+//    }
 }
