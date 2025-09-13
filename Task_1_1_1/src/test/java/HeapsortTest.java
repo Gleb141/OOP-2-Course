@@ -72,4 +72,11 @@ public class HeapsortTest {
     void mainTest() {
         Heapsort.main(new String[0]);
     }
+
+    @Test
+    void heapifyRightChildDominates() {
+        int[] a = {1, 2, 4};
+        Heapsort.heapify(a, a.length, 0);
+        assertEquals(4, a[0]);
+    }
 }
