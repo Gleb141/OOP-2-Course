@@ -1,6 +1,5 @@
 public class Heapsort {
-    public void sort(int arr[])
-    {
+    public static void sort(int[] arr) {
         int n = arr.length;
 
         //Строительство кучи
@@ -20,8 +19,7 @@ public class Heapsort {
     }
 
     // Кучевание
-    void heapify(int arr[], int n, int i)
-    {
+    static void heapify(int[] arr, int n, int i) {
         int largest = i; // Самое большое - корень
         int l = 2 * i + 1; // Левый элемент
         int r = 2 * i + 2; // Правый элемент
@@ -46,22 +44,18 @@ public class Heapsort {
     }
 
     /* Печать массива */
-    static void printArray(int arr[])
-    {
+    static void printArray(int[] arr) {
         int n = arr.length;
-        for (int i = 0; i < n; ++i)
-            System.out.print(arr[i] + " ");
+        for (int j : arr) System.out.print(j + " ");
         System.out.println();
     }
 
     // Главный код
-    public static void main(String args[])
-    {
-        int arr[] = { 12, 11, 13, 5, 6, 7 }; //тест
+    public static void main(String[] args) {
+        int[] arr = {12, 11, 13, 5, 6, 7}; //тест
         int n = arr.length;
 
-        Heapsort ob = new Heapsort();
-        ob.sort(arr);
+        Heapsort.sort(arr);
 
         System.out.println("Вывод:");
         printArray(arr);
