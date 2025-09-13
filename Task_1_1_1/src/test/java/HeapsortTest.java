@@ -1,8 +1,12 @@
 import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Юнит-тесты для {@link Heapsort}.
+ */
 public class HeapsortTest {
     @Test
     void emptyArray() {
@@ -81,7 +85,7 @@ public class HeapsortTest {
     }
 
     @Test
-    void sortTwoElementsCoversEdgeIEqualsZero() {
+    void sortTwoElementsCoversEdgeIndexZero() {
         int[] a = {2, 1};
         Heapsort.sort(a);
         assertArrayEquals(new int[]{1, 2}, a);
