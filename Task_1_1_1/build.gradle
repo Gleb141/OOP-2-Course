@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly  'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+}
+
+test {
+    useJUnitPlatform {
+        excludeTags 'perf'
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.named("build") { finalizedBy("jacocoTestReport") }
+
+tasks.register('perfTest', Test) {
+    description = 'Runs performance-tagged tests and generates CSV reports.'
+    group = 'verification'
+    useJUnitPlatform {
+        includeTags 'perf'
+    }
+    shouldRunAfter test
+    jacoco.enabled = false
+}
