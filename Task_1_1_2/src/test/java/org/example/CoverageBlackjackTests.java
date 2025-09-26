@@ -1,8 +1,5 @@
 package org.example;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -12,7 +9,12 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CoverageBlackjackTests {
 
@@ -34,13 +36,26 @@ class CoverageBlackjackTests {
     }
 
     static class StubDeck extends Deck {
-        private final Deque<Card> q = new ArrayDeque<>();
-        StubDeck(Card... cards) { for (Card c : cards) q.addLast(c); }
-        @Override void build() {}
-        @Override void shuffle() {}
-        @Override Card deal() {
-            if (q.isEmpty()) throw new IllegalStateException("StubDeck exhausted");
-            return q.removeFirst();
+        private final Deque<Card> queue = new ArrayDeque<>();
+
+        StubDeck(Card... cards) {
+            for (Card c : cards) {
+                queue.addLast(c);
+            }
+        }
+
+        @Override
+        void build() { }
+
+        @Override
+        void shuffle() { }
+
+        @Override
+        Card deal() {
+            if (queue.isEmpty()) {
+                throw new IllegalStateException("StubDeck exhausted");
+            }
+            return queue.removeFirst();
         }
     }
 
@@ -52,7 +67,7 @@ class CoverageBlackjackTests {
                 return;
             }
         }
-        fail("Не найдено поле Deck внутри Game для инъекции");
+        throw new IllegalStateException("Deck field not found");
     }
 
     private void injectScanner(Game g, String input) throws Exception {
@@ -60,7 +75,13 @@ class CoverageBlackjackTests {
         for (Field f : g.getClass().getDeclaredFields()) {
             if (Scanner.class.isAssignableFrom(f.getType())) {
                 f.setAccessible(true);
-                f.set(g, new Scanner(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8.name()));
+                f.set(
+                        g,
+                        new Scanner(
+                                new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)),
+                                StandardCharsets.UTF_8.name()
+                        )
+                );
                 return;
             }
         }
@@ -69,21 +90,27 @@ class CoverageBlackjackTests {
     private String capturePlayRound(Game g) throws Exception {
         PrintStream originalOut = System.out;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(bout, true, StandardCharsets.UTF_8.name()));
+        System.setOut(new PrintStream(bout, true, StandardCharsets.UTF_8));
+
         try {
             g.playRound();
-            return bout.toString(StandardCharsets.UTF_8.name());
+            return bout.toString(StandardCharsets.UTF_8);
         } finally {
             System.setOut(originalOut);
         }
     }
 
     private boolean containsAny(String haystack, String... needles) {
-        for (String s : needles) if (haystack.contains(s)) return true;
+        for (String s : needles) {
+            if (haystack.contains(s)) {
+                return true;
+            }
+        }
         return false;
     }
 
-    @Test @DisplayName("Hand: понижение туза и флаги isBlackJack/isBust")
+    @Test
+    @DisplayName("Hand: понижение туза и флаги isBlackJack/isBust")
     void handAceAndFlags() {
         Hand h = new Hand();
         h.add(make("Туз", "Пики"));
@@ -105,17 +132,19 @@ class CoverageBlackjackTests {
         assertTrue(bust.isBust());
     }
 
-    @Test @DisplayName("Deck: выдаёт 53-ю карту (автопересбор/перетасовка)")
+    @Test
+    @DisplayName("Deck: выдаёт 53-ю карту (автопересбор/перетасовка)")
     void deckRebuilds() {
         Deck d = new Deck();
         for (int i = 0; i < 52; i++) {
-            assertNotNull(d.deal(), "Карта #" + (i+1) + " должна быть не null");
+            assertTrue(d.deal() != null, "Карта #" + (i + 1) + " должна быть не null");
         }
         Card c53 = d.deal();
-        assertNotNull(c53);
+        assertTrue(c53 != null);
     }
 
-    @Test @DisplayName("Игрок получает блэкджек сразу")
+    @Test
+    @DisplayName("Игрок получает блэкджек сразу")
     void immediatePlayerBlackjack() throws Exception {
         Game g = new Game();
         StubDeck deck = new StubDeck(
@@ -127,10 +156,13 @@ class CoverageBlackjackTests {
         injectDeck(g, deck);
         injectScanner(g, "");
         String out = capturePlayRound(g);
-        assertTrue(containsAny(out, "У Игрока Блэкджек", "Блэкджек", "Blackjack"));
+        assertTrue(
+                containsAny(out, "У Игрока Блэкджек", "Блэкджек", "Blackjack")
+        );
     }
 
-    @Test @DisplayName("Игрок берёт одну карту и сгорает")
+    @Test
+    @DisplayName("Игрок берёт одну карту и сгорает")
     void playerBustsOnHit() throws Exception {
         Game g = new Game();
         StubDeck deck = new StubDeck(
@@ -143,10 +175,13 @@ class CoverageBlackjackTests {
         injectDeck(g, deck);
         injectScanner(g, "1\n");
         String out = capturePlayRound(g);
-        assertTrue(containsAny(out, "Перебор", "проиграли", "проигрыш", "bust"));
+        assertTrue(
+                containsAny(out, "Перебор", "проиграли", "проигрыш", "bust")
+        );
     }
 
-    @Test @DisplayName("Игрок стоит; дилер сгорает при доборе")
+    @Test
+    @DisplayName("Игрок стоит; дилер сгорает при доборе")
     void dealerBustsAfterStand() throws Exception {
         Game g = new Game();
         StubDeck deck = new StubDeck(
@@ -159,10 +194,13 @@ class CoverageBlackjackTests {
         injectDeck(g, deck);
         injectScanner(g, "0\n");
         String out = capturePlayRound(g);
-        assertTrue(containsAny(out, "Дилер перебрал", "Вы выиграли", "дилер сгорел", "dealer bust"));
+        assertTrue(
+                containsAny(out, "Дилер перебрал", "Вы выиграли", "дилер сгорел", "dealer bust")
+        );
     }
 
-    @Test @DisplayName("Оба получают блэкджек — ничья")
+    @Test
+    @DisplayName("Оба получают блэкджек — ничья")
     void bothBlackjackDraw() throws Exception {
         Game g = new Game();
         StubDeck deck = new StubDeck(
@@ -174,10 +212,13 @@ class CoverageBlackjackTests {
         injectDeck(g, deck);
         injectScanner(g, "");
         String out = capturePlayRound(g);
-        assertTrue(containsAny(out, "Нич", "ничья", "draw"));
+        assertTrue(
+                containsAny(out, "Нич", "ничья", "draw")
+        );
     }
 
-    @Test @DisplayName("Дилер получает блэкджек — игрок проигрывает сразу")
+    @Test
+    @DisplayName("Дилер получает блэкджек — игрок проигрывает сразу")
     void dealerBlackjackImmediateLoss() throws Exception {
         Game g = new Game();
         StubDeck deck = new StubDeck(
@@ -189,12 +230,16 @@ class CoverageBlackjackTests {
         injectDeck(g, deck);
         injectScanner(g, "");
         String out = capturePlayRound(g);
-        assertTrue(containsAny(out,
-                "Блэкджек у дилера",
-                "Дилер получил блэкджек",
-                "У Дилера Блэкджек",
-                "Поражение",
-                "проиграли",
-                "dealer blackjack"));
+        assertTrue(
+                containsAny(
+                        out,
+                        "Блэкджек у дилера",
+                        "Дилер получил блэкджек",
+                        "У Дилера Блэкджек",
+                        "Поражение",
+                        "проиграли",
+                        "dealer blackjack"
+                )
+        );
     }
 }
