@@ -14,15 +14,9 @@ class Deck {
 
     void build() {
         cards.clear();
-        String[] suits = {"Пики", "Трефы", "Черви", "Бубны"};
-        String[] ranks = {
-                "Двойка", "Тройка", "Четвёрка", "Пятёрка", "Шестёрка", "Семёрка",
-                "Восьмёрка", "Девятка", "Десятка", "Валет", "Дама", "Король", "Туз"
-        };
-        int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-        for (int s = 0; s < suits.length; s++) {
-            for (int r = 0; r < ranks.length; r++) {
-                cards.add(new Card(suits[s], ranks[r], values[r]));
+        for (Suit s : Suit.values()) {
+            for (Rank r : Rank.values()) {
+                cards.add(new Card(s.label(), r.label(), r.value()));
             }
         }
     }

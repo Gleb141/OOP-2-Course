@@ -30,33 +30,8 @@ class Game {
         Hand player = new Hand();
         Hand dealer = new Hand();
 
-        player.add(deck.deal());
-        dealer.add(deck.deal());
-        player.add(deck.deal());
-        dealer.add(deck.deal());
-
-        System.out.println("Дилер раздал карты");
-        showHands(player, dealer, false);
-
-        boolean playerBlackjack = player.isBlackJack();
-        boolean dealerBlackjack = dealer.isBlackJack();
-        if (playerBlackjack || dealerBlackjack) {
-            System.out.println();
-            System.out.println("Открываем карты...");
-            showHands(player, dealer, true);
-            if (playerBlackjack && dealerBlackjack) {
-                System.out.println("У обоих игроков Блэкджек. Ничья!");
-                draws++;
-                printScore("draw");
-            } else if (playerBlackjack) {
-                System.out.println("У Игрока Блэкджек. Победа!");
-                playerWins++;
-                printScore("player");
-            } else {
-                System.out.println("У Дилера Блэкджек. Вы проиграли раунд!");
-                dealerWins++;
-                printScore("dealer");
-            }
+        initialDeal(player, dealer);
+        if (handleImmediateBlackjacks(player, dealer)) {
             return;
         }
 
@@ -64,6 +39,58 @@ class Game {
         System.out.println("Ваш ход");
         System.out.println("-------");
 
+        boolean playerBust = playerTurn(player, dealer);
+        if (playerBust) {
+            System.out.println("\nПеребор. Вы проиграли раунд!");
+            dealerWins++;
+            printScore("dealer");
+            return;
+        }
+
+        dealerTurn(dealer, player);
+        settleRound(player, dealer);
+    }
+
+    // --- helpers ---
+
+    void initialDeal(Hand player, Hand dealer) {
+        player.add(deck.deal());
+        dealer.add(deck.deal());
+        player.add(deck.deal());
+        dealer.add(deck.deal());
+
+        System.out.println("Дилер раздал карты");
+        showHands(player, dealer, false);
+    }
+
+    boolean handleImmediateBlackjacks(Hand player, Hand dealer) {
+        boolean playerBlackjack = player.isBlackJack();
+        boolean dealerBlackjack = dealer.isBlackJack();
+        if (!playerBlackjack && !dealerBlackjack) {
+            return false;
+        }
+
+        System.out.println();
+        System.out.println("Открываем карты...");
+        showHands(player, dealer, true);
+
+        if (playerBlackjack && dealerBlackjack) {
+            System.out.println("У обоих игроков Блэкджек. Ничья!");
+            draws++;
+            printScore("draw");
+        } else if (playerBlackjack) {
+            System.out.println("У Игрока Блэкджек. Победа!");
+            playerWins++;
+            printScore("player");
+        } else {
+            System.out.println("У Дилера Блэкджек. Вы проиграли раунд!");
+            dealerWins++;
+            printScore("dealer");
+        }
+        return true;
+    }
+
+    boolean playerTurn(Hand player, Hand dealer) {
         boolean playerBust = false;
         while (true) {
             System.out.println("Введите 1 - взять, 0 - стоп: ");
@@ -88,14 +115,10 @@ class Game {
                 System.out.println("Неверный ввод.");
             }
         }
+        return playerBust;
+    }
 
-        if (playerBust) {
-            System.out.println("\nПеребор. Вы проиграли раунд!");
-            dealerWins++;
-            printScore("dealer");
-            return;
-        }
-
+    void dealerTurn(Hand dealer, Hand player) {
         System.out.println("\nХод Дилера");
         System.out.println("-------");
         System.out.println("Дилер открывает закрытую карту: " + dealer.list.get(1));
@@ -107,7 +130,9 @@ class Game {
             System.out.println("Дилер открывает карту " + c);
             showHands(player, dealer, true);
         }
+    }
 
+    void settleRound(Hand player, Hand dealer) {
         int p = player.value();
         int d = dealer.value();
 
