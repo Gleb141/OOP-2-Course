@@ -2,7 +2,6 @@ package org.example;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +9,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Тесты покрытия для примитивов выражений и бинарных операций.
+ */
 class ExpressionCoverageTests {
 
     private Main.Number num(int v) {
@@ -27,19 +30,19 @@ class ExpressionCoverageTests {
     @Test
     @DisplayName("Number/Variable: render, toString, eval, hasVariables, equals/hashCode, print")
     void numberVariableBasics() {
-        Main.Expression eNum = num(7);
-        assertEquals("7", eNum.render());
-        assertEquals("7", eNum.toString());
-        assertEquals(7, eNum.eval(new HashMap<>()));
-        assertTrue(!eNum.hasVariables());
+        Main.Expression numExpr = num(7);
+        assertEquals("7", numExpr.render());
+        assertEquals("7", numExpr.toString());
+        assertEquals(7, numExpr.eval(new HashMap<>()));
+        assertFalse(numExpr.hasVariables());
 
-        Main.Expression eVar = var("x");
-        assertEquals("x", eVar.render());
-        assertEquals("x", eVar.toString());
+        Main.Expression varExpr = var("x");
+        assertEquals("x", varExpr.render());
+        assertEquals("x", varExpr.toString());
         Map<String, Integer> env = new HashMap<>();
         env.put("x", 42);
-        assertEquals(42, eVar.eval(env));
-        assertTrue(eVar.hasVariables());
+        assertEquals(42, varExpr.eval(env));
+        assertTrue(varExpr.hasVariables());
 
         assertEquals(num(7), new Main.Number(7));
         assertEquals(num(7).hashCode(), new Main.Number(7).hashCode());
@@ -48,14 +51,14 @@ class ExpressionCoverageTests {
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         PrintStream prev = System.out;
-        System.setOut(new PrintStream(bout, true, StandardCharsets.UTF_8));
+        System.setOut(new PrintStream(bout, true));
         try {
-            eNum.print();
-            eVar.print();
+            numExpr.print();
+            varExpr.print();
         } finally {
             System.setOut(prev);
         }
-        String out = bout.toString(StandardCharsets.UTF_8);
+        String out = bout.toString();
         assertTrue(out.contains("7"));
         assertTrue(out.contains("x"));
     }

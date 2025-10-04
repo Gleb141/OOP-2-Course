@@ -3,84 +3,69 @@ package org.example;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+/**
+ * Тесты базовых операций выражений.
+ */
 public class EquationOperationsTests {
+
     @Test
     @DisplayName("Создание выражения")
-    void EquationCreate() {
-        Main.Expression e = new Main.Add(new Main.Number(3), new Main.Mul(new Main.Number(2), new Main.Variable("x")));
-        assertEquals("(3+(2*x))", e.render());
+    void equationCreate() {
+        Main.Expression expr = new Main.Add(
+                new Main.Number(3),
+                new Main.Mul(new Main.Number(2), new Main.Variable("x"))
+        );
+        assertEquals("(3+(2*x))", expr.render());
     }
 
     @Test
-    @DisplayName("Создание производной")
-    void DerivativeCreate() {
-        Main.Expression s4 = Main.Expression.parseFully("((2*3)+(10/5))").simplify();
-        assertEquals("8", s4.render());
+    @DisplayName("Создание производной (упрощение конкретного примера)")
+    void derivativeCreate() {
+        Main.Expression simplified = Main.Expression
+                .parseFully("((2*3)+(10/5))")
+                .simplify();
+        assertEquals("8", simplified.render());
     }
 
     @Test
-    @DisplayName("Умножение")
-    void Multiplication() {
-        Main.Expression s1 = new Main.Mul(new Main.Number(0), new Main.Variable("x")).simplify();
-        assertEquals("0", s1.render());
+    @DisplayName("Умножение с нулём упрощается в 0")
+    void multiplication() {
+        Main.Expression simplified = new Main.Mul(
+                new Main.Number(0),
+                new Main.Variable("x")
+        ).simplify();
+        assertEquals("0", simplified.render());
     }
 
-//    @Test
-//    @DisplayName("Создание производной")
-//    void zeroDivision(){
-//        Main.Expression e = Main.Expression.parseFully("((2*3)+(10/0))").simplify();
-//        Throwable exception = assertThrows(ArithmeticException.class,() -> {
-//            if (b == 0) throw new ArithmeticException("Деление на ноль");
-//            return a / b;
-//        });
-//        assertEquals("Деление на ноль", exception.getMessage());
-//    }
-
     @Test
+    @DisplayName("Деление на ноль бросает ArithmeticException")
     void zeroDivision() {
-
-        Throwable exception = assertThrows(
+        Throwable ex = assertThrows(
                 ArithmeticException.class,
-                () ->
-                        new Main.Div(
-                                Main.Expression.parseFully("5"),
-                                Main.Expression.parseFully("5"))
-                                .apply(1, 0)
-
+                () -> new Main.Div(
+                        Main.Expression.parseFully("5"),
+                        Main.Expression.parseFully("5")
+                ).apply(1, 0)
         );
-        assertEquals("Деление на ноль", exception.getMessage());
+        assertEquals("Деление на ноль", ex.getMessage());
     }
 
     @Test
+    @DisplayName("Пустая строка парсера — сообщение об ожидании выражения")
     void expectedBracket() {
-
-        Throwable exception = assertThrows(
+        Throwable ex = assertThrows(
                 IllegalArgumentException.class,
-                () ->
-                        new Main.Div(
-                                Main.Expression.parseFully(""),
-                                Main.Expression.parseFully(""))
-                                .apply(1, 0)
-
+                () -> new Main.Div(
+                        Main.Expression.parseFully(""),
+                        Main.Expression.parseFully("")
+                ).apply(1, 0)
         );
-        assertEquals("Ожидалось '(', число или переменная (позиция 0 в \"\")", exception.getMessage());
+        assertEquals(
+                "Ожидалось '(', число или переменная (позиция 0 в \"\")",
+                ex.getMessage()
+        );
     }
-
-//    @Test
-//    void expectedNumber() {
-//
-//        Throwable exception = assertThrows(
-//                IllegalArgumentException.class,
-//                () ->
-//                        new Main.Div(
-//                                Main.Expression.parseFully(""),
-//                                Main.Expression.parseFully(""))
-//                                .apply(1, 0)
-//
-//        );
-//        assertEquals("Нет значения для переменной: ", exception.getMessage());
-//    }
 }

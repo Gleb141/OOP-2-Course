@@ -2,7 +2,6 @@ package org.example;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Тесты парсера и сценария Main.main.
+ */
 class ExpressionParserAndMainTests {
 
     @Test
@@ -28,36 +30,24 @@ class ExpressionParserAndMainTests {
     @Test
     @DisplayName("Parser: ошибки — неизвестный оператор, лишние символы, незакрытая скобка, '-x'")
     void parserErrorCases() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> Main.Expression.parseFully("(1$2)")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> Main.Expression.parseFully("(1+2))")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> Main.Expression.parseFully("(1+2")
-        );
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> Main.Expression.parseFully("-x")
-        );
+        assertThrows(IllegalArgumentException.class, () -> Main.Expression.parseFully("(1$2)"));
+        assertThrows(IllegalArgumentException.class, () -> Main.Expression.parseFully("(1+2))"));
+        assertThrows(IllegalArgumentException.class, () -> Main.Expression.parseFully("(1+2"));
+        assertThrows(IllegalArgumentException.class, () -> Main.Expression.parseFully("-x"));
     }
 
     @Test
     @DisplayName("Main.main: демонстрация печати и вычислений завершается корректно")
-    void mainRunsAndPrints() throws Exception {
+    void mainRunsAndPrints() {
         PrintStream prev = System.out;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(bout, true, StandardCharsets.UTF_8));
+        System.setOut(new PrintStream(bout, true));
         try {
             Main.main(new String[0]);
         } finally {
             System.setOut(prev);
         }
-        String out = bout.toString(StandardCharsets.UTF_8);
+        String out = bout.toString();
         assertTrue(out.contains("23"));
         assertTrue(out.contains("(3+(2*x))"));
         assertTrue(out.contains("0"));
