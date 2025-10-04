@@ -6,42 +6,34 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Тесты базовых операций выражений.
- */
-public class EquationOperationsTests {
+class EquationOperationsTests {
 
     @Test
     @DisplayName("Создание выражения")
     void equationCreate() {
-        Main.Expression expr = new Main.Add(
+        Main.Expression e = new Main.Add(
                 new Main.Number(3),
                 new Main.Mul(new Main.Number(2), new Main.Variable("x"))
         );
-        assertEquals("(3+(2*x))", expr.render());
+        assertEquals("(3+(2*x))", e.render());
     }
 
     @Test
-    @DisplayName("Создание производной (упрощение конкретного примера)")
+    @DisplayName("Создание производной/упрощение констант")
     void derivativeCreate() {
-        Main.Expression simplified = Main.Expression
-                .parseFully("((2*3)+(10/5))")
-                .simplify();
-        assertEquals("8", simplified.render());
+        Main.Expression s4 = Main.Expression.parseFully("((2*3)+(10/5))").simplify();
+        assertEquals("8", s4.render());
     }
 
     @Test
-    @DisplayName("Умножение с нулём упрощается в 0")
+    @DisplayName("Умножение: 0 * x = 0")
     void multiplication() {
-        Main.Expression simplified = new Main.Mul(
-                new Main.Number(0),
-                new Main.Variable("x")
-        ).simplify();
-        assertEquals("0", simplified.render());
+        Main.Expression s1 = new Main.Mul(new Main.Number(0), new Main.Variable("x")).simplify();
+        assertEquals("0", s1.render());
     }
 
     @Test
-    @DisplayName("Деление на ноль бросает ArithmeticException")
+    @DisplayName("Деление на ноль → ArithmeticException")
     void zeroDivision() {
         Throwable ex = assertThrows(
                 ArithmeticException.class,
@@ -54,7 +46,7 @@ public class EquationOperationsTests {
     }
 
     @Test
-    @DisplayName("Пустая строка парсера — сообщение об ожидании выражения")
+    @DisplayName("Пустая строка вместо выражения → сообщение про ожидание '('/числа/переменной")
     void expectedBracket() {
         Throwable ex = assertThrows(
                 IllegalArgumentException.class,
@@ -63,9 +55,6 @@ public class EquationOperationsTests {
                         Main.Expression.parseFully("")
                 ).apply(1, 0)
         );
-        assertEquals(
-                "Ожидалось '(', число или переменная (позиция 0 в \"\")",
-                ex.getMessage()
-        );
+        assertEquals("Ожидалось '(', число или переменная (позиция 0 в \"\")", ex.getMessage());
     }
 }

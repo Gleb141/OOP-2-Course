@@ -3,7 +3,6 @@ package org.example;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Тесты парсера и сценария Main.main.
- */
 class ExpressionParserAndMainTests {
 
     @Test
