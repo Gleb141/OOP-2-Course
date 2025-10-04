@@ -16,6 +16,11 @@ public class Main {
 
         public abstract int eval(Map<String, Integer> env);
 
+        public final int eval(String assignments) {
+            Map<String, Integer> env = parseAssignments(assignments);
+            return eval(env);
+        }
+
         public abstract boolean hasVariables();
 
         public Expression simplify() {
@@ -29,11 +34,6 @@ public class Main {
         @Override
         public final String toString() {
             return render();
-        }
-
-        public final int eval(String assignments) {
-            Map<String, Integer> env = parseAssignments(assignments);
-            return eval(env);
         }
 
         private static Map<String, Integer> parseAssignments(String s) {
@@ -390,7 +390,7 @@ public class Main {
             skip();
             if (peek() == '(') {
                 index++;
-                Expression leftExpr = parseExpr();
+                final Expression leftExpr = parseExpr();
                 skip();
                 char op = next();
                 Expression rightExpr = parseExpr();
