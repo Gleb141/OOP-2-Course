@@ -40,7 +40,7 @@ public class EquationOperationsTests {
 //    }
 
     @Test
-    void whenAssertingException() {
+    void zeroDivision() {
 
         Throwable exception = assertThrows(
                 ArithmeticException.class,
@@ -53,4 +53,34 @@ public class EquationOperationsTests {
         );
         assertEquals("Деление на ноль", exception.getMessage());
     }
+
+    @Test
+    void expectedBracket() {
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        new Main.Div(
+                                Main.Expression.parseFully(""),
+                                Main.Expression.parseFully(""))
+                                .apply(1, 0)
+
+        );
+        assertEquals("Ожидалось '(', число или переменная (позиция 0 в \"\")", exception.getMessage());
+    }
+
+//    @Test
+//    void expectedNumber() {
+//
+//        Throwable exception = assertThrows(
+//                IllegalArgumentException.class,
+//                () ->
+//                        new Main.Div(
+//                                Main.Expression.parseFully(""),
+//                                Main.Expression.parseFully(""))
+//                                .apply(1, 0)
+//
+//        );
+//        assertEquals("Нет значения для переменной: ", exception.getMessage());
+//    }
 }

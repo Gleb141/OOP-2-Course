@@ -27,3 +27,12 @@ test {
 jacoco {
     toolVersion = '0.8.11'
 }
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
