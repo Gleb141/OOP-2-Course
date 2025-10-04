@@ -1,12 +1,15 @@
 package org.example;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Мини-DSL для арифметических выражений:
+ * парсер с полными скобками, вычисление, упрощение и производные.
+ */
 public class Main {
 
-    static abstract class Expression {
+    abstract static class Expression {
         public abstract String render();
 
         public abstract Expression derivative(String var);
@@ -34,14 +37,20 @@ public class Main {
         }
 
         private static Map<String, Integer> parseAssignments(String s) {
-            Map<String, Integer> env = new HashMap<String, Integer>();
-            if (s == null) return env;
+            Map<String, Integer> env = new HashMap<>();
+            if (s == null) {
+                return env;
+            }
             String[] parts = s.split(";");
-            for (int i = 0; i < parts.length; i++) {
-                String p = parts[i].trim();
-                if (p.isEmpty()) continue;
+            for (int idx = 0; idx < parts.length; idx++) {
+                String p = parts[idx].trim();
+                if (p.isEmpty()) {
+                    continue;
+                }
                 String[] kv = p.split("=");
-                if (kv.length != 2) throw new IllegalArgumentException("Неверная подстановка: " + p);
+                if (kv.length != 2) {
+                    throw new IllegalArgumentException("Неверная подстановка: " + p);
+                }
                 String key = kv[0].trim();
                 String val = kv[1].trim();
                 env.put(key, Integer.parseInt(val));
@@ -61,18 +70,22 @@ public class Main {
             this.value = value;
         }
 
+        @Override
         public String render() {
             return Integer.toString(value);
         }
 
+        @Override
         public Expression derivative(String var) {
             return new Number(0);
         }
 
+        @Override
         public int eval(Map<String, Integer> env) {
             return value;
         }
 
+        @Override
         public boolean hasVariables() {
             return false;
         }
@@ -95,19 +108,27 @@ public class Main {
             this.name = name;
         }
 
+        @Override
         public String render() {
             return name;
         }
 
+        @Override
         public Expression derivative(String var) {
             return new Number(name.equals(var) ? 1 : 0);
         }
 
+        @Override
         public int eval(Map<String, Integer> env) {
-            if (!env.containsKey(name)) throw new IllegalArgumentException("Нет значения для переменной: " + name);
+            if (!env.containsKey(name)) {
+                throw new IllegalArgumentException(
+                        "Нет значения для переменной: " + name
+                );
+            }
             return env.get(name);
         }
 
+        @Override
         public boolean hasVariables() {
             return true;
         }
@@ -123,7 +144,7 @@ public class Main {
         }
     }
 
-    static abstract class Binary extends Expression {
+    abstract static class Binary extends Expression {
         final Expression left;
         final Expression right;
 
@@ -136,28 +157,34 @@ public class Main {
 
         protected abstract int apply(int a, int b);
 
+        @Override
         public String render() {
             return "(" + left.render() + opChar() + right.render() + ")";
         }
 
+        @Override
         public int eval(Map<String, Integer> env) {
             return apply(left.eval(env), right.eval(env));
         }
 
+        @Override
         public boolean hasVariables() {
             return left.hasVariables() || right.hasVariables();
         }
 
         @Override
         public boolean equals(Object o) {
-            if (o == null || o.getClass() != this.getClass()) return false;
+            if (o == null || o.getClass() != this.getClass()) {
+                return false;
+            }
             Binary b = (Binary) o;
             return left.equals(b.left) && right.equals(b.right);
         }
 
         @Override
         public int hashCode() {
-            return (getClass().getName().hashCode() * 31 + left.hashCode()) * 31 + right.hashCode();
+            return (getClass().getName().hashCode() * 31 + left.hashCode()) * 31
+                    + right.hashCode();
         }
 
         protected static boolean isZero(Expression e) {
@@ -173,7 +200,7 @@ public class Main {
         }
 
         protected static int evalConst(Expression e) {
-            return e.eval(new HashMap<String, Integer>());
+            return e.eval(new HashMap<>());
         }
     }
 
@@ -182,24 +209,35 @@ public class Main {
             super(l, r);
         }
 
+        @Override
         protected char opChar() {
             return '+';
         }
 
+        @Override
         protected int apply(int a, int b) {
             return a + b;
         }
 
+        @Override
         public Expression derivative(String v) {
             return new Add(left.derivative(v), right.derivative(v));
         }
 
+        @Override
         public Expression simplify() {
-            Expression L = left.simplify(), R = right.simplify();
-            if (bothConst(L, R)) return new Number(evalConst(new Add(L, R)));
-            if (isZero(L)) return R;
-            if (isZero(R)) return L;
-            return new Add(L, R);
+            Expression leftSimpl = left.simplify();
+            Expression rightSimpl = right.simplify();
+            if (bothConst(leftSimpl, rightSimpl)) {
+                return new Number(evalConst(new Add(leftSimpl, rightSimpl)));
+            }
+            if (isZero(leftSimpl)) {
+                return rightSimpl;
+            }
+            if (isZero(rightSimpl)) {
+                return leftSimpl;
+            }
+            return new Add(leftSimpl, rightSimpl);
         }
     }
 
@@ -208,23 +246,32 @@ public class Main {
             super(l, r);
         }
 
+        @Override
         protected char opChar() {
             return '-';
         }
 
+        @Override
         protected int apply(int a, int b) {
             return a - b;
         }
 
+        @Override
         public Expression derivative(String v) {
             return new Sub(left.derivative(v), right.derivative(v));
         }
 
+        @Override
         public Expression simplify() {
-            Expression L = left.simplify(), R = right.simplify();
-            if (L.equals(R)) return new Number(0);
-            if (bothConst(L, R)) return new Number(evalConst(new Sub(L, R)));
-            return new Sub(L, R);
+            Expression leftSimpl = left.simplify();
+            Expression rightSimpl = right.simplify();
+            if (leftSimpl.equals(rightSimpl)) {
+                return new Number(0);
+            }
+            if (bothConst(leftSimpl, rightSimpl)) {
+                return new Number(evalConst(new Sub(leftSimpl, rightSimpl)));
+            }
+            return new Sub(leftSimpl, rightSimpl);
         }
     }
 
@@ -233,25 +280,41 @@ public class Main {
             super(l, r);
         }
 
+        @Override
         protected char opChar() {
             return '*';
         }
 
+        @Override
         protected int apply(int a, int b) {
             return a * b;
         }
 
+        @Override
         public Expression derivative(String v) {
-            return new Add(new Mul(left.derivative(v), right), new Mul(left, right.derivative(v)));
+            return new Add(
+                    new Mul(left.derivative(v), right),
+                    new Mul(left, right.derivative(v))
+            );
         }
 
+        @Override
         public Expression simplify() {
-            Expression L = left.simplify(), R = right.simplify();
-            if (isZero(L) || isZero(R)) return new Number(0);
-            if (isOne(L)) return R;
-            if (isOne(R)) return L;
-            if (bothConst(L, R)) return new Number(evalConst(new Mul(L, R)));
-            return new Mul(L, R);
+            Expression leftSimpl = left.simplify();
+            Expression rightSimpl = right.simplify();
+            if (isZero(leftSimpl) || isZero(rightSimpl)) {
+                return new Number(0);
+            }
+            if (isOne(leftSimpl)) {
+                return rightSimpl;
+            }
+            if (isOne(rightSimpl)) {
+                return leftSimpl;
+            }
+            if (bothConst(leftSimpl, rightSimpl)) {
+                return new Number(evalConst(new Mul(leftSimpl, rightSimpl)));
+            }
+            return new Mul(leftSimpl, rightSimpl);
         }
     }
 
@@ -260,64 +323,90 @@ public class Main {
             super(l, r);
         }
 
+        @Override
         protected char opChar() {
             return '/';
         }
 
+        @Override
         public int apply(int a, int b) {
-            if (b == 0) throw new ArithmeticException("Деление на ноль");
+            if (b == 0) {
+                throw new ArithmeticException("Деление на ноль");
+            }
             return a / b;
         }
 
+        @Override
         public Expression derivative(String v) {
-            return new Div(new Sub(new Mul(left.derivative(v), right), new Mul(left, right.derivative(v))), new Mul(right, right));
+            return new Div(
+                    new Sub(
+                            new Mul(left.derivative(v), right),
+                            new Mul(left, right.derivative(v))
+                    ),
+                    new Mul(right, right)
+            );
         }
 
+        @Override
         public Expression simplify() {
-            Expression L = left.simplify(), R = right.simplify();
-            if (bothConst(L, R)) {
+            Expression leftSimpl = left.simplify();
+            Expression rightSimpl = right.simplify();
+            if (bothConst(leftSimpl, rightSimpl)) {
                 try {
-                    return new Number(evalConst(new Div(L, R)));
+                    return new Number(evalConst(new Div(leftSimpl, rightSimpl)));
                 } catch (ArithmeticException ex) {
+                    return new Div(leftSimpl, rightSimpl);
                 }
             }
-            if (isZero(L)) return new Number(0);
-            if (isOne(R)) return L;
-            return new Div(L, R);
+            if (isZero(leftSimpl)) {
+                return new Number(0);
+            }
+            if (isOne(rightSimpl)) {
+                return leftSimpl;
+            }
+            return new Div(leftSimpl, rightSimpl);
         }
     }
 
     static final class FullyParenParser {
-        private final String s;
-        private int i = 0;
+        private final String source;
+        private int index = 0;
 
         FullyParenParser(String s) {
-            this.s = s;
+            this.source = s;
         }
 
         Expression parse() {
             skip();
             Expression e = parseExpr();
             skip();
-            if (i != s.length()) throw error("Лишние символы в конце");
+            if (index != source.length()) {
+                throw error("Лишние символы в конце");
+            }
             return e;
         }
 
         private Expression parseExpr() {
             skip();
             if (peek() == '(') {
-                i++;
-                Expression L = parseExpr();
+                index++;
+                Expression leftExpr = parseExpr();
                 skip();
                 char op = next();
-                Expression R = parseExpr();
+                Expression rightExpr = parseExpr();
                 skip();
                 expect(')');
-                return make(op, L, R);
+                return make(op, leftExpr, rightExpr);
             }
-            if (peek() == '-' && isDigit(peek(1))) return new Number(parseInt());
-            if (isDigit(peek())) return new Number(parseInt());
-            if (isIdentStart(peek())) return new Variable(parseIdent());
+            if (peek() == '-' && isDigit(peek(1))) {
+                return new Number(parseInt());
+            }
+            if (isDigit(peek())) {
+                return new Number(parseInt());
+            }
+            if (isIdentStart(peek())) {
+                return new Variable(parseIdent());
+            }
             throw error("Ожидалось '(', число или переменная");
         }
 
@@ -337,26 +426,35 @@ public class Main {
         }
 
         private void skip() {
-            while (i < s.length() && Character.isWhitespace(s.charAt(i))) i++;
+            while (index < source.length()
+                    && Character.isWhitespace(source.charAt(index))) {
+                index++;
+            }
         }
 
         private char peek() {
-            return i < s.length() ? s.charAt(i) : '\0';
+            return index < source.length() ? source.charAt(index) : '\0';
         }
 
         private char peek(int k) {
-            int j = i + k;
-            return j < s.length() ? s.charAt(j) : '\0';
+            int j = index + k;
+            return j < source.length() ? source.charAt(j) : '\0';
         }
 
         private char next() {
-            if (i >= s.length()) throw error("Неожиданный конец строки");
-            return s.charAt(i++);
+            if (index >= source.length()) {
+                throw error("Неожиданный конец строки");
+            }
+            return source.charAt(index++);
         }
 
         private void expect(char c) {
             char got = next();
-            if (got != c) throw error("Ожидался символ '" + c + "', а получен '" + got + "'");
+            if (got != c) {
+                throw error(
+                        "Ожидался символ '" + c + "', а получен '" + got + "'"
+                );
+            }
         }
 
         private static boolean isDigit(char c) {
@@ -371,49 +469,75 @@ public class Main {
             int sign = 1;
             if (peek() == '-') {
                 sign = -1;
-                i++;
+                index++;
             }
             int val = 0;
-            if (!isDigit(peek())) throw error("Ожидалось число");
-            while (isDigit(peek())) val = val * 10 + (next() - '0');
+            if (!isDigit(peek())) {
+                throw error("Ожидалось число");
+            }
+            while (isDigit(peek())) {
+                val = val * 10 + (next() - '0');
+            }
             return sign * val;
         }
 
         private String parseIdent() {
-            if (!isIdentStart(peek())) throw error("Ожидалось имя переменной");
+            if (!isIdentStart(peek())) {
+                throw error("Ожидалось имя переменной");
+            }
             StringBuilder sb = new StringBuilder();
-            while (i < s.length()) {
-                char c = s.charAt(i);
+            while (index < source.length()) {
+                char c = source.charAt(index);
                 if (Character.isLetterOrDigit(c) || c == '_') {
                     sb.append(c);
-                    i++;
-                } else break;
+                    index++;
+                } else {
+                    break;
+                }
             }
             return sb.toString();
         }
 
         private IllegalArgumentException error(String msg) {
-            return new IllegalArgumentException(msg + " (позиция " + i + " в \"" + s + "\")");
+            return new IllegalArgumentException(
+                    msg + " (позиция " + index + " в \"" + source + "\")"
+            );
         }
     }
 
+    /** Точка входа для демонстрации. */
     public static void main(String[] args) {
-        Expression e = new Add(new Number(3), new Mul(new Number(2), new Variable("x")));
+        Expression e = new Add(
+                new Number(3),
+                new Mul(new Number(2), new Variable("x"))
+        );
         e.print();
+
         Expression de = e.derivative("x");
         de.print();
+
         int result = e.eval("x = 10; y = 13");
         System.out.println(result);
+
         Expression p = Expression.parseFully("(3+(2*x))");
         p.print();
+
         Expression s1 = new Mul(new Number(0), new Variable("x")).simplify();
         s1.print();
-        Expression s2 = new Mul(new Number(1), Expression.parseFully("(a+b)")).simplify();
+
+        Expression s2 = new Mul(
+                new Number(1),
+                Expression.parseFully("(a+b)")
+        ).simplify();
         s2.print();
-        Expression s3 = new Sub(Expression.parseFully("(t*(u+v))"), Expression.parseFully("(t*(u+v))")).simplify();
+
+        Expression s3 = new Sub(
+                Expression.parseFully("(t*(u+v))"),
+                Expression.parseFully("(t*(u+v))")
+        ).simplify();
         s3.print();
+
         Expression s4 = Expression.parseFully("((2*3)+(10/5))").simplify();
         s4.print();
     }
 }
-
