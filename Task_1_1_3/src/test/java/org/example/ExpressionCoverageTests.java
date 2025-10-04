@@ -2,8 +2,10 @@ package org.example;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExpressionCoverageTests {
 
-    private Main.Number num(int v) { return new Main.Number(v); }
-    private Main.Variable var(String n) { return new Main.Variable(n); }
+    private Main.Number num(int v) {
+        return new Main.Number(v);
+    }
+
+    private Main.Variable var(String n) {
+        return new Main.Variable(n);
+    }
 
     @Test
     @DisplayName("Number/Variable: render, toString, eval, hasVariables, equals/hashCode, print")
@@ -42,14 +49,14 @@ class ExpressionCoverageTests {
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         PrintStream prev = System.out;
-        System.setOut(new PrintStream(bout, true));
+        System.setOut(new PrintStream(bout, true, StandardCharsets.UTF_8));
         try {
             numExpr.print();
             varExpr.print();
         } finally {
             System.setOut(prev);
         }
-        String out = bout.toString();
+        String out = bout.toString(StandardCharsets.UTF_8);
         assertTrue(out.contains("7"));
         assertTrue(out.contains("x"));
     }
@@ -72,12 +79,13 @@ class ExpressionCoverageTests {
     }
 
     @Test
-    @DisplayName("Производные: сумма и правило произведения; по чужой переменной → 0")
+    @DisplayName("Derivatives: суммa и правило произведения; по отсутствующей переменной → 0")
     void derivativesEvaluateCorrectly() {
         Main.Expression e = new Main.Add(num(3), new Main.Mul(num(2), var("x")));
         Main.Expression dx = e.derivative("x");
         Map<String, Integer> env = Map.of("x", 5);
         assertEquals(2, dx.eval(env));
+
         Main.Expression dy = e.derivative("y");
         assertEquals(0, dy.eval(env));
     }
@@ -96,11 +104,17 @@ class ExpressionCoverageTests {
     }
 
     @Test
-    @DisplayName("Add: simplify (0+X, X+0, константы), render/apply")
+    @DisplayName("Add: render/apply/simplify (0+X, X+0, константы)")
     void addSimplify() {
-        assertEquals("x", new Main.Add(num(0), var("x")).simplify().render());
-        assertEquals("x", new Main.Add(var("x"), num(0)).simplify().render());
-        assertEquals("5", new Main.Add(num(2), num(3)).simplify().render());
+        Main.Add a1 = new Main.Add(num(0), var("x"));
+        assertEquals("x", a1.simplify().render());
+
+        Main.Add a2 = new Main.Add(var("x"), num(0));
+        assertEquals("x", a2.simplify().render());
+
+        Main.Add a3 = new Main.Add(num(2), num(3));
+        assertEquals("5", a3.simplify().render());
+
         assertEquals("(1+2)", new Main.Add(num(1), num(2)).render());
         assertEquals(7, new Main.Add(num(3), num(4)).eval(new HashMap<>()));
     }
@@ -108,8 +122,12 @@ class ExpressionCoverageTests {
     @Test
     @DisplayName("Sub: simplify (X−X=0, константы), render/apply")
     void subSimplify() {
-        assertEquals("0", new Main.Sub(var("t"), var("t")).simplify().render());
-        assertEquals("7", new Main.Sub(num(10), num(3)).simplify().render());
+        Main.Sub s1 = new Main.Sub(var("t"), var("t"));
+        assertEquals("0", s1.simplify().render());
+
+        Main.Sub s2 = new Main.Sub(num(10), num(3));
+        assertEquals("7", s2.simplify().render());
+
         assertEquals("(5-2)", new Main.Sub(num(5), num(2)).render());
         assertEquals(3, new Main.Sub(num(5), num(2)).eval(new HashMap<>()));
     }
@@ -131,8 +149,14 @@ class ExpressionCoverageTests {
         assertEquals("0", new Main.Div(num(0), var("x")).simplify().render());
         assertEquals("x", new Main.Div(var("x"), num(1)).simplify().render());
         assertEquals("2", new Main.Div(num(6), num(3)).simplify().render());
+
         Main.Expression e = new Main.Div(num(1), num(0)).simplify();
         assertTrue(e instanceof Main.Div);
-        assertThrows(ArithmeticException.class, () -> new Main.Div(num(1), num(0)).eval(new HashMap<>()));
+
+        assertThrows(
+                ArithmeticException.class,
+                () -> new Main.Div(num(1), num(0))
+                        .eval(new HashMap<>())
+        );
     }
 }
