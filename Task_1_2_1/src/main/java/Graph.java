@@ -24,14 +24,20 @@ public interface Graph {
             }
         }
         Queue<Integer> q = new ArrayDeque<>();
-        for (int v = 0; v < n; v++) if (inDegree[v] == 0) q.add(v);
+        for (int v = 0; v < n; v++) {
+            if (inDegree[v] == 0) {
+                q.add(v);
+            }
+        }
         List<Integer> order = new ArrayList<>(n);
         while (!q.isEmpty()) {
             int v = q.remove();
             order.add(v);
             for (int to : getNeighbors(v)) {
                 inDegree[to]--;
-                if (inDegree[to] == 0) q.add(to);
+                if (inDegree[to] == 0) {
+                    q.add(to);
+                }
             }
         }
         if (order.size() != n) {
@@ -46,10 +52,14 @@ public interface Graph {
             sb.append(v).append(": ");
             List<Integer> ns = getNeighbors(v);
             for (int i = 0; i < ns.size(); i++) {
-                if (i > 0) sb.append(' ');
+                if (i > 0) {
+                    sb.append(' ');
+                }
                 sb.append(ns.get(i));
             }
-            if (v + 1 < size()) sb.append('\n');
+            if (v + 1 < size()) {
+                sb.append('\n');
+            }
         }
         return sb.toString();
     }
@@ -59,9 +69,13 @@ public interface Graph {
     static Graph fromFile(Path path, Representation rep) {
         try (BufferedReader br = Files.newBufferedReader(path)) {
             String header = br.readLine();
-            if (header == null) throw new GraphFormatException("Пустой файл");
+            if (header == null) {
+                throw new GraphFormatException("Пустой файл");
+            }
             String[] first = header.trim().split("\\s+");
-            if (first.length < 2) throw new GraphFormatException("Ожидаю 'n m' в первой строке");
+            if (first.length < 2) {
+                throw new GraphFormatException("Ожидаю 'n m' в первой строке");
+            }
             int n;
             int m;
             try {
@@ -80,9 +94,13 @@ public interface Graph {
             }
             for (int i = 0; i < m; i++) {
                 String line = br.readLine();
-                if (line == null) throw new GraphFormatException("Ожидал " + m + " строк рёбер, но файл закончился раньше");
+                if (line == null) {
+                    throw new GraphFormatException("Ожидал " + m + " строк рёбер, но файл закончился раньше");
+                }
                 String[] uv = line.trim().split("\\s+");
-                if (uv.length < 2) throw new GraphFormatException("Каждая строка ребра должна быть формата 'u v'");
+                if (uv.length < 2) {
+                    throw new GraphFormatException("Каждая строка ребра должна быть формата 'u v'");
+                }
                 int u;
                 int v;
                 try {
@@ -100,13 +118,19 @@ public interface Graph {
     }
 
     default boolean equalsGraph(Graph other) {
-        if (other == null) return false;
-        if (this.size() != other.size()) return false;
+        if (other == null) {
+            return false;
+        }
+        if (this.size() != other.size()) {
+            return false;
+        }
         int n = size();
         for (int v = 0; v < n; v++) {
             Set<Integer> a = new HashSet<>(getNeighbors(v));
             Set<Integer> b = new HashSet<>(other.getNeighbors(v));
-            if (!a.equals(b)) return false;
+            if (!a.equals(b)) {
+                return false;
+            }
         }
         return true;
     }
