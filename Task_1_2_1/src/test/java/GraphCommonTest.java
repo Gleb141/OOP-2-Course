@@ -96,9 +96,12 @@ public class GraphCommonTest {
     @MethodSource("impls")
     void equalsGraph_null_and_sizeMismatch(Graph g) {
         assertFalse(g.equalsGraph(null));
-        g.addVertex(); g.addVertex();                 // size=2
+        g.addVertex();
+        g.addVertex();                 // size=2
         Graph other = new AdjacencyListGraph(0);
-        other.addVertex(); other.addVertex(); other.addVertex(); // size=3
+        other.addVertex();
+        other.addVertex();
+        other.addVertex(); // size=3
         assertFalse(g.equalsGraph(other));
     }
 
@@ -118,7 +121,7 @@ public class GraphCommonTest {
         Map<Integer, Integer> pos = new HashMap<>();
         for (int i = 0; i < order.size(); i++) pos.put(order.get(i), i);
         assertEquals(6, order.size());
-        int[][] edges = {{5,2},{5,0},{4,0},{4,1},{2,3},{3,1}};
+        int[][] edges = {{5, 2}, {5, 0}, {4, 0}, {4, 1}, {2, 3}, {3, 1}};
         for (int[] e : edges) assertTrue(pos.get(e[0]) < pos.get(e[1]), Arrays.toString(e));
     }
 
