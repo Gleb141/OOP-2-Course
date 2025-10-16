@@ -35,12 +35,23 @@ public class Main {
         public final String toString() {
             return render();
         }
-
+        public static class IncorrectSubstitutionException extends Exception{
+            public IncorrectSubstitutionException(String errmessage){
+                super(errmessage);
+            }
+        }
+        private static void kvcheck(String p, String[] kv) throws IncorrectSubstitutionException {
+            if (kv.length != 2) {
+                throw new IncorrectSubstitutionException("Неверная подстановка: " + p);
+            }
+        }
         private static Map<String, Integer> parseAssignments(String s) {
+
             Map<String, Integer> env = new HashMap<>();
             if (s == null) {
                 return env;
             }
+
             String[] parts = s.split(";");
             for (int idx = 0; idx < parts.length; idx++) {
                 String p = parts[idx].trim();
@@ -48,15 +59,22 @@ public class Main {
                     continue;
                 }
                 String[] kv = p.split("=");
-                if (kv.length != 2) {
-                    throw new IllegalArgumentException("Неверная подстановка: " + p);
-                }
                 String key = kv[0].trim();
                 String val = kv[1].trim();
                 env.put(key, Integer.parseInt(val));
+                try{
+                    kvcheck(parts[idx].trim(),p.split("="));
+                }catch(IncorrectSubstitutionException e){
+                    System.out.println(e.getMessage());
+
+                }
             }
+
             return env;
+
         }
+
+
 
         public static Expression parseFully(String src) {
             return new FullyParenParser(src).parse();
@@ -507,6 +525,13 @@ public class Main {
 
     /** Точка входа для демонстрации. */
     public static void main(String[] args) {
+//        try {
+//            Expression e = new Add(new Number(3), new Mul(new Number(2), new Variable("x")));
+//            int result = e.eval("x = 10; y = 13");
+//            System.out.println(result);
+//        } catch (Expression.IncorrectSubstitutionException ex) {
+//            System.out.println("Ошибка подстановки: " + ex.getMessage());
+//        }
         Expression e = new Add(
                 new Number(3),
                 new Mul(new Number(2), new Variable("x"))
@@ -516,7 +541,7 @@ public class Main {
         Expression de = e.derivative("x");
         de.print();
 
-        int result = e.eval("x = 10; y = 13");
+        int result = e.eval("x = 10 = 20");
         System.out.println(result);
 
         Expression p = Expression.parseFully("(3+(2*x))");
