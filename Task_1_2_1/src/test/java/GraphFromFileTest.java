@@ -44,49 +44,57 @@ public class GraphFromFileTest {
     @Test
     void fromFile_empty_file() throws Exception {
         Path p = write("");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_bad_header_token_count() throws Exception {
         Path p = write("4\n0 1\n");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_bad_header_numbers() throws Exception {
         Path p = write("X Y\n");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_short_edges_section() throws Exception {
         Path p = write("2 2\n0 1\n");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_bad_edge_numbers() throws Exception {
         Path p = write("2 1\nA B\n");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_bad_edge_token_count() throws Exception {
         Path p = write("2 1\n0\n");
-        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphFormatException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_vertex_out_of_bounds() throws Exception {
         Path p = write("2 1\n0 5\n");
         // addEdge внутри fromFile бросит GraphIndexException
-        assertThrows(GraphIndexException.class, () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphIndexException.class, () ->
+                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
     }
 
     @Test
     void fromFile_io_error() {
         Path missing = Path.of("definitely_missing_1234567890.txt");
-        assertThrows(GraphIoException.class, () -> Graph.fromFile(missing, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphIoException.class, () ->
+                Graph.fromFile(missing, Graph.Representation.ADJ_LIST));
     }
 }
