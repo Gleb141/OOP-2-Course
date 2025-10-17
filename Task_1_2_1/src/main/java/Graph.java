@@ -123,7 +123,7 @@ public interface Graph {
             }
             return g;
         } catch (IOException e) {
-            throw new GraphIOException("Ошибка чтения файла: " + path, e);
+            throw new GraphIoException("Ошибка чтения файла: " + path, e);
         }
     }
 
