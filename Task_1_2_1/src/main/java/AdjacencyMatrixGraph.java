@@ -29,9 +29,13 @@ public class AdjacencyMatrixGraph implements Graph {
         int n = a.length;
         int[][] na = new int[n - 1][n - 1];
         for (int i = 0, ii = 0; i < n; i++) {
-            if (i == v) continue;
+            if (i == v) {
+                continue;
+            }
             for (int j = 0, jj = 0; j < n; j++) {
-                if (j == v) continue;
+                if (j == v) {
+                    continue;
+                }
                 na[ii][jj++] = a[i][j];
             }
             ii++;
@@ -57,7 +61,11 @@ public class AdjacencyMatrixGraph implements Graph {
     public List<Integer> getNeighbors(int v) {
         checkVertex(v);
         List<Integer> ns = new ArrayList<>();
-        for (int to = 0; to < a.length; to++) if (a[v][to] == 1) ns.add(to);
+        for (int to = 0; to < a.length; to++) {
+            if (a[v][to] == 1) {
+                ns.add(to);
+            }
+        }
         return ns;
     }
 
