@@ -78,7 +78,7 @@ public class IncidenceMatrixGraph implements Graph {
             System.arraycopy(b[v], 0, nb[v], 0, oldM);
         }
         nb[from][oldM] = 1;
-        nb[to][oldM]   = -1;
+        nb[to][oldM] = -1;
         b = nb;
     }
 
@@ -91,7 +91,10 @@ public class IncidenceMatrixGraph implements Graph {
         int idx = -1;
         for (int i = 0; i < edges.size(); i++) {
             int[] e = edges.get(i);
-            if (e[0] == from && e[1] == to) { idx = i; break; }
+            if (e[0] == from && e[1] == to) {
+                idx = i;
+                break;
+            }
         }
         if (idx < 0) return; // нет такого ребра — допускаем тихое завершение
 
