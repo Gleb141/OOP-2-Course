@@ -118,7 +118,9 @@ public class IncidenceMatrixGraph implements Graph {
         // Для сохранения порядка добавления опираемся на список рёбер
         List<Integer> ns = new ArrayList<>();
         for (int[] e : edges) {
-            if (e[0] == v) ns.add(e[1]);
+            if (e[0] == v) {
+                ns.add(e[1]);
+            }
         }
         return ns;
     }

@@ -7,7 +7,9 @@ public class AdjacencyListGraph implements Graph {
 
     public AdjacencyListGraph(int n) {
         this.adj = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
     }
 
     public AdjacencyListGraph() {

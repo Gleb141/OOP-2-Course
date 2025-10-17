@@ -6,10 +6,15 @@ import java.util.*;
 
 public interface Graph {
     int addVertex();
+
     void removeVertex(int v);
+
     void addEdge(int from, int to);
+
     void removeEdge(int from, int to);
+
     List<Integer> getNeighbors(int v);
+
     int size();
 
     default List<Integer> topoSort() {
