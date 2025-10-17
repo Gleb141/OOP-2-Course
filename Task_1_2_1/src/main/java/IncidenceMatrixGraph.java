@@ -35,7 +35,8 @@ public class IncidenceMatrixGraph implements Graph {
         // 1) Фильтруем рёбра, инцидентные v, и переиндексируем оставшиеся
         List<int[]> newEdges = new ArrayList<>();
         for (int[] e : edges) {
-            int from = e[0], to = e[1];
+            int from = e[0];
+            int to = e[1];
             if (from == v || to == v) {
                 continue;   // выбрасываем рёбра, инцидентные удаляемой вершине
             }
@@ -105,7 +106,9 @@ public class IncidenceMatrixGraph implements Graph {
                 break;
             }
         }
-        if (idx < 0) return; // нет такого ребра — допускаем тихое завершение
+        if (idx < 0) {
+            return; // нет такого ребра — допускаем тихое завершение
+        }
 
         edges.remove(idx);
 

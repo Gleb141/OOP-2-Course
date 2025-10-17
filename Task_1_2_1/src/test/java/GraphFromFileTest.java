@@ -86,6 +86,6 @@ public class GraphFromFileTest {
     @Test
     void fromFile_io_error() {
         Path missing = Path.of("definitely_missing_1234567890.txt");
-        assertThrows(GraphIOException.class, () -> Graph.fromFile(missing, Graph.Representation.ADJ_LIST));
+        assertThrows(GraphIoException.class, () -> Graph.fromFile(missing, Graph.Representation.ADJ_LIST));
     }
 }
