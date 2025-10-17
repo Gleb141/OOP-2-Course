@@ -43,7 +43,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void removeVertex_last(Graph g) {
-        for (int i = 0; i < 4; i++) g.addVertex(); // 0..3
+        for (int i = 0; i < 4; i++) {
+            g.addVertex(); // 0..3
+        }
         g.addEdge(0, 1);
         g.addEdge(2, 3);
         assertEquals(4, g.size());
@@ -56,7 +58,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void removeVertex_middle_reindexes(Graph g) {
-        for (int i = 0; i < 5; i++) g.addVertex(); // 0..4
+        for (int i = 0; i < 5; i++) {
+            g.addVertex(); // 0..4
+        }
         g.addEdge(0, 2);
         g.addEdge(1, 3);
         g.addEdge(3, 4);
@@ -108,7 +112,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void topoSort_dag(Graph g) {
-        for (int i = 0; i < 6; i++) g.addVertex();
+        for (int i = 0; i < 6; i++) {
+            g.addVertex();
+        }
         g.addEdge(5, 2);
         g.addEdge(5, 0);
         g.addEdge(4, 0);
@@ -119,16 +125,22 @@ public class GraphCommonTest {
         List<Integer> order = g.topoSort();
 
         Map<Integer, Integer> pos = new HashMap<>();
-        for (int i = 0; i < order.size(); i++) pos.put(order.get(i), i);
+        for (int i = 0; i < order.size(); i++) {
+            pos.put(order.get(i), i);
+        }
         assertEquals(6, order.size());
         int[][] edges = {{5, 2}, {5, 0}, {4, 0}, {4, 1}, {2, 3}, {3, 1}};
-        for (int[] e : edges) assertTrue(pos.get(e[0]) < pos.get(e[1]), Arrays.toString(e));
+        for (int[] e : edges) {
+            assertTrue(pos.get(e[0]) < pos.get(e[1]), Arrays.toString(e));
+        }
     }
 
     @ParameterizedTest
     @MethodSource("impls")
     void topoSort_cycle(Graph g) {
-        for (int i = 0; i < 3; i++) g.addVertex();
+        for (int i = 0; i < 3; i++) {
+            g.addVertex();
+        }
         g.addEdge(0, 1);
         g.addEdge(1, 2);
         g.addEdge(2, 0);
@@ -146,7 +158,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void toString_format(Graph g) {
-        for (int i = 0; i < 3; i++) g.addVertex();
+        for (int i = 0; i < 3; i++) {
+            g.addVertex();
+        }
         g.addEdge(0, 2);
         g.addEdge(1, 2);
         String s = g.toString().replace("\r\n", "\n");
@@ -157,7 +171,9 @@ public class GraphCommonTest {
     @MethodSource("impls")
     void invalidIndices(Graph g) {
         assertThrows(GraphIndexException.class, () -> g.addEdge(0, 1));
-        for (int i = 0; i < 2; i++) g.addVertex();
+        for (int i = 0; i < 2; i++) {
+            g.addVertex();
+        }
         assertThrows(GraphIndexException.class, () -> g.addEdge(-1, 0));
         assertThrows(GraphIndexException.class, () -> g.addEdge(0, 2));
         assertThrows(GraphIndexException.class, () -> g.removeEdge(0, 2));
@@ -172,7 +188,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void addEdge_idempotent(Graph g) {
-        for (int i = 0; i < 3; i++) g.addVertex();
+        for (int i = 0; i < 3; i++) {
+            g.addVertex();
+        }
         g.addEdge(0, 1);
         g.addEdge(0, 1);
         assertIterableEquals(List.of(1), g.getNeighbors(0));
@@ -181,14 +199,18 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void removeEdge_nonexistent_noThrow(Graph g) {
-        for (int i = 0; i < 2; i++) g.addVertex();
+        for (int i = 0; i < 2; i++) {
+            g.addVertex();
+        }
         assertDoesNotThrow(() -> g.removeEdge(0, 1));
     }
 
     @ParameterizedTest
     @MethodSource("impls")
     void neighbors_are_defensive_copies(Graph g) {
-        for (int i = 0; i < 3; i++) g.addVertex();
+        for (int i = 0; i < 3; i++) {
+            g.addVertex();
+        }
         g.addEdge(0, 1);
         List<Integer> ns = g.getNeighbors(0);
         ns.add(99);                              // пробуем испортить копию
@@ -198,7 +220,9 @@ public class GraphCommonTest {
     @ParameterizedTest
     @MethodSource("impls")
     void self_loop_allowed(Graph g) {
-        for (int i = 0; i < 2; i++) g.addVertex();
+        for (int i = 0; i < 2; i++) {
+            g.addVertex();
+        }
         g.addEdge(1, 1);
         assertIterableEquals(List.of(1), g.getNeighbors(1));
     }
