@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IncidenceMatrixGraph implements Graph {
     private int m;                 // число столбцов (рёбер)
@@ -35,9 +36,15 @@ public class IncidenceMatrixGraph implements Graph {
         List<int[]> newEdges = new ArrayList<>();
         for (int[] e : edges) {
             int from = e[0], to = e[1];
-            if (from == v || to == v) continue;   // выбрасываем рёбра, инцидентные удаляемой вершине
-            if (from > v) from--;
-            if (to > v) to--;
+            if (from == v || to == v) {
+                continue;   // выбрасываем рёбра, инцидентные удаляемой вершине
+            }
+            if (from > v) {
+                from--;
+            }
+            if (to > v) {
+                to--;
+            }
             newEdges.add(new int[]{from, to});
         }
         edges.clear();
@@ -63,7 +70,9 @@ public class IncidenceMatrixGraph implements Graph {
 
         // Идемпотентность — если ребро уже есть, ничего не делаем
         for (int[] e : edges) {
-            if (e[0] == from && e[1] == to) return;
+            if (e[0] == from && e[1] == to) {
+                return;
+            }
         }
 
         // Добавляем в список рёбер
