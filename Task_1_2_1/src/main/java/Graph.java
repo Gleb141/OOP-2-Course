@@ -51,7 +51,9 @@ public interface Graph {
             }
         }
         if (order.size() != n) {
-            throw new GraphCycleException("Топологическая сортировка невозможна: в графе есть цикл");
+            String errormsg = "Топологическая сортировка невозможна:";
+            errormsg += " в графе есть цикл";
+            throw new GraphCycleException(errormsg);
         }
         return order;
     }
@@ -105,11 +107,15 @@ public interface Graph {
             for (int i = 0; i < m; i++) {
                 String line = br.readLine();
                 if (line == null) {
-                    throw new GraphFormatException("Ожидал " + m + " строк рёбер, но файл закончился раньше");
+                    String errormsg = "Ожидал ";
+                    errormsg += m;
+                    errormsg += "строк рёбер, но файл закончился раньше";
+                    throw new GraphFormatException(errormsg);
                 }
                 String[] uv = line.trim().split("\\s+");
                 if (uv.length < 2) {
-                    throw new GraphFormatException("Каждая строка ребра должна быть формата 'u v'");
+                    String errormsg = "Каждая строка должна быть формата 'u v'";
+                    throw new GraphFormatException(errormsg);
                 }
                 int u;
                 int v;
