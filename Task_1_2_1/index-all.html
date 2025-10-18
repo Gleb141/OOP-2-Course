@@ -48,7 +48,7 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:A">A</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
+<a href="#I:A">A</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
 <dt><a href="AdjacencyListGraph.html#addEdge(int,int)" class="member-name-link">addEdge(int, int)</a> - Method in class <a href="AdjacencyListGraph.html" title="class in Unnamed Package">AdjacencyListGraph</a></dt>
@@ -73,19 +73,15 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="AdjacencyListGraph.html" class="type-name-link" title="class in Unnamed Package">AdjacencyListGraph</a> - Class in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
-<div class="block">Граф по списку инцидентности.</div>
+<div class="block">Реализация графа на списках смежности.</div>
 </dd>
 <dt><a href="AdjacencyListGraph.html#%3Cinit%3E()" class="member-name-link">AdjacencyListGraph()</a> - Constructor for class <a href="AdjacencyListGraph.html" title="class in Unnamed Package">AdjacencyListGraph</a></dt>
-<dd>
-<div class="block">Граф по списку инцидентности.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="AdjacencyListGraph.html#%3Cinit%3E(int)" class="member-name-link">AdjacencyListGraph(int)</a> - Constructor for class <a href="AdjacencyListGraph.html" title="class in Unnamed Package">AdjacencyListGraph</a></dt>
-<dd>
-<div class="block">Граф по списку инцидентности.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="AdjacencyMatrixGraph.html" class="type-name-link" title="class in Unnamed Package">AdjacencyMatrixGraph</a> - Class in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
-<div class="block">Задание графа по матрице смежности.</div>
+<div class="block">Реализация графа на матрице смежности.</div>
 </dd>
 <dt><a href="AdjacencyMatrixGraph.html#%3Cinit%3E()" class="member-name-link">AdjacencyMatrixGraph()</a> - Constructor for class <a href="AdjacencyMatrixGraph.html" title="class in Unnamed Package">AdjacencyMatrixGraph</a></dt>
 <dd>&nbsp;</dd>
@@ -96,14 +92,14 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="Graph.html#equalsGraph(Graph)" class="member-name-link">equalsGraph(Graph)</a> - Method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
 <dd>
-<div class="block">Проверка равенства графов.</div>
+<div class="block">Сравнение структуры двух графов (по наборам смежности).</div>
 </dd>
 </dl>
 <h2 class="title" id="I:F">F</h2>
 <dl class="index">
 <dt><a href="Graph.html#fromFile(java.nio.file.Path,Graph.Representation)" class="member-name-link">fromFile(Path, Graph.Representation)</a> - Static method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
 <dd>
-<div class="block">Репрезентация графа и чтение из файла.</div>
+<div class="block">Загрузка графа из файла с заголовком: N M, затем M строк "u v".</div>
 </dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
@@ -118,12 +114,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="Graph.html" class="type-name-link" title="interface in Unnamed Package">Graph</a> - Interface in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
-<div class="block">Интерфейс графа.</div>
+<div class="block">Интерфейс графа и утилиты работы с ним.</div>
 </dd>
 <dt><a href="Graph.Representation.html" class="type-name-link" title="enum class in Unnamed Package">Graph.Representation</a> - Enum Class in <a href="package-summary.html">Unnamed Package</a></dt>
-<dd>
-<div class="block">Репрезентация графа и чтение из файла.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="GraphCycleException.html" class="type-name-link" title="class in Unnamed Package">GraphCycleException</a> - Exception in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
 <div class="block">Исключение по наличию цикла в графе.</div>
@@ -159,30 +153,37 @@ loadScripts(document, 'script');</script>
 <dt><a href="GraphIoException.html#%3Cinit%3E(java.lang.String,java.lang.Throwable)" class="member-name-link">GraphIoException(String, Throwable)</a> - Constructor for exception <a href="GraphIoException.html" title="class in Unnamed Package">GraphIoException</a></dt>
 <dd>&nbsp;</dd>
 </dl>
+<h2 class="title" id="I:H">H</h2>
+<dl class="index">
+<dt><a href="AdjacencyListGraph.html#hasEdge(int,int)" class="member-name-link">hasEdge(int, int)</a> - Method in class <a href="AdjacencyListGraph.html" title="class in Unnamed Package">AdjacencyListGraph</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="AdjacencyMatrixGraph.html#hasEdge(int,int)" class="member-name-link">hasEdge(int, int)</a> - Method in class <a href="AdjacencyMatrixGraph.html" title="class in Unnamed Package">AdjacencyMatrixGraph</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="Graph.html#hasEdge(int,int)" class="member-name-link">hasEdge(int, int)</a> - Method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="IncidenceMatrixGraph.html#hasEdge(int,int)" class="member-name-link">hasEdge(int, int)</a> - Method in class <a href="IncidenceMatrixGraph.html" title="class in Unnamed Package">IncidenceMatrixGraph</a></dt>
+<dd>&nbsp;</dd>
+</dl>
 <h2 class="title" id="I:I">I</h2>
 <dl class="index">
 <dt><a href="Graph.Representation.html#INC_MATRIX" class="member-name-link">INC_MATRIX</a> - Enum constant in enum class <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="IncidenceMatrixGraph.html" class="type-name-link" title="class in Unnamed Package">IncidenceMatrixGraph</a> - Class in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
-<div class="block">Задание графа по матрице инцидентности.</div>
+<div class="block">Реализация графа на матрице инцидентности: для дуги (u->v) u=1, v=-1.</div>
 </dd>
 <dt><a href="IncidenceMatrixGraph.html#%3Cinit%3E()" class="member-name-link">IncidenceMatrixGraph()</a> - Constructor for class <a href="IncidenceMatrixGraph.html" title="class in Unnamed Package">IncidenceMatrixGraph</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="IncidenceMatrixGraph.html#%3Cinit%3E(int)" class="member-name-link">IncidenceMatrixGraph(int)</a> - Constructor for class <a href="IncidenceMatrixGraph.html" title="class in Unnamed Package">IncidenceMatrixGraph</a></dt>
-<dd>
-<div class="block">Задание графа по матрице инцидентности.</div>
-</dd>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
 <dt><a href="MainDemo.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class <a href="MainDemo.html" title="class in Unnamed Package">MainDemo</a></dt>
-<dd>
-<div class="block">Демо из задания.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="MainDemo.html" class="type-name-link" title="class in Unnamed Package">MainDemo</a> - Class in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
-<div class="block">Демо из задания.</div>
+<div class="block">Демонстрационная программа.</div>
 </dd>
 <dt><a href="MainDemo.html#%3Cinit%3E()" class="member-name-link">MainDemo()</a> - Constructor for class <a href="MainDemo.html" title="class in Unnamed Package">MainDemo</a></dt>
 <dd>&nbsp;</dd>
@@ -219,9 +220,9 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:T">T</h2>
 <dl class="index">
-<dt><a href="Graph.html#topoSort()" class="member-name-link">topoSort()</a> - Method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
+<dt><a href="Graph.html#topologicalSort()" class="member-name-link">topologicalSort()</a> - Method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
 <dd>
-<div class="block">Топологическая сортировка матрицы.</div>
+<div class="block">Топологическая сортировка ориентированного ациклического графа.</div>
 </dd>
 <dt><a href="AdjacencyListGraph.html#toString()" class="member-name-link">toString()</a> - Method in class <a href="AdjacencyListGraph.html" title="class in Unnamed Package">AdjacencyListGraph</a></dt>
 <dd>&nbsp;</dd>
@@ -231,7 +232,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="Graph.html#toStringDefault()" class="member-name-link">toStringDefault()</a> - Method in interface <a href="Graph.html" title="interface in Unnamed Package">Graph</a></dt>
 <dd>
-<div class="block">Перевод в строку.</div>
+<div class="block">Строковое представление:
+  0: 1 2
+  1: 2
+  2:</div>
 </dd>
 </dl>
 <h2 class="title" id="I:V">V</h2>
@@ -246,7 +250,7 @@ loadScripts(document, 'script');</script>
 the order they are declared.</div>
 </dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
+<a href="#I:A">A</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
 </div>
 </div>
 </body>

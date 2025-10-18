@@ -75,7 +75,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Graph</span></div>
-<div class="block">Интерфейс графа.</div>
+<div class="block">Интерфейс графа и утилиты работы с ним.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,9 +90,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="Graph.Representation.html" class="type-name-link" title="enum class in Unnamed Package">Graph.Representation</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Репрезентация графа и чтение из файла.</div>
-</div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -117,36 +115,43 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#equalsGraph(Graph)" class="member-name-link">equalsGraph</a><wbr>(<a href="Graph.html" title="interface in Unnamed Package">Graph</a>&nbsp;other)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Проверка равенства графов.</div>
+<div class="block">Сравнение структуры двух графов (по наборам смежности).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#fromFile(java.nio.file.Path,Graph.Representation)" class="member-name-link">fromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path,
- <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;rep)</code></div>
+ <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;repr)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
-<div class="block">Репрезентация графа и чтение из файла.</div>
+<div class="block">Загрузка графа из файла с заголовком: N M, затем M строк "u v".</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNeighbors(int)" class="member-name-link">getNeighbors</a><wbr>(int&nbsp;v)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hasEdge(int,int)" class="member-name-link">hasEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeVertex(int)" class="member-name-link">removeVertex</a><wbr>(int&nbsp;v)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
+ int&nbsp;to)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeVertex(int)" class="member-name-link">removeVertex</a><wbr>(int&nbsp;v)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#topoSort()" class="member-name-link">topoSort</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Топологическая сортировка матрицы.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#toStringDefault()" class="member-name-link">toStringDefault</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#topologicalSort()" class="member-name-link">topologicalSort</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Перевод в строку.</div>
+<div class="block">Топологическая сортировка ориентированного ациклического графа.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#toStringDefault()" class="member-name-link">toStringDefault</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Строковое представление:
+  0: 1 2
+  1: 2
+  2:</div>
 </div>
 </div>
 </div>
@@ -189,6 +194,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="hasEdge(int,int)">
+<h3>hasEdge</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">hasEdge</span><wbr><span class="parameters">(int&nbsp;from,
+ int&nbsp;to)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="getNeighbors(int)">
 <h3>getNeighbors</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">getNeighbors</span><wbr><span class="parameters">(int&nbsp;v)</span></div>
@@ -201,32 +213,35 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="topoSort()">
-<h3>topoSort</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">topoSort</span>()</div>
-<div class="block">Топологическая сортировка матрицы.</div>
+<section class="detail" id="topologicalSort()">
+<h3>topologicalSort</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">topologicalSort</span>()</div>
+<div class="block">Топологическая сортировка ориентированного ациклического графа.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="toStringDefault()">
 <h3>toStringDefault</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toStringDefault</span>()</div>
-<div class="block">Перевод в строку.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="fromFile(java.nio.file.Path,Graph.Representation)">
-<h3>fromFile</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Graph.html" title="interface in Unnamed Package">Graph</a></span>&nbsp;<span class="element-name">fromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path,
- <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;rep)</span></div>
-<div class="block">Репрезентация графа и чтение из файла.</div>
+<div class="block">Строковое представление:
+  0: 1 2
+  1: 2
+  2:</div>
 </section>
 </li>
 <li>
 <section class="detail" id="equalsGraph(Graph)">
 <h3>equalsGraph</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equalsGraph</span><wbr><span class="parameters">(<a href="Graph.html" title="interface in Unnamed Package">Graph</a>&nbsp;other)</span></div>
-<div class="block">Проверка равенства графов.</div>
+<div class="block">Сравнение структуры двух графов (по наборам смежности).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="fromFile(java.nio.file.Path,Graph.Representation)">
+<h3>fromFile</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Graph.html" title="interface in Unnamed Package">Graph</a></span>&nbsp;<span class="element-name">fromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path,
+ <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;repr)</span></div>
+<div class="block">Загрузка графа из файла с заголовком: N M, затем M строк "u v".</div>
 </section>
 </li>
 </ul>
