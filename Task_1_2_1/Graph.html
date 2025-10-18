@@ -90,7 +90,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="Graph.Representation.html" class="type-name-link" title="enum class in Unnamed Package">Graph.Representation</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Представление графа при загрузке из файла.</div>
+</div>
 </div>
 </section>
 </li>
@@ -108,50 +110,62 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addEdge(int,int)" class="member-name-link">addEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Добавляет ориентированное ребро.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addVertex()" class="member-name-link">addVertex</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Добавляет вершину.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#equalsGraph(Graph)" class="member-name-link">equalsGraph</a><wbr>(<a href="Graph.html" title="interface in Unnamed Package">Graph</a>&nbsp;other)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Сравнение структуры двух графов (по наборам смежности).</div>
+<div class="block">Сравнивает структуру двух графов по наборам смежности.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#fromFile(java.nio.file.Path,Graph.Representation)" class="member-name-link">fromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path,
  <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;repr)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
-<div class="block">Загрузка графа из файла с заголовком: N M, затем M строк "u v".</div>
+<div class="block">Загружает граф из файла формата:
+ первая строка — "N M", далее M строк "u v".</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNeighbors(int)" class="member-name-link">getNeighbors</a><wbr>(int&nbsp;v)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Возвращает список соседей вершины (куда идут дуги).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hasEdge(int,int)" class="member-name-link">hasEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Проверяет наличие ориентированного ребра.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Удаляет ориентированное ребро.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeVertex(int)" class="member-name-link">removeVertex</a><wbr>(int&nbsp;v)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Удаляет вершину.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Возвращает число вершин.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#topologicalSort()" class="member-name-link">topologicalSort</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Топологическая сортировка ориентированного ациклического графа.</div>
+<div class="block">Выполняет топологическую сортировку ориентированного ациклического графа.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#toStringDefault()" class="member-name-link">toStringDefault</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Строковое представление:
-  0: 1 2
-  1: 2
-  2:</div>
+<div class="block">Строковое представление графа в виде списков смежности.</div>
 </div>
 </div>
 </div>
@@ -171,12 +185,22 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="addVertex()">
 <h3>addVertex</h3>
 <div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">addVertex</span>()</div>
+<div class="block">Добавляет вершину.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>индекс добавленной вершины.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="removeVertex(int)">
 <h3>removeVertex</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeVertex</span><wbr><span class="parameters">(int&nbsp;v)</span></div>
+<div class="block">Удаляет вершину.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>v</code> - индекс вершины.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -184,6 +208,12 @@ loadScripts(document, 'script');</script>
 <h3>addEdge</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
+<div class="block">Добавляет ориентированное ребро.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - начальная вершина.</dd>
+<dd><code>to</code> - конечная вершина.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -191,6 +221,12 @@ loadScripts(document, 'script');</script>
 <h3>removeEdge</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removeEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
+<div class="block">Удаляет ориентированное ребро.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - начальная вершина.</dd>
+<dd><code>to</code> - конечная вершина.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -198,42 +234,81 @@ loadScripts(document, 'script');</script>
 <h3>hasEdge</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">hasEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
+<div class="block">Проверяет наличие ориентированного ребра.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - начальная вершина.</dd>
+<dd><code>to</code> - конечная вершина.</dd>
+<dt>Returns:</dt>
+<dd>true, если ребро существует.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getNeighbors(int)">
 <h3>getNeighbors</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">getNeighbors</span><wbr><span class="parameters">(int&nbsp;v)</span></div>
+<div class="block">Возвращает список соседей вершины (куда идут дуги).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>v</code> - вершина.</dd>
+<dt>Returns:</dt>
+<dd>список индексов соседей.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="size()">
 <h3>size</h3>
 <div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
+<div class="block">Возвращает число вершин.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>число вершин.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="topologicalSort()">
 <h3>topologicalSort</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">topologicalSort</span>()</div>
-<div class="block">Топологическая сортировка ориентированного ациклического графа.</div>
+<div class="block">Выполняет топологическую сортировку ориентированного ациклического графа.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>порядок вершин в топологической сортировке.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="GraphCycleException.html" title="class in Unnamed Package">GraphCycleException</a></code> - если в графе есть цикл.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="toStringDefault()">
 <h3>toStringDefault</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toStringDefault</span>()</div>
-<div class="block">Строковое представление:
-  0: 1 2
-  1: 2
-  2:</div>
+<div class="block">Строковое представление графа в виде списков смежности.
+ Пример:
+ <pre>
+ 0: 1 2
+ 1: 2
+ 2:
+ </pre></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>строка с описанием графа.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="equalsGraph(Graph)">
 <h3>equalsGraph</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equalsGraph</span><wbr><span class="parameters">(<a href="Graph.html" title="interface in Unnamed Package">Graph</a>&nbsp;other)</span></div>
-<div class="block">Сравнение структуры двух графов (по наборам смежности).</div>
+<div class="block">Сравнивает структуру двух графов по наборам смежности.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>other</code> - другой граф.</dd>
+<dt>Returns:</dt>
+<dd>true, если структуры совпадают.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -241,7 +316,18 @@ loadScripts(document, 'script');</script>
 <h3>fromFile</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Graph.html" title="interface in Unnamed Package">Graph</a></span>&nbsp;<span class="element-name">fromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;path,
  <a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a>&nbsp;repr)</span></div>
-<div class="block">Загрузка графа из файла с заголовком: N M, затем M строк "u v".</div>
+<div class="block">Загружает граф из файла формата:
+ первая строка — "N M", далее M строк "u v".</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>path</code> - путь к файлу.</dd>
+<dd><code>repr</code> - целевое представление графа.</dd>
+<dt>Returns:</dt>
+<dd>созданный граф.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="GraphFormatException.html" title="class in Unnamed Package">GraphFormatException</a></code> - при ошибке формата.</dd>
+<dd><code><a href="GraphIoException.html" title="class in Unnamed Package">GraphIoException</a></code> - при ошибке ввода/вывода.</dd>
+</dl>
 </section>
 </li>
 </ul>
