@@ -1,16 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/** Задание графа по матрице инцидентности. */
+/** Реализация графа на матрице инцидентности: для дуги (u->v) u=1, v=-1. */
 public class IncidenceMatrixGraph implements Graph {
-    private int m;                 // число столбцов (рёбер)
-    private int[][] b;             // матрица инцидентности (n x m): источник=1, приёмник=-1
-    private final List<int[]> edges; // список рёбер (from,to) — источник истины
-    /** Задание графа по матрице инцидентности. */
+    /** Матрица инцидентности размера N x M (N — вершины, M — рёбра). */
+    private int[][] incidenceMatrix;
+    /** Список рёбер в порядке добавления: [from, to]. Используется как источник истины. */
+    private final List<int[]> edges;
 
     public IncidenceMatrixGraph(int n) {
-        this.b = new int[n][0];
-        this.m = 0;
+        if (n < 0) {
+            throw new GraphException("Размер графа не может быть отрицательным.");
+        }
+        this.incidenceMatrix = new int[n][0];
         this.edges = new ArrayList<>();
     }
 
@@ -20,133 +22,109 @@ public class IncidenceMatrixGraph implements Graph {
 
     @Override
     public int addVertex() {
-        int n = b.length;
-        int[][] nb = new int[n + 1][m];
+        final int n = incidenceMatrix.length;
+        int[][] next = new int[n + 1][edges.size()];
         for (int i = 0; i < n; i++) {
-            System.arraycopy(b[i], 0, nb[i], 0, m);
+            System.arraycopy(incidenceMatrix[i], 0, next[i], 0, edges.size());
         }
-        b = nb;
+        incidenceMatrix = next;
         return n;
     }
 
     @Override
     public void removeVertex(int v) {
         checkVertex(v);
-        int oldN = b.length;
-
-        // 1) Фильтруем рёбра, инцидентные v, и переиндексируем оставшиеся
+        // Удаляем рёбра, касающиеся v, и сдвигаем индексы > v на 1 вниз.
         List<int[]> newEdges = new ArrayList<>();
         for (int[] e : edges) {
             int from = e[0];
             int to = e[1];
             if (from == v || to == v) {
-                continue;   // выбрасываем рёбра, инцидентные удаляемой вершине
+                continue;
             }
-            if (from > v) {
-                from--;
-            }
-            if (to > v) {
-                to--;
-            }
+            if (from > v) from--;
+            if (to > v) to--;
             newEdges.add(new int[]{from, to});
         }
         edges.clear();
         edges.addAll(newEdges);
-
-        // 2) Перестраиваем матрицу заново по списку рёбер
-        int newN = oldN - 1;
-        int newM = edges.size();
-        int[][] nb = new int[newN][newM];
-        for (int col = 0; col < newM; col++) {
-            int[] e = edges.get(col);
-            nb[e[0]][col] = 1;
-            nb[e[1]][col] = -1;
-        }
-        b = nb;
-        m = newM;
+        rebuildFromEdges(incidenceMatrix.length - 1);
     }
 
     @Override
     public void addEdge(int from, int to) {
         checkVertex(from);
         checkVertex(to);
-
-        // Идемпотентность — если ребро уже есть, ничего не делаем
-        for (int[] e : edges) {
-            if (e[0] == from && e[1] == to) {
-                return;
-            }
-        }
-
-        // Добавляем в список рёбер
         edges.add(new int[]{from, to});
-
-        // Добавляем новый столбец в матрицу
-        int oldM = m;
-        m++;
-        int n = b.length;
-        int[][] nb = new int[n][m];
-        for (int v = 0; v < n; v++) {
-            System.arraycopy(b[v], 0, nb[v], 0, oldM);
-        }
-        nb[from][oldM] = 1;
-        nb[to][oldM] = -1;
-        b = nb;
+        rebuildFromEdges(incidenceMatrix.length);
     }
 
     @Override
     public void removeEdge(int from, int to) {
         checkVertex(from);
         checkVertex(to);
-
-        // Находим и удаляем ребро из списка
-        int idx = -1;
         for (int i = 0; i < edges.size(); i++) {
             int[] e = edges.get(i);
             if (e[0] == from && e[1] == to) {
-                idx = i;
-                break;
+                edges.remove(i);
+                rebuildFromEdges(incidenceMatrix.length);
+                return;
             }
         }
-        if (idx < 0) {
-            return; // нет такого ребра — допускаем тихое завершение
-        }
+        // если ребра нет — просто выходим
+    }
 
-        edges.remove(idx);
-
-        // Перестраиваем матрицу по актуальному списку рёбер
-        int n = b.length;
-        m = edges.size();
-        int[][] nb = new int[n][m];
-        for (int col = 0; col < m; col++) {
-            int[] e = edges.get(col);
-            nb[e[0]][col] = 1;
-            nb[e[1]][col] = -1;
+    @Override
+    public boolean hasEdge(int from, int to) {
+        checkVertex(from);
+        checkVertex(to);
+        for (int[] e : edges) {
+            if (e[0] == from && e[1] == to) {
+                return true;
+            }
         }
-        b = nb;
+        return false;
     }
 
     @Override
     public List<Integer> getNeighbors(int v) {
         checkVertex(v);
-        // Для сохранения порядка добавления опираемся на список рёбер
-        List<Integer> ns = new ArrayList<>();
+        List<Integer> neighbors = new ArrayList<>();
         for (int[] e : edges) {
             if (e[0] == v) {
-                ns.add(e[1]);
+                neighbors.add(e[1]);
             }
         }
-        return ns;
+        return neighbors;
     }
 
     @Override
     public int size() {
-        return b.length;
+        return incidenceMatrix.length;
+    }
+
+    private void rebuildFromEdges(int newN) {
+        if (newN < 0) {
+            throw new GraphException("Размер графа не может быть отрицательным.");
+        }
+        int m = edges.size();
+        int[][] next = new int[newN][m];
+        for (int j = 0; j < m; j++) {
+            int from = edges.get(j)[0];
+            int to = edges.get(j)[1];
+            // Для самопетли (v->v) кладём +1 в строку v (−1 в ту же ячейку невозможен).
+            // Обнаружение соседей и наличие ребра делаем по списку edges, так что информация не теряется.
+            next[from][j] = 1;
+            if (from != to) {
+                next[to][j] = -1;
+            }
+        }
+        incidenceMatrix = next;
     }
 
     private void checkVertex(int v) {
-        if (v < 0 || v >= b.length) {
-            throw new GraphIndexException("Вершина " + v + " вне диапазона 0.." + (b.length - 1));
+        if (v < 0 || v >= incidenceMatrix.length) {
+            throw new GraphIndexException("Вершина " + v + " вне диапазона 0.." + (incidenceMatrix.length - 1));
         }
     }
 

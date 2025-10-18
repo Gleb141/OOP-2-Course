@@ -1,29 +1,44 @@
-/** Демо из задания. */
+/** Демонстрационная программа. */
 public class MainDemo {
-    /** Демо из задания. */
     public static void main(String[] args) {
+        // Список смежности
         Graph g1 = new AdjacencyListGraph();
-        int a = g1.addVertex();
-        int b = g1.addVertex();
-        int c = g1.addVertex();
-        g1.addEdge(a, b);
-        g1.addEdge(a, c);
-        g1.addEdge(b, c);
-        System.out.println("AdjacencyListGraph:\n" + g1);
-        System.out.println("Topo: " + g1.topoSort());
+        for (int i = 0; i < 3; i++) {
+            g1.addVertex();
+        }
+        g1.addEdge(0, 1);
+        g1.addEdge(1, 2);
+        System.out.println("AdjacencyListGraph:");
+        System.out.println(g1);
+        try {
+            System.out.println("Topo: " + g1.topologicalSort());
+        } catch (GraphCycleException ex) {
+            System.out.println("Topo: cycle detected");
+        }
 
+        // Матрица смежности
         Graph g2 = new AdjacencyMatrixGraph(3);
         g2.addEdge(0, 1);
         g2.addEdge(0, 2);
-        g2.addEdge(1, 2);
-        System.out.println("\nAdjacencyMatrixGraph:\n" + g2);
-        System.out.println("Equals g1? " + g1.equalsGraph(g2));
+        System.out.println("AdjacencyMatrixGraph:");
+        System.out.println(g2);
+        try {
+            System.out.println("Topo: " + g2.topologicalSort());
+        } catch (GraphCycleException ex) {
+            System.out.println("Topo: cycle detected");
+        }
 
+        // Матрица инцидентности (с циклом 0->1->2->0 для демонстрации ошибки топосортировки)
         Graph g3 = new IncidenceMatrixGraph(3);
         g3.addEdge(0, 1);
-        g3.addEdge(0, 2);
         g3.addEdge(1, 2);
-        System.out.println("\nIncidenceMatrixGraph:\n" + g3);
-        System.out.println("Topo: " + g3.topoSort());
+        g3.addEdge(2, 0);
+        System.out.println("IncidenceMatrixGraph:");
+        System.out.println(g3);
+        try {
+            System.out.println("Topo: " + g3.topologicalSort());
+        } catch (GraphCycleException ex) {
+            System.out.println("Topo: cycle detected");
+        }
     }
 }

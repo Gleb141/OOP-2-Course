@@ -1,6 +1,3 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,7 +5,10 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/** Тестирование графа из файла. */
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/** Тестирование чтения графа из файла. */
 public class GraphFromFileTest {
 
     private Path write(String content) throws IOException {
@@ -49,48 +49,60 @@ public class GraphFromFileTest {
     @DisplayName("Чтение пустого файла")
     void fromFile_empty_file() throws Exception {
         Path p = write("");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
-    @DisplayName("Чтение пустого файла")
+    @DisplayName("Чтение файла с плохим числом токенов в заголовке")
     void fromFile_bad_header_token_count() throws Exception {
         Path p = write("4\n0 1\n");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
-    @DisplayName("Чтение файла с плохими цифрами в хедере")
+    @DisplayName("Чтение файла с плохими цифрами в заголовке")
     void fromFile_bad_header_numbers() throws Exception {
         Path p = write("X Y\n");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
     @DisplayName("Чтение файла с короткими рёбрами")
     void fromFile_short_edges_section() throws Exception {
         Path p = write("2 2\n0 1\n");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
     @DisplayName("Чтение файла с плохими цифрами на рёбрах")
     void fromFile_bad_edge_numbers() throws Exception {
         Path p = write("2 1\nA B\n");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
-    @DisplayName("Чтение файла с недостаточным числом токенов")
+    @DisplayName("Чтение файла с недостаточным числом токенов на ребре")
     void fromFile_bad_edge_token_count() throws Exception {
         Path p = write("2 1\n0\n");
-        assertThrows(GraphFormatException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphFormatException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
@@ -98,15 +110,19 @@ public class GraphFromFileTest {
     void fromFile_vertex_out_of_bounds() throws Exception {
         Path p = write("2 1\n0 5\n");
         // addEdge внутри fromFile бросит GraphIndexException
-        assertThrows(GraphIndexException.class, () ->
-                Graph.fromFile(p, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphIndexException.class,
+                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
+        );
     }
 
     @Test
-    @DisplayName("Чтение файла с ошибкой")
+    @DisplayName("Чтение файла с ошибкой ввода/вывода")
     void fromFile_io_error() {
         Path missing = Path.of("definitely_missing_1234567890.txt");
-        assertThrows(GraphIoException.class, () ->
-                Graph.fromFile(missing, Graph.Representation.ADJ_LIST));
+        assertThrows(
+                GraphIoException.class,
+                () -> Graph.fromFile(missing, Graph.Representation.ADJ_LIST)
+        );
     }
 }

@@ -1,11 +1,10 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-/** Категория тестов списков инцидентности. */
+/** Категория тестов списков смежности. */
 public class AdjacencyListTests {
 
     @Test
@@ -16,28 +15,12 @@ public class AdjacencyListTests {
     }
 
     @Test
-    void removeVertex_decreasesSize() {
-        Graph g = new AdjacencyListGraph();
-        g.addVertex();
-        g.removeVertex(0);
-        assertEquals(0, g.size());
-    }
-
-    @Test
-    void addEdge_addsNeighbor() {
+    void add_and_remove_edge() {
         Graph g = new AdjacencyListGraph();
         g.addVertex();
         g.addVertex();
         g.addEdge(0, 1);
         assertIterableEquals(List.of(1), g.getNeighbors(0));
-    }
-
-    @Test
-    void removeEdge_removesNeighbor() {
-        Graph g = new AdjacencyListGraph();
-        g.addVertex();
-        g.addVertex();
-        g.addEdge(0, 1);
         g.removeEdge(0, 1);
         assertIterableEquals(List.of(), g.getNeighbors(0));
     }

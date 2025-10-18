@@ -9,8 +9,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-/** Интерфейс графа. */
+/** Интерфейс графа и утилиты работы с ним. */
 public interface Graph {
+
+    enum Representation {
+        ADJ_LIST,
+        ADJ_MATRIX,
+        INC_MATRIX
+    }
+
     int addVertex();
 
     void removeVertex(int v);
@@ -19,48 +26,50 @@ public interface Graph {
 
     void removeEdge(int from, int to);
 
+    boolean hasEdge(int from, int to);
+
     List<Integer> getNeighbors(int v);
 
     int size();
-    /** Топологическая сортировка матрицы. */
 
-    default List<Integer> topoSort() {
+    /** Топологическая сортировка ориентированного ациклического графа. */
+    default List<Integer> topologicalSort() {
         int n = size();
-        int[] inDegree = new int[n];
+        int[] indeg = new int[n];
         for (int v = 0; v < n; v++) {
-            for (int to : getNeighbors(v)) {
-                if (to < 0 || to >= n) {
-                    throw new GraphIndexException("Некорректный сосед " + to + " у вершины " + v);
-                }
-                inDegree[to]++;
+            for (int u : getNeighbors(v)) {
+                indeg[u]++;
             }
         }
         Queue<Integer> q = new ArrayDeque<>();
         for (int v = 0; v < n; v++) {
-            if (inDegree[v] == 0) {
+            if (indeg[v] == 0) {
                 q.add(v);
             }
         }
-        List<Integer> order = new ArrayList<>(n);
+        List<Integer> order = new ArrayList<>();
         while (!q.isEmpty()) {
-            int v = q.remove();
+            int v = q.poll();
             order.add(v);
-            for (int to : getNeighbors(v)) {
-                inDegree[to]--;
-                if (inDegree[to] == 0) {
-                    q.add(to);
+            for (int u : getNeighbors(v)) {
+                if (--indeg[u] == 0) {
+                    q.add(u);
                 }
             }
         }
         if (order.size() != n) {
-            String errormsg = "Топологическая сортировка невозможна:";
-            errormsg += " в графе есть цикл";
-            throw new GraphCycleException(errormsg);
+            throw new GraphCycleException(
+                    "Топологическая сортировка невозможна: в графе есть цикл."
+            );
         }
         return order;
     }
-    /** Перевод в строку. */
 
+    /** Строковое представление:
+     *  0: 1 2
+     *  1: 2
+     *  2:
+     */
     default String toStringDefault() {
         StringBuilder sb = new StringBuilder();
         for (int v = 0; v < size(); v++) {
@@ -72,80 +81,14 @@ public interface Graph {
                 }
                 sb.append(ns.get(i));
             }
-            if (v + 1 < size()) {
-                sb.append('\n');
-            }
+            sb.append(System.lineSeparator());
         }
         return sb.toString();
     }
-    /** Репрезентация графа и чтение из файла. */
 
-    enum Representation { ADJ_LIST, ADJ_MATRIX, INC_MATRIX }
-
-    /** Репрезентация графа и чтение из файла. */
-
-    static Graph fromFile(Path path, Representation rep) {
-        try (BufferedReader br = Files.newBufferedReader(path)) {
-            String header = br.readLine();
-            if (header == null) {
-                throw new GraphFormatException("Пустой файл");
-            }
-            String[] first = header.trim().split("\\s+");
-            if (first.length < 2) {
-                throw new GraphFormatException("Ожидаю 'n m' в первой строке");
-            }
-            int n;
-            int m;
-            try {
-                n = Integer.parseInt(first[0]);
-                m = Integer.parseInt(first[1]);
-            } catch (NumberFormatException e) {
-                throw new GraphFormatException("Некорректные числа в заголовке");
-            }
-            Graph g;
-            if (rep == Representation.ADJ_LIST) {
-                g = new AdjacencyListGraph(n);
-            } else if (rep == Representation.ADJ_MATRIX) {
-                g = new AdjacencyMatrixGraph(n);
-            } else {
-                g = new IncidenceMatrixGraph(n);
-            }
-            for (int i = 0; i < m; i++) {
-                String line = br.readLine();
-                if (line == null) {
-                    String errormsg = "Ожидал ";
-                    errormsg += m;
-                    errormsg += "строк рёбер, но файл закончился раньше";
-                    throw new GraphFormatException(errormsg);
-                }
-                String[] uv = line.trim().split("\\s+");
-                if (uv.length < 2) {
-                    String errormsg = "Каждая строка должна быть формата 'u v'";
-                    throw new GraphFormatException(errormsg);
-                }
-                int u;
-                int v;
-                try {
-                    u = Integer.parseInt(uv[0]);
-                    v = Integer.parseInt(uv[1]);
-                } catch (NumberFormatException e) {
-                    throw new GraphFormatException("Некорректные числа в строке ребра: " + line);
-                }
-                g.addEdge(u, v);
-            }
-            return g;
-        } catch (IOException e) {
-
-            throw new GraphIoException("Ошибка чтения файла: " + path, e);
-        }
-    }
-    /** Проверка равенства графов. */
-
+    /** Сравнение структуры двух графов (по наборам смежности). */
     default boolean equalsGraph(Graph other) {
-        if (other == null) {
-            return false;
-        }
-        if (this.size() != other.size()) {
+        if (other == null || other.size() != size()) {
             return false;
         }
         int n = size();
@@ -158,5 +101,83 @@ public interface Graph {
         }
         return true;
     }
-}
 
+    /** Загрузка графа из файла с заголовком: N M, затем M строк "u v". */
+    static Graph fromFile(Path path, Representation repr) {
+        Graph g;
+        switch (repr) {
+            case ADJ_LIST:
+                g = new AdjacencyListGraph(0);
+                break;
+            case ADJ_MATRIX:
+                g = new AdjacencyMatrixGraph(0);
+                break;
+            case INC_MATRIX:
+                g = new IncidenceMatrixGraph(0);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown representation: " + repr);
+        }
+
+        try (BufferedReader br = Files.newBufferedReader(path)) {
+            String header = br.readLine();
+            if (header == null || header.trim().isEmpty()) {
+                throw new GraphFormatException("Пустой файл.");
+            }
+            String[] ht = header.trim().split("\\s+");
+            if (ht.length != 2) {
+                throw new GraphFormatException(
+                        "Некорректный заголовок: ожидалось два числа N M."
+                );
+            }
+            int n;
+            int m;
+            try {
+                n = Integer.parseInt(ht[0]);
+                m = Integer.parseInt(ht[1]);
+            } catch (NumberFormatException ex) {
+                throw new GraphFormatException("Некорректные числа в заголовке: " + header);
+            }
+            if (n < 0 || m < 0) {
+                throw new GraphFormatException("N и M должны быть неотрицательны.");
+            }
+            for (int i = 0; i < n; i++) {
+                g.addVertex();
+            }
+            int readEdges = 0;
+            String line;
+            while ((line = br.readLine()) != null && readEdges < m) {
+                String s = line.trim();
+                if (s.isEmpty() || s.startsWith("#")) {
+                    continue;
+                }
+                String[] parts = s.split("\\s+");
+                if (parts.length != 2) {
+                    throw new GraphFormatException(
+                            "Ожидалось два числа для ребра, строка: '" + s + "'"
+                    );
+                }
+                int from;
+                int to;
+                try {
+                    from = Integer.parseInt(parts[0]);
+                    to = Integer.parseInt(parts[1]);
+                } catch (NumberFormatException ex) {
+                    throw new GraphFormatException(
+                            "Некорректные номера вершин в строке: '" + s + "'"
+                    );
+                }
+                g.addEdge(from, to); // может бросить GraphIndexException
+                readEdges++;
+            }
+            if (readEdges < m) {
+                throw new GraphFormatException(
+                        "Недостаточно строк рёбер: ожидалось " + m + ", прочитано " + readEdges + "."
+                );
+            }
+            return g;
+        } catch (IOException ioe) {
+            throw new GraphIoException("Ошибка чтения файла: " + path, ioe);
+        }
+    }
+}
