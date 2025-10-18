@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/** Граф по списку инцидентности */
 public class AdjacencyListGraph implements Graph {
     private final List<List<Integer>> adj;
 

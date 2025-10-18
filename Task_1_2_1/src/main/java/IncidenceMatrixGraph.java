@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/** Задание графа по матрице инцидентности */
 public class IncidenceMatrixGraph implements Graph {
     private int m;                 // число столбцов (рёбер)
     private int[][] b;             // матрица инцидентности (n x m): источник=1, приёмник=-1

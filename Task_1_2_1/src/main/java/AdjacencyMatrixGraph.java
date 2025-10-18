@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
+/** Задание графа по матрице смежности */
 public class AdjacencyMatrixGraph implements Graph {
     private int[][] a;
 
