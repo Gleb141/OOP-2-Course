@@ -6,6 +6,7 @@ import java.util.ListIterator;
 public class AdjacencyListGraph implements Graph {
     private final List<List<Integer>> adj;
     /** Граф по списку инцидентности. */
+
     public AdjacencyListGraph(int n) {
         this.adj = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
@@ -13,6 +14,7 @@ public class AdjacencyListGraph implements Graph {
         }
     }
     /** Граф по списку инцидентности. */
+
     public AdjacencyListGraph() {
         this(0);
     }

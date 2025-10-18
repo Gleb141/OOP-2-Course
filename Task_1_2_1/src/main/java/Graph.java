@@ -23,6 +23,7 @@ public interface Graph {
 
     int size();
     /** Топологическая сортировка матрицы. */
+
     default List<Integer> topoSort() {
         int n = size();
         int[] inDegree = new int[n];
@@ -59,6 +60,7 @@ public interface Graph {
         return order;
     }
     /** Перевод в строку. */
+
     default String toStringDefault() {
         StringBuilder sb = new StringBuilder();
         for (int v = 0; v < size(); v++) {
@@ -77,8 +79,11 @@ public interface Graph {
         return sb.toString();
     }
     /** Репрезентация графа и чтение из файла. */
+
     enum Representation { ADJ_LIST, ADJ_MATRIX, INC_MATRIX }
+
     /** Репрезентация графа и чтение из файла. */
+
     static Graph fromFile(Path path, Representation rep) {
         try (BufferedReader br = Files.newBufferedReader(path)) {
             String header = br.readLine();
@@ -130,10 +135,12 @@ public interface Graph {
             }
             return g;
         } catch (IOException e) {
+
             throw new GraphIoException("Ошибка чтения файла: " + path, e);
         }
     }
     /** Проверка равенства графов. */
+
     default boolean equalsGraph(Graph other) {
         if (other == null) {
             return false;

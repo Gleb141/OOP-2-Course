@@ -1,5 +1,6 @@
 /** Демо из задания. */
 public class MainDemo {
+    /** Демо из задания. */
     public static void main(String[] args) {
         Graph g1 = new AdjacencyListGraph();
         int a = g1.addVertex();
