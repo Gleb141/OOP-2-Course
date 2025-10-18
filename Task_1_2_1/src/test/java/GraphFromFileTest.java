@@ -5,23 +5,52 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-/** Тестирование чтения графа из файла. */
+/**
+ * Тесты загрузки графа из файла. Успешные кейсы параметризованы по представлению.
+ */
 public class GraphFromFileTest {
 
+    /**
+     * Вспомогательная запись файла.
+     *
+     * @param content текст.
+     * @return путь к временному файлу.
+     * @throws IOException ошибка записи.
+     */
     private Path write(String content) throws IOException {
         Path p = Files.createTempFile("graph", ".txt");
         Files.writeString(p, content);
         return p;
     }
 
-    @Test
-    @DisplayName("Чтение списка из файла")
-    void fromFile_ok_list() throws Exception {
+    /**
+     * Поставщик трёх представлений для параметризованных тестов.
+     *
+     * @return поток представлений графа.
+     */
+    static Stream<Graph.Representation> reprs() {
+        return Stream.of(
+                Graph.Representation.ADJ_LIST,
+                Graph.Representation.ADJ_MATRIX,
+                Graph.Representation.INC_MATRIX
+        );
+    }
+
+    /**
+     * Успешная загрузка графа с рёбрами 0→1, 1→2, 2→3 для всех представлений.
+     */
+    @ParameterizedTest
+    @MethodSource("reprs")
+    @DisplayName("fromFile: OK (универсальный формат N M + рёбра)")
+    void fromFile_ok_all(Graph.Representation repr) throws Exception {
         Path p = write("4 3\n0 1\n1 2\n2 3\n");
-        Graph g = Graph.fromFile(p, Graph.Representation.ADJ_LIST);
+        Graph g = Graph.fromFile(p, repr);
         assertEquals(4, g.size());
         assertEquals(List.of(1), g.getNeighbors(0));
         assertEquals(List.of(2), g.getNeighbors(1));
@@ -29,24 +58,11 @@ public class GraphFromFileTest {
         assertEquals(List.of(), g.getNeighbors(3));
     }
 
+    /**
+     * Пустой файл — ошибка формата (repr роли не играет).
+     */
     @Test
-    @DisplayName("Чтение матрицы из файла")
-    void fromFile_ok_matrix() throws Exception {
-        Path p = write("3 2\n0 1\n0 2\n");
-        Graph g = Graph.fromFile(p, Graph.Representation.ADJ_MATRIX);
-        assertEquals(List.of(1, 2), g.getNeighbors(0));
-    }
-
-    @Test
-    @DisplayName("Чтение списка инцидентности из файла")
-    void fromFile_ok_incidence() throws Exception {
-        Path p = write("3 3\n0 1\n0 2\n1 2\n");
-        Graph g = Graph.fromFile(p, Graph.Representation.INC_MATRIX);
-        assertEquals(List.of(1, 2), g.getNeighbors(0));
-    }
-
-    @Test
-    @DisplayName("Чтение пустого файла")
+    @DisplayName("fromFile: пустой файл → GraphFormatException")
     void fromFile_empty_file() throws Exception {
         Path p = write("");
         assertThrows(
@@ -55,8 +71,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Некорректный заголовок — ошибка формата.
+     */
     @Test
-    @DisplayName("Чтение файла с плохим числом токенов в заголовке")
+    @DisplayName("fromFile: плохой заголовок (число токенов) → GraphFormatException")
     void fromFile_bad_header_token_count() throws Exception {
         Path p = write("4\n0 1\n");
         assertThrows(
@@ -65,8 +84,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Некорректные числа в заголовке — ошибка формата.
+     */
     @Test
-    @DisplayName("Чтение файла с плохими цифрами в заголовке")
+    @DisplayName("fromFile: плохие числа в заголовке → GraphFormatException")
     void fromFile_bad_header_numbers() throws Exception {
         Path p = write("X Y\n");
         assertThrows(
@@ -75,8 +97,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Обещано M рёбер, но строк меньше — ошибка формата.
+     */
     @Test
-    @DisplayName("Чтение файла с короткими рёбрами")
+    @DisplayName("fromFile: рёбер меньше, чем M → GraphFormatException")
     void fromFile_short_edges_section() throws Exception {
         Path p = write("2 2\n0 1\n");
         assertThrows(
@@ -85,8 +110,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Плохие числа в строке ребра — ошибка формата.
+     */
     @Test
-    @DisplayName("Чтение файла с плохими цифрами на рёбрах")
+    @DisplayName("fromFile: плохие числа в строке ребра → GraphFormatException")
     void fromFile_bad_edge_numbers() throws Exception {
         Path p = write("2 1\nA B\n");
         assertThrows(
@@ -95,8 +123,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Недостаточно токенов в строке ребра — ошибка формата.
+     */
     @Test
-    @DisplayName("Чтение файла с недостаточным числом токенов на ребре")
+    @DisplayName("fromFile: недостаточно токенов на ребре → GraphFormatException")
     void fromFile_bad_edge_token_count() throws Exception {
         Path p = write("2 1\n0\n");
         assertThrows(
@@ -105,8 +136,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * Вершина вне диапазона — исключение индекса.
+     */
     @Test
-    @DisplayName("Чтение файла с вершиной вне границ")
+    @DisplayName("fromFile: вершина вне границ → GraphIndexException")
     void fromFile_vertex_out_of_bounds() throws Exception {
         Path p = write("2 1\n0 5\n");
         assertThrows(
@@ -115,8 +149,11 @@ public class GraphFromFileTest {
         );
     }
 
+    /**
+     * IO-ошибка — оборачивается в GraphIoException.
+     */
     @Test
-    @DisplayName("Чтение файла с ошибкой ввода/вывода")
+    @DisplayName("fromFile: IO-ошибка → GraphIoException")
     void fromFile_io_error() {
         Path missing = Path.of("definitely_missing_1234567890.txt");
         assertThrows(

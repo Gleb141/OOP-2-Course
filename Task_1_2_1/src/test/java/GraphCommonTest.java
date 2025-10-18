@@ -10,9 +10,18 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/** Общие тесты для всех реализаций Graph. */
+/**
+ * Общие параметризованные тесты для всех реализаций Graph.
+ * Проверяют добавление/удаление рёбер, самопетли, формат вывода,
+ * топологическую сортировку и сравнение структур.
+ */
 public class GraphCommonTest {
 
+    /**
+     * Поставщик реализаций графа.
+     *
+     * @return поток реализаций.
+     */
     static Stream<Graph> impls() {
         return Stream.of(
                 new AdjacencyListGraph(0),
@@ -21,6 +30,9 @@ public class GraphCommonTest {
         );
     }
 
+    /**
+     * Добавление вершин/рёбер, соседи и удаление петли.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void addVertex_addEdge_neighbors(Graph g) {
@@ -29,13 +41,18 @@ public class GraphCommonTest {
         final int v1 = g.addVertex();
         assertEquals(0, v0);
         assertEquals(1, v1);
+
         g.addEdge(0, 0);
         g.addEdge(0, 1);
         assertIterableEquals(List.of(0, 1), g.getNeighbors(0));
+
         g.removeEdge(0, 0);
         assertIterableEquals(List.of(1), g.getNeighbors(0));
     }
 
+    /**
+     * Равенство структур между разными реализациями.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void equalsGraph_across_impls(Graph g1) {
@@ -54,6 +71,9 @@ public class GraphCommonTest {
         assertTrue(g1.equalsGraph(g3));
     }
 
+    /**
+     * Возвращаемые соседи — отдельная копия (внешние изменения не влияют на граф).
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void neighbors_unmodifiable_copy(Graph g) {
@@ -61,10 +81,13 @@ public class GraphCommonTest {
         g.addVertex();
         g.addEdge(0, 1);
         List<Integer> ns = g.getNeighbors(0);
-        ns.add(99); // пробуем испортить копию
-        assertIterableEquals(List.of(1), g.getNeighbors(0)); // оригинал не изменился
+        ns.add(99);
+        assertIterableEquals(List.of(1), g.getNeighbors(0));
     }
 
+    /**
+     * Самопетли допускаются.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void self_loop_allowed(Graph g) {
@@ -74,6 +97,9 @@ public class GraphCommonTest {
         assertIterableEquals(List.of(1), g.getNeighbors(1));
     }
 
+    /**
+     * Формат строкового представления.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void toString_format(Graph g) {
@@ -85,6 +111,9 @@ public class GraphCommonTest {
         assertTrue(s.contains("1: "));
     }
 
+    /**
+     * Топосорт должен обнаруживать цикл.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void topological_sort_detects_cycle(Graph g) {
@@ -95,6 +124,9 @@ public class GraphCommonTest {
         assertThrows(GraphCycleException.class, g::topologicalSort);
     }
 
+    /**
+     * Топосорт на DAG не должен кидать исключение.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void topological_sort_ok(Graph g) {
@@ -106,6 +138,9 @@ public class GraphCommonTest {
         assertDoesNotThrow(g::topologicalSort);
     }
 
+    /**
+     * equalsGraph корректно обрабатывает null и различный размер.
+     */
     @ParameterizedTest
     @MethodSource("impls")
     void equalsGraph_null_and_size(Graph g) {
