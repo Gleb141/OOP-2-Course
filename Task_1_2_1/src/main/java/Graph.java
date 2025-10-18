@@ -9,30 +9,79 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-/** Интерфейс графа и утилиты работы с ним. */
+/**
+ * Интерфейс графа и утилиты работы с ним.
+ */
 public interface Graph {
-
+    /**
+     * Представление графа при загрузке из файла.
+     */
     enum Representation {
         ADJ_LIST,
         ADJ_MATRIX,
         INC_MATRIX
     }
 
+    /**
+     * Добавляет вершину.
+     *
+     * @return индекс добавленной вершины.
+     */
     int addVertex();
 
+    /**
+     * Удаляет вершину.
+     *
+     * @param v индекс вершины.
+     */
     void removeVertex(int v);
 
+    /**
+     * Добавляет ориентированное ребро.
+     *
+     * @param from начальная вершина.
+     * @param to конечная вершина.
+     */
     void addEdge(int from, int to);
 
+    /**
+     * Удаляет ориентированное ребро.
+     *
+     * @param from начальная вершина.
+     * @param to конечная вершина.
+     */
     void removeEdge(int from, int to);
 
+    /**
+     * Проверяет наличие ориентированного ребра.
+     *
+     * @param from начальная вершина.
+     * @param to конечная вершина.
+     * @return true, если ребро существует.
+     */
     boolean hasEdge(int from, int to);
 
+    /**
+     * Возвращает список соседей вершины (куда идут дуги).
+     *
+     * @param v вершина.
+     * @return список индексов соседей.
+     */
     List<Integer> getNeighbors(int v);
 
+    /**
+     * Возвращает число вершин.
+     *
+     * @return число вершин.
+     */
     int size();
 
-    /** Топологическая сортировка ориентированного ациклического графа. */
+    /**
+     * Выполняет топологическую сортировку ориентированного ациклического графа.
+     *
+     * @return порядок вершин в топологической сортировке.
+     * @throws GraphCycleException если в графе есть цикл.
+     */
     default List<Integer> topologicalSort() {
         int n = size();
         int[] indeg = new int[n];
@@ -52,7 +101,8 @@ public interface Graph {
             int v = q.poll();
             order.add(v);
             for (int u : getNeighbors(v)) {
-                if (--indeg[u] == 0) {
+                indeg[u]--;
+                if (indeg[u] == 0) {
                     q.add(u);
                 }
             }
@@ -65,10 +115,16 @@ public interface Graph {
         return order;
     }
 
-    /** Строковое представление:
-     *  0: 1 2
-     *  1: 2
-     *  2:
+    /**
+     * Строковое представление графа в виде списков смежности.
+     * Пример:
+     * <pre>
+     * 0: 1 2
+     * 1: 2
+     * 2:
+     * </pre>
+     *
+     * @return строка с описанием графа.
      */
     default String toStringDefault() {
         StringBuilder sb = new StringBuilder();
@@ -86,7 +142,12 @@ public interface Graph {
         return sb.toString();
     }
 
-    /** Сравнение структуры двух графов (по наборам смежности). */
+    /**
+     * Сравнивает структуру двух графов по наборам смежности.
+     *
+     * @param other другой граф.
+     * @return true, если структуры совпадают.
+     */
     default boolean equalsGraph(Graph other) {
         if (other == null || other.size() != size()) {
             return false;
@@ -102,7 +163,16 @@ public interface Graph {
         return true;
     }
 
-    /** Загрузка графа из файла с заголовком: N M, затем M строк "u v". */
+    /**
+     * Загружает граф из файла формата:
+     * первая строка — "N M", далее M строк "u v".
+     *
+     * @param path путь к файлу.
+     * @param repr целевое представление графа.
+     * @return созданный граф.
+     * @throws GraphFormatException при ошибке формата.
+     * @throws GraphIoException     при ошибке ввода/вывода.
+     */
     static Graph fromFile(Path path, Representation repr) {
         Graph g;
         switch (repr) {
@@ -136,7 +206,9 @@ public interface Graph {
                 n = Integer.parseInt(ht[0]);
                 m = Integer.parseInt(ht[1]);
             } catch (NumberFormatException ex) {
-                throw new GraphFormatException("Некорректные числа в заголовке: " + header);
+                throw new GraphFormatException(
+                        "Некорректные числа в заголовке: " + header
+                );
             }
             if (n < 0 || m < 0) {
                 throw new GraphFormatException("N и M должны быть неотрицательны.");
@@ -167,13 +239,13 @@ public interface Graph {
                             "Некорректные номера вершин в строке: '" + s + "'"
                     );
                 }
-                g.addEdge(from, to); // может бросить GraphIndexException
+                g.addEdge(from, to);
                 readEdges++;
             }
             if (readEdges < m) {
-                throw new GraphFormatException(
-                        "Недостаточно строк рёбер: ожидалось " + m + ", прочитано " + readEdges + "."
-                );
+                String msg = "Недостаточно строк рёбер: ожидалось "
+                        + m + ", прочитано " + readEdges + ".";
+                throw new GraphFormatException(msg);
             }
             return g;
         } catch (IOException ioe) {

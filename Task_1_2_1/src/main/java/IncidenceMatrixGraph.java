@@ -1,13 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/** Реализация графа на матрице инцидентности: для дуги (u->v) u=1, v=-1. */
+/**
+ * Реализация ориентированного графа на матрице инцидентности.
+ * Для ребра (u→v) в столбце стоит +1 в строке u и −1 в строке v.
+ * Для самопетли (v→v) фиксируем только +1; факт ребра хранится в списке edges.
+ */
 public class IncidenceMatrixGraph implements Graph {
-    /** Матрица инцидентности размера N x M (N — вершины, M — рёбра). */
+    /** Матрица инцидентности N×M. */
     private int[][] incidenceMatrix;
-    /** Список рёбер в порядке добавления: [from, to]. Используется как источник истины. */
+    /** Список рёбер (from, to) — источник истины. */
     private final List<int[]> edges;
 
+    /**
+     * Создает граф с указанным числом вершин.
+     *
+     * @param n начальное число вершин.
+     * @throws GraphException если n отрицательно.
+     */
     public IncidenceMatrixGraph(int n) {
         if (n < 0) {
             throw new GraphException("Размер графа не может быть отрицательным.");
@@ -16,10 +26,16 @@ public class IncidenceMatrixGraph implements Graph {
         this.edges = new ArrayList<>();
     }
 
+    /**
+     * Создает пустой граф.
+     */
     public IncidenceMatrixGraph() {
         this(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int addVertex() {
         final int n = incidenceMatrix.length;
@@ -31,6 +47,9 @@ public class IncidenceMatrixGraph implements Graph {
         return n;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeVertex(int v) {
         checkVertex(v);
@@ -42,8 +61,12 @@ public class IncidenceMatrixGraph implements Graph {
             if (from == v || to == v) {
                 continue;
             }
-            if (from > v) from--;
-            if (to > v) to--;
+            if (from > v) {
+                from--;
+            }
+            if (to > v) {
+                to--;
+            }
             newEdges.add(new int[]{from, to});
         }
         edges.clear();
@@ -51,6 +74,9 @@ public class IncidenceMatrixGraph implements Graph {
         rebuildFromEdges(incidenceMatrix.length - 1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addEdge(int from, int to) {
         checkVertex(from);
@@ -59,6 +85,9 @@ public class IncidenceMatrixGraph implements Graph {
         rebuildFromEdges(incidenceMatrix.length);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeEdge(int from, int to) {
         checkVertex(from);
@@ -71,9 +100,11 @@ public class IncidenceMatrixGraph implements Graph {
                 return;
             }
         }
-        // если ребра нет — просто выходим
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasEdge(int from, int to) {
         checkVertex(from);
@@ -86,6 +117,9 @@ public class IncidenceMatrixGraph implements Graph {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Integer> getNeighbors(int v) {
         checkVertex(v);
@@ -98,11 +132,19 @@ public class IncidenceMatrixGraph implements Graph {
         return neighbors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return incidenceMatrix.length;
     }
 
+    /**
+     * Перестраивает матрицу инцидентности из списка рёбер.
+     *
+     * @param newN новое число строк (вершин).
+     */
     private void rebuildFromEdges(int newN) {
         if (newN < 0) {
             throw new GraphException("Размер графа не может быть отрицательным.");
@@ -112,8 +154,6 @@ public class IncidenceMatrixGraph implements Graph {
         for (int j = 0; j < m; j++) {
             int from = edges.get(j)[0];
             int to = edges.get(j)[1];
-            // Для самопетли (v->v) кладём +1 в строку v (−1 в ту же ячейку невозможен).
-            // Обнаружение соседей и наличие ребра делаем по списку edges, так что информация не теряется.
             next[from][j] = 1;
             if (from != to) {
                 next[to][j] = -1;
@@ -122,9 +162,17 @@ public class IncidenceMatrixGraph implements Graph {
         incidenceMatrix = next;
     }
 
+    /**
+     * Проверяет индекс вершины на попадание в диапазон.
+     *
+     * @param v индекс вершины.
+     * @throws GraphIndexException если индекс вне диапазона.
+     */
     private void checkVertex(int v) {
         if (v < 0 || v >= incidenceMatrix.length) {
-            throw new GraphIndexException("Вершина " + v + " вне диапазона 0.." + (incidenceMatrix.length - 1));
+            String msg = "Вершина " + v + " вне диапазона 0.."
+                    + (incidenceMatrix.length - 1);
+            throw new GraphIndexException(msg);
         }
     }
 

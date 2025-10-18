@@ -1,12 +1,12 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Тестирование чтения графа из файла. */
 public class GraphFromFileTest {
@@ -109,7 +109,6 @@ public class GraphFromFileTest {
     @DisplayName("Чтение файла с вершиной вне границ")
     void fromFile_vertex_out_of_bounds() throws Exception {
         Path p = write("2 1\n0 5\n");
-        // addEdge внутри fromFile бросит GraphIndexException
         assertThrows(
                 GraphIndexException.class,
                 () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)

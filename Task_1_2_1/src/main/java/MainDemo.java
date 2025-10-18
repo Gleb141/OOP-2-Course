@@ -1,5 +1,12 @@
-/** Демонстрационная программа. */
+/**
+ * Демонстрационная программа.
+ */
 public class MainDemo {
+    /**
+     * Точка входа в программу.
+     *
+     * @param args аргументы командной строки.
+     */
     public static void main(String[] args) {
         // Список смежности
         Graph g1 = new AdjacencyListGraph();
@@ -28,7 +35,7 @@ public class MainDemo {
             System.out.println("Topo: cycle detected");
         }
 
-        // Матрица инцидентности (с циклом 0->1->2->0 для демонстрации ошибки топосортировки)
+        // Матрица инцидентности (цикл 0->1->2->0)
         Graph g3 = new IncidenceMatrixGraph(3);
         g3.addEdge(0, 1);
         g3.addEdge(1, 2);
