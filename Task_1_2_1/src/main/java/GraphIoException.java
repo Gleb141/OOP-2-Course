@@ -1,3 +1,4 @@
+/** Исключение ввода вывода. */
 public class GraphIoException extends GraphException {
     public GraphIoException(String message) {
         super(message);

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-/** Интерфейс графа */
+/** Интерфейс графа. */
 public interface Graph {
     int addVertex();
 
