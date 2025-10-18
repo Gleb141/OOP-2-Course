@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/** Тестирование графа из файла*/
+/** Тестирование графа из файла. */
 public class GraphFromFileTest {
 
     private Path write(String content) throws IOException {
