@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 
-
+/** Категория тестов общие. */
 public class GraphCommonTest {
 
     static Stream<Graph> impls() {

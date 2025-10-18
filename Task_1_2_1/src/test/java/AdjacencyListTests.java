@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 
-
+/** Категория тестов списков инцидентности. */
 public class AdjacencyListTests {
 
     @Test

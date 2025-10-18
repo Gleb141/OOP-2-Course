@@ -6,7 +6,7 @@ public class IncidenceMatrixGraph implements Graph {
     private int m;                 // число столбцов (рёбер)
     private int[][] b;             // матрица инцидентности (n x m): источник=1, приёмник=-1
     private final List<int[]> edges; // список рёбер (from,to) — источник истины
-
+    /** Задание графа по матрице инцидентности. */
     public IncidenceMatrixGraph(int n) {
         this.b = new int[n][0];
         this.m = 0;
