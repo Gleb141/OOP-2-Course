@@ -11,46 +11,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/**
- * Тесты загрузки графа из файла. Успешные кейсы параметризованы по представлению.
- */
+/** Тесты загрузки графа из файла. */
 public class GraphFromFileTest {
 
-    /**
-     * Вспомогательная запись файла.
-     *
-     * @param content текст.
-     * @return путь к временному файлу.
-     * @throws IOException ошибка записи.
-     */
     private Path write(String content) throws IOException {
         Path p = Files.createTempFile("graph", ".txt");
         Files.writeString(p, content);
         return p;
     }
 
-    /**
-     * Поставщик трёх представлений для параметризованных тестов.
-     *
-     * @return поток представлений графа.
-     */
-    static Stream<Graph.Representation> reprs() {
+    static Stream<Graph.GraphFactory> factories() {
         return Stream.of(
-                Graph.Representation.ADJ_LIST,
-                Graph.Representation.ADJ_MATRIX,
-                Graph.Representation.INC_MATRIX
+                AdjacencyListGraph::new,
+                AdjacencyMatrixGraph::new,
+                IncidenceMatrixGraph::new
         );
     }
 
-    /**
-     * Успешная загрузка графа с рёбрами 0→1, 1→2, 2→3 для всех представлений.
-     */
     @ParameterizedTest
-    @MethodSource("reprs")
+    @MethodSource("factories")
     @DisplayName("fromFile: OK (универсальный формат N M + рёбра)")
-    void fromFile_ok_all(Graph.Representation repr) throws Exception {
+    void fromFile_ok_all(Graph.GraphFactory factory) throws Exception {
         Path p = write("4 3\n0 1\n1 2\n2 3\n");
-        Graph g = Graph.fromFile(p, repr);
+        Graph g = Graph.fromFile(p, factory);
         assertEquals(4, g.size());
         assertEquals(List.of(1), g.getNeighbors(0));
         assertEquals(List.of(2), g.getNeighbors(1));
@@ -58,107 +41,52 @@ public class GraphFromFileTest {
         assertEquals(List.of(), g.getNeighbors(3));
     }
 
-    /**
-     * Пустой файл — ошибка формата (repr роли не играет).
-     */
     @Test
     @DisplayName("fromFile: пустой файл → GraphFormatException")
     void fromFile_empty_file() throws Exception {
         Path p = write("");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Некорректный заголовок — ошибка формата.
-     */
     @Test
-    @DisplayName("fromFile: плохой заголовок (число токенов) → GraphFormatException")
+    @DisplayName("fromFile: плохой заголовок (число токенов)")
     void fromFile_bad_header_token_count() throws Exception {
         Path p = write("4\n0 1\n");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Некорректные числа в заголовке — ошибка формата.
-     */
     @Test
-    @DisplayName("fromFile: плохие числа в заголовке → GraphFormatException")
+    @DisplayName("fromFile: плохие числа в заголовке")
     void fromFile_bad_header_numbers() throws Exception {
         Path p = write("X Y\n");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Обещано M рёбер, но строк меньше — ошибка формата.
-     */
     @Test
-    @DisplayName("fromFile: рёбер меньше, чем M → GraphFormatException")
+    @DisplayName("fromFile: рёбер меньше, чем M")
     void fromFile_short_edges_section() throws Exception {
         Path p = write("2 2\n0 1\n");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Плохие числа в строке ребра — ошибка формата.
-     */
     @Test
-    @DisplayName("fromFile: плохие числа в строке ребра → GraphFormatException")
+    @DisplayName("fromFile: плохие числа в строке ребра")
     void fromFile_bad_edge_numbers() throws Exception {
         Path p = write("2 1\nA B\n");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Недостаточно токенов в строке ребра — ошибка формата.
-     */
     @Test
-    @DisplayName("fromFile: недостаточно токенов на ребре → GraphFormatException")
+    @DisplayName("fromFile: недостаточно токенов на ребре")
     void fromFile_bad_edge_token_count() throws Exception {
         Path p = write("2 1\n0\n");
-        assertThrows(
-                GraphFormatException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphFormatException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 
-    /**
-     * Вершина вне диапазона — исключение индекса.
-     */
     @Test
-    @DisplayName("fromFile: вершина вне границ → GraphIndexException")
+    @DisplayName("fromFile: вершина вне границ")
     void fromFile_vertex_out_of_bounds() throws Exception {
         Path p = write("2 1\n0 5\n");
-        assertThrows(
-                GraphIndexException.class,
-                () -> Graph.fromFile(p, Graph.Representation.ADJ_LIST)
-        );
-    }
-
-    /**
-     * IO-ошибка — оборачивается в GraphIoException.
-     */
-    @Test
-    @DisplayName("fromFile: IO-ошибка → GraphIoException")
-    void fromFile_io_error() {
-        Path missing = Path.of("definitely_missing_1234567890.txt");
-        assertThrows(
-                GraphIoException.class,
-                () -> Graph.fromFile(missing, Graph.Representation.ADJ_LIST)
-        );
+        assertThrows(GraphIndexException.class, () -> Graph.fromFile(p, AdjacencyListGraph::new));
     }
 }

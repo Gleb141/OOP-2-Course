@@ -13,74 +13,48 @@ import java.util.Set;
  * Интерфейс графа и утилиты работы с ним.
  */
 public interface Graph {
+
     /**
-     * Представление графа при загрузке из файла.
+     * Фабрика графов. Используйте ссылку на конструктор реализации
+     * (например, {@code AdjacencyListGraph::new}).
      */
-    enum Representation {
-        ADJ_LIST,
-        ADJ_MATRIX,
-        INC_MATRIX
+    @FunctionalInterface
+    interface GraphFactory {
+        /**
+         * Создает граф с указанным числом вершин.
+         *
+         * @param vertices начальное число вершин
+         * @return новый граф
+         */
+        Graph create(int vertices);
     }
 
-    /**
-     * Добавляет вершину.
-     *
-     * @return индекс добавленной вершины.
-     */
+    /** Добавляет вершину и возвращает её индекс. */
     int addVertex();
 
-    /**
-     * Удаляет вершину.
-     *
-     * @param v индекс вершины.
-     */
+    /** Удаляет вершину по индексу. */
     void removeVertex(int v);
 
-    /**
-     * Добавляет ориентированное ребро.
-     *
-     * @param from начальная вершина.
-     * @param to конечная вершина.
-     */
+    /** Добавляет ориентированное ребро {@code from -> to}. */
     void addEdge(int from, int to);
 
-    /**
-     * Удаляет ориентированное ребро.
-     *
-     * @param from начальная вершина.
-     * @param to конечная вершина.
-     */
+    /** Удаляет ориентированное ребро {@code from -> to}. */
     void removeEdge(int from, int to);
 
-    /**
-     * Проверяет наличие ориентированного ребра.
-     *
-     * @param from начальная вершина.
-     * @param to конечная вершина.
-     * @return true, если ребро существует.
-     */
+    /** Проверяет наличие ребра {@code from -> to}. */
     boolean hasEdge(int from, int to);
 
-    /**
-     * Возвращает список соседей вершины (куда идут дуги).
-     *
-     * @param v вершина.
-     * @return список индексов соседей.
-     */
+    /** Возвращает список соседей вершины (куда идут дуги). */
     List<Integer> getNeighbors(int v);
 
-    /**
-     * Возвращает число вершин.
-     *
-     * @return число вершин.
-     */
+    /** Возвращает число вершин. */
     int size();
 
     /**
-     * Выполняет топологическую сортировку ориентированного ациклического графа.
+     * Топологическая сортировка ориентированного ациклического графа.
      *
-     * @return порядок вершин в топологической сортировке.
-     * @throws GraphCycleException если в графе есть цикл.
+     * @return порядок вершин
+     * @throws GraphCycleException если в графе есть цикл
      */
     default List<Integer> topologicalSort() {
         int n = size();
@@ -117,14 +91,8 @@ public interface Graph {
 
     /**
      * Строковое представление графа в виде списков смежности.
-     * Пример:
-     * <pre>
-     * 0: 1 2
-     * 1: 2
-     * 2:
-     * </pre>
      *
-     * @return строка с описанием графа.
+     * @return строка с описанием графа
      */
     default String toStringDefault() {
         StringBuilder sb = new StringBuilder();
@@ -145,8 +113,8 @@ public interface Graph {
     /**
      * Сравнивает структуру двух графов по наборам смежности.
      *
-     * @param other другой граф.
-     * @return true, если структуры совпадают.
+     * @param other другой граф
+     * @return true, если структуры совпадают
      */
     default boolean equalsGraph(Graph other) {
         if (other == null || other.size() != size()) {
@@ -163,32 +131,16 @@ public interface Graph {
         return true;
     }
 
-    /**
-     * Загружает граф из файла формата:
-     * первая строка — "N M", далее M строк "u v".
-     *
-     * @param path путь к файлу.
-     * @param repr целевое представление графа.
-     * @return созданный граф.
-     * @throws GraphFormatException при ошибке формата.
-     * @throws GraphIoException     при ошибке ввода/вывода.
-     */
-    static Graph fromFile(Path path, Representation repr) {
-        Graph g;
-        switch (repr) {
-            case ADJ_LIST:
-                g = new AdjacencyListGraph(0);
-                break;
-            case ADJ_MATRIX:
-                g = new AdjacencyMatrixGraph(0);
-                break;
-            case INC_MATRIX:
-                g = new IncidenceMatrixGraph(0);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown representation: " + repr);
-        }
 
+    /**
+     * Загружает граф из файла формата: первая строка — {@code N M},
+     * далее M строк {@code "u v"}. Граф создается через переданную фабрику.
+     *
+     * @param path    путь к файлу
+     * @param factory фабрика для создания графа на N вершинах
+     * @return созданный и заполненный граф
+     */
+    static Graph fromFile(Path path, GraphFactory factory) {
         try (BufferedReader br = Files.newBufferedReader(path)) {
             String header = br.readLine();
             if (header == null || header.trim().isEmpty()) {
@@ -213,9 +165,9 @@ public interface Graph {
             if (n < 0 || m < 0) {
                 throw new GraphFormatException("N и M должны быть неотрицательны.");
             }
-            for (int i = 0; i < n; i++) {
-                g.addVertex();
-            }
+
+            Graph g = factory.create(n);
+
             int readEdges = 0;
             String line;
             while ((line = br.readLine()) != null && readEdges < m) {
@@ -251,5 +203,21 @@ public interface Graph {
         } catch (IOException ioe) {
             throw new GraphIoException("Ошибка чтения файла: " + path, ioe);
         }
+    }
+
+    /**
+     * Загружает данные из файла формата {@code N M + рёбра} в переданный граф.
+     * В методе в граф добавятся N вершин и M рёбер.
+     *
+     * @param path   путь к файлу
+     * @param target целевой граф
+     */
+    static void loadInto(Path path, Graph target) {
+        fromFile(path, n -> {
+            for (int i = 0; i < n; i++) {
+                target.addVertex();
+            }
+            return target;
+        });
     }
 }
