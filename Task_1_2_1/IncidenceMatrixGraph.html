@@ -92,7 +92,7 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-Graph">Nested classes/interfaces inherited from interface&nbsp;<a href="Graph.html" title="interface in Unnamed Package">Graph</a></h2>
-<code><a href="Graph.Representation.html" title="enum class in Unnamed Package">Graph.Representation</a></code></div>
+<code><a href="Graph.GraphFactory.html" title="interface in Unnamed Package">Graph.GraphFactory</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -129,12 +129,12 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEdge(int,int)" class="member-name-link">addEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Добавляет ориентированное ребро.</div>
+<div class="block">Добавляет ориентированное ребро <code>from -&gt; to</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addVertex()" class="member-name-link">addVertex</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Добавляет вершину.</div>
+<div class="block">Добавляет вершину и возвращает её индекс.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNeighbors(int)" class="member-name-link">getNeighbors</a><wbr>(int&nbsp;v)</code></div>
@@ -145,18 +145,18 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasEdge(int,int)" class="member-name-link">hasEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Проверяет наличие ориентированного ребра.</div>
+<div class="block">Проверяет наличие ребра <code>from -&gt; to</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeEdge(int,int)" class="member-name-link">removeEdge</a><wbr>(int&nbsp;from,
  int&nbsp;to)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Удаляет ориентированное ребро.</div>
+<div class="block">Удаляет ориентированное ребро <code>from -&gt; to</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeVertex(int)" class="member-name-link">removeVertex</a><wbr>(int&nbsp;v)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Удаляет вершину.</div>
+<div class="block">Удаляет вершину по индексу.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
@@ -218,12 +218,10 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <section class="detail" id="addVertex()">
 <h3>addVertex</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addVertex</span>()</div>
-<div class="block">Добавляет вершину.</div>
+<div class="block">Добавляет вершину и возвращает её индекс.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#addVertex()">addVertex</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Returns:</dt>
-<dd>индекс добавленной вершины.</dd>
 </dl>
 </section>
 </li>
@@ -231,12 +229,10 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <section class="detail" id="removeVertex(int)">
 <h3>removeVertex</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeVertex</span><wbr><span class="parameters">(int&nbsp;v)</span></div>
-<div class="block">Удаляет вершину.</div>
+<div class="block">Удаляет вершину по индексу.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#removeVertex(int)">removeVertex</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>v</code> - индекс вершины.</dd>
 </dl>
 </section>
 </li>
@@ -245,13 +241,10 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <h3>addEdge</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
-<div class="block">Добавляет ориентированное ребро.</div>
+<div class="block">Добавляет ориентированное ребро <code>from -&gt; to</code>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#addEdge(int,int)">addEdge</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>from</code> - начальная вершина.</dd>
-<dd><code>to</code> - конечная вершина.</dd>
 </dl>
 </section>
 </li>
@@ -260,13 +253,10 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <h3>removeEdge</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
-<div class="block">Удаляет ориентированное ребро.</div>
+<div class="block">Удаляет ориентированное ребро <code>from -&gt; to</code>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#removeEdge(int,int)">removeEdge</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>from</code> - начальная вершина.</dd>
-<dd><code>to</code> - конечная вершина.</dd>
 </dl>
 </section>
 </li>
@@ -275,15 +265,10 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <h3>hasEdge</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasEdge</span><wbr><span class="parameters">(int&nbsp;from,
  int&nbsp;to)</span></div>
-<div class="block">Проверяет наличие ориентированного ребра.</div>
+<div class="block">Проверяет наличие ребра <code>from -&gt; to</code>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#hasEdge(int,int)">hasEdge</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>from</code> - начальная вершина.</dd>
-<dd><code>to</code> - конечная вершина.</dd>
-<dt>Returns:</dt>
-<dd>true, если ребро существует.</dd>
 </dl>
 </section>
 </li>
@@ -295,10 +280,6 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#getNeighbors(int)">getNeighbors</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>v</code> - вершина.</dd>
-<dt>Returns:</dt>
-<dd>список индексов соседей.</dd>
 </dl>
 </section>
 </li>
@@ -310,8 +291,6 @@ implements <a href="Graph.html" title="interface in Unnamed Package">Graph</a></
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Graph.html#size()">size</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in Unnamed Package">Graph</a></code></dd>
-<dt>Returns:</dt>
-<dd>число вершин.</dd>
 </dl>
 </section>
 </li>
