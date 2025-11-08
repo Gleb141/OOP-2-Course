@@ -3,39 +3,52 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Auto-generated tests and support code.
+ * Simple separate-chaining hash table with fail-fast iterator.
  */
 public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
+
+    private static final int DEFAULT_CAPACITY = 16;
+    private static final float LOAD_FACTOR = 0.75f;
+
     private HashTableEntry<K, V>[] table;
     private int size;
     private int capacity;
     private int modCount;
 
-    private static final float LOAD_FACTOR = 0.75f;
-
+    /**
+     * Constructs an empty hash table.
+     */
     @SuppressWarnings("unchecked")
     public HashTable() {
-        this.capacity = 16;
+        this.capacity = DEFAULT_CAPACITY;
         this.table = (HashTableEntry<K, V>[]) new HashTableEntry[capacity];
-        this.modCount = 0;
         this.size = 0;
+        this.modCount = 0;
     }
 
     private int hash(K key) {
-        if (key == null) return 0;
-        return Math.abs(key.hashCode()) % capacity;
+        if (key == null) {
+            return 0;
+        }
+        int h = key.hashCode();
+        int m = h == Integer.MIN_VALUE ? 0 : Math.abs(h);
+        return m % capacity;
     }
-    /**
-     * Auto-generated.
-     */
 
+    private boolean keysEqual(K a, K b) {
+        return a == b || (a != null && a.equals(b));
+    }
+
+    /**
+     * Associates the given key with the value.
+     */
     public void put(K key, V value) {
         int index = hash(key);
         HashTableEntry<K, V> entry = table[index];
         while (entry != null) {
             if (keysEqual(entry.key, key)) {
                 entry.value = value;
-                modCount++;
+                modCount++; // treat as structural for fail-fast semantics
                 return;
             }
             entry = entry.next;
@@ -49,10 +62,10 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             resize();
         }
     }
-    /**
-     * Auto-generated.
-     */
 
+    /**
+     * Returns the value for the key or null if absent.
+     */
     public V get(K key) {
         int index = hash(key);
         HashTableEntry<K, V> entry = table[index];
@@ -64,10 +77,10 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         }
         return null;
     }
-    /**
-     * Auto-generated.
-     */
 
+    /**
+     * Removes the entry for the given key if present.
+     */
     public void remove(K key) {
         int index = hash(key);
         HashTableEntry<K, V> entry = table[index];
@@ -87,17 +100,17 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             entry = entry.next;
         }
     }
-    /**
-     * Auto-generated.
-     */
 
+    /**
+     * Updates the value for the key (alias of put).
+     */
     public void update(K key, V value) {
         put(key, value);
     }
-    /**
-     * Auto-generated.
-     */
 
+    /**
+     * Returns true if the table contains the key.
+     */
     public boolean containsKey(K key) {
         int index = hash(key);
         HashTableEntry<K, V> entry = table[index];
@@ -112,70 +125,69 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
 
     @SuppressWarnings("unchecked")
     private void resize() {
-        capacity *= 2;
+        int newCapacity = capacity * 2;
         HashTableEntry<K, V>[] old = table;
-        table = (HashTableEntry<K, V>[]) new HashTableEntry[capacity];
-        int oldSize = size;
-        size = 0;
-        for (HashTableEntry<K, V> e : old) {
-            HashTableEntry<K, V> cur = e;
-            while (cur != null) {
-                put(cur.key, cur.value);
-                cur = cur.next;
+        table = (HashTableEntry<K, V>[]) new HashTableEntry[newCapacity];
+        int oldCapacity = capacity;
+        capacity = newCapacity;
+        // rehash without changing size or modCount
+        for (int i = 0; i < oldCapacity; i++) {
+            HashTableEntry<K, V> e = old[i];
+            while (e != null) {
+                HashTableEntry<K, V> next = e.next;
+                int idx = (e.key == null ? 0 : Math.abs(e.key.hashCode()) % capacity);
+                e.next = table[idx];
+                table[idx] = e;
+                e = next;
             }
         }
-        size = oldSize;
     }
 
-    private boolean keysEqual(K a, K b) {
-        return (a == b) || (a != null && a.equals(b));
-    }
-
+    /**
+     * Returns an iterator over entries.
+     */
     @Override
     public Iterator<HashTableEntry<K, V>> iterator() {
-        return new HashTableIterator();
+        return new HashTableIter();
     }
 
-    private class HashTableIterator implements Iterator<HashTableEntry<K, V>> {
-        private int expectedModCount;
-        private int bucketIndex;
+    private final class HashTableIter implements Iterator<HashTableEntry<K, V>> {
+        private int bucketIndex = 0;
         private HashTableEntry<K, V> nextEntry;
+        private final int expectedModCount = modCount;
 
-        HashTableIterator() {
-            this.expectedModCount = modCount;
-            this.bucketIndex = 0;
-            this.nextEntry = null;
-            advanceToNextNonEmpty();
+        private HashTableIter() {
+            advanceToNext();
         }
 
-
-        private void advanceToNextNonEmpty() {
-            if (nextEntry != null && nextEntry.next != null) {
-                nextEntry = nextEntry.next;
-                return;
+        private void advanceToNext() {
+            while (bucketIndex < capacity && (nextEntry = table[bucketIndex]) == null) {
+                bucketIndex++;
             }
-            nextEntry = null;
-            while (bucketIndex < capacity) {
-                if (table[bucketIndex] != null) {
-                    nextEntry = table[bucketIndex++];
-                    return;
-                }
+            if (nextEntry != null) {
+                // prepare for subsequent step
                 bucketIndex++;
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-/**
- * Auto-generated.
- */
         public boolean hasNext() {
+            if (expectedModCount != modCount) {
+                throw new ConcurrentModificationException();
+            }
             return nextEntry != null;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public HashTableEntry<K, V> next() {
             if (expectedModCount != modCount) {
-                throw new ConcurrentModificationException("HashTable modified during iteration");
+                throw new ConcurrentModificationException();
             }
             if (!hasNext()) {
                 throw new NoSuchElementException();
@@ -196,31 +208,33 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             return result;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-/**
- * Auto-generated.
- */
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
+    /**
+     * Returns string representation of the table.
+     */
     @Override
-/**
- * Auto-generated.
- */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
+        boolean first = true;
         for (int i = 0; i < table.length; i++) {
             HashTableEntry<K, V> entry = table[i];
             while (entry != null) {
-                sb.append(entry.key).append("=").append(entry.value).append(", ");
+                if (!first) {
+                    sb.append(", ");
+                }
+                first = false;
+                sb.append(entry.key).append("=").append(entry.value);
                 entry = entry.next;
             }
-        }
-        if (sb.length() > 1) {
-            sb.setLength(sb.length() - 2);
         }
         sb.append("}");
         return sb.toString();

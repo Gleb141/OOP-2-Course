@@ -1,9 +1,11 @@
 /**
- * Auto-generated tests and support code.
+ * Demo main.
  */
 public class Main {
+
     /**
-     * Auto-generated.
+     * Entry point.
+     * @param args command-line args
      */
     public static void main(String[] args) {
         HashTable<String, Number> hashTable = new HashTable<>();

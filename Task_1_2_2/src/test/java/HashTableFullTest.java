@@ -1,14 +1,11 @@
-
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 /**
  * Full coverage tests for HashTable (style-compliant).
@@ -45,7 +42,8 @@ public class HashTableFullTest {
 
     @Test
     void nullKey_pathsCovered() {
-        // put/get/update/remove with null key should work since hash(null) -> 0 and keysEqual handles nulls
+        // put/get/update/remove with null key should work
+        // since hash(null) -> 0 and keysEqual handles nulls
         Assertions.assertNull(ht.get(null));
         Assertions.assertFalse(ht.containsKey(null));
 
@@ -65,14 +63,31 @@ public class HashTableFullTest {
     static final class BadKey {
         final int id;
 
-        BadKey(int id) { this.id = id; }
-        @Override public int hashCode() { return 42; } // all collide
-        @Override public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof BadKey)) return false;
-            return id == ((BadKey) o).id;
+        BadKey(int id) {
+            this.id = id;
         }
-        @Override public String toString() { return "k"+id; }
+
+        @Override
+        public int hashCode() {
+            return 42;
+        } // all collide
+        @Override
+        public boolean equals(Object o) {
+
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof BadKey)) {
+                return false;
+            }
+            return id == ((BadKey) o).id;
+
+        }
+
+        @Override
+        public String toString() {
+            return "k" + id;
+        }
     }
 
     @Test
@@ -136,7 +151,7 @@ public class HashTableFullTest {
             Assertions.assertTrue(e.toString().contains("=")); // covers HashTableEntry.toString
             seen.add(e.toString().split("=")[0]);
         }
-        Assertions.assertEquals(Set.of("x","y","z"), seen);
+        Assertions.assertEquals(Set.of("x", "y", "z"), seen);
 
         // Now drive iterator to end and check NoSuchElementException on next()
         Iterator<HashTableEntry<String, Number>> it = ht.iterator();
