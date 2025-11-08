@@ -1,3 +1,6 @@
+/**
+ * Auto-generated tests and support code.
+ */
 public class HashTableEntry<K, V> {
     K key;
     V value;
@@ -10,8 +13,10 @@ public class HashTableEntry<K, V> {
     }
 
     @Override
+/**
+ * Auto-generated.
+ */
     public String toString() {
         return key + "=" + value;
     }
 }
-

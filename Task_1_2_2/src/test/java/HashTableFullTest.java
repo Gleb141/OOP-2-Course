@@ -1,13 +1,18 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+/**
+ * Full coverage tests for HashTable (style-compliant).
+ */
 public class HashTableFullTest {
 
     private HashTable<String, Number> ht;
@@ -59,6 +64,7 @@ public class HashTableFullTest {
     // Helper key to force collisions in the same bucket
     static final class BadKey {
         final int id;
+
         BadKey(int id) { this.id = id; }
         @Override public int hashCode() { return 42; } // all collide
         @Override public boolean equals(Object o) {
@@ -119,6 +125,7 @@ public class HashTableFullTest {
         Iterator<HashTableEntry<String, Number>> itEmpty = ht.iterator();
         Assertions.assertFalse(itEmpty.hasNext());
         Assertions.assertThrows(NoSuchElementException.class, itEmpty::next);
+
         // non-empty iteration covers buckets and chaining
         ht.put("x", 1);
         ht.put("y", 2);
@@ -159,7 +166,8 @@ public class HashTableFullTest {
 
     @Test
     void resize_preservesAllEntries() {
-        // initial capacity is 16 with load factor 0.75, so resizing should happen after inserting > 12 items
+        // initial capacity is 16 (LF 0.75);
+        // resize occurs after inserting more than 12 items
         int n = 40; // large enough to force at least one resize
         Set<Integer> keys = new HashSet<>();
         for (int i = 0; i < n; i++) {
@@ -192,7 +200,10 @@ public class HashTableFullTest {
 
         String s = ht.toString();
         Assertions.assertTrue(s.startsWith("{") && s.endsWith("}"));
-        Assertions.assertFalse(s.endsWith(", }"), "toString must not have a trailing comma");
+        Assertions.assertFalse(
+                s.endsWith(", }"),
+                "toString must not have a trailing comma"
+        );
         Assertions.assertTrue(s.contains("one="), "toString must contain 'one='");
         Assertions.assertTrue(s.contains("two="), "toString must contain 'two='");
     }

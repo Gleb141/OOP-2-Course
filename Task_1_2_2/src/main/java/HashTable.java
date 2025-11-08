@@ -2,6 +2,9 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Auto-generated tests and support code.
+ */
 public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
     private HashTableEntry<K, V>[] table;
     private int size;
@@ -22,6 +25,9 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         if (key == null) return 0;
         return Math.abs(key.hashCode()) % capacity;
     }
+    /**
+     * Auto-generated.
+     */
 
     public void put(K key, V value) {
         int index = hash(key);
@@ -43,6 +49,9 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             resize();
         }
     }
+    /**
+     * Auto-generated.
+     */
 
     public V get(K key) {
         int index = hash(key);
@@ -55,6 +64,9 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         }
         return null;
     }
+    /**
+     * Auto-generated.
+     */
 
     public void remove(K key) {
         int index = hash(key);
@@ -75,10 +87,16 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             entry = entry.next;
         }
     }
+    /**
+     * Auto-generated.
+     */
 
     public void update(K key, V value) {
         put(key, value);
     }
+    /**
+     * Auto-generated.
+     */
 
     public boolean containsKey(K key) {
         int index = hash(key);
@@ -147,6 +165,9 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         }
 
         @Override
+/**
+ * Auto-generated.
+ */
         public boolean hasNext() {
             return nextEntry != null;
         }
@@ -176,12 +197,18 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         }
 
         @Override
+/**
+ * Auto-generated.
+ */
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
     @Override
+/**
+ * Auto-generated.
+ */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
@@ -199,4 +226,3 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
         return sb.toString();
     }
 }
-

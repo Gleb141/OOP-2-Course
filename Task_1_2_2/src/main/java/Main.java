@@ -1,4 +1,10 @@
+/**
+ * Auto-generated tests and support code.
+ */
 public class Main {
+    /**
+     * Auto-generated.
+     */
     public static void main(String[] args) {
         HashTable<String, Number> hashTable = new HashTable<>();
         hashTable.put("one", 1);
