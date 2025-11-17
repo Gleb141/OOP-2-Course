@@ -207,14 +207,6 @@ public class HashTable<K, V> implements Iterable<HashTableEntry<K, V>> {
             }
             return result;
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
 
     /**
