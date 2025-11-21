@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,13 +9,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Full coverage tests for {@link SubStringFinder}.
+ */
 public class SubStringTest {
-
-    /**
-     * Full coverage tests for SubStringFinder.
-     */
 
     private Path createTempFileWithContent(String content) throws IOException {
         Path tempFile = Files.createTempFile("substring_finder_test_", ".txt");
@@ -59,5 +58,45 @@ public class SubStringTest {
         Path file = createTempFileWithContent(sb.toString());
         List<Integer> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
         assertEquals(Collections.singletonList(100_000), indices);
+    }
+
+    @Test
+    void emptyFileNoMatches() throws IOException {
+        Path file = createTempFileWithContent("");
+        List<Integer> indices = SubStringFinder.findInFile(file.toString(), "test");
+        assertTrue(indices.isEmpty());
+    }
+
+    @Test
+    void patternAtBeginningAndEnd() throws IOException {
+        Path file = createTempFileWithContent("XYZ---XYZ");
+        List<Integer> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
+        assertEquals(Arrays.asList(0, 6), indices);
+    }
+
+    @Test
+    void nullPatternThrowsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> SubStringFinder.findInFile("dummy.txt", null));
+    }
+
+    @Test
+    void emptyPatternThrowsException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> SubStringFinder.findInFile("dummy.txt", ""));
+    }
+
+    @Test
+    void patternWithSelfOverlap() throws IOException {
+        Path file = createTempFileWithContent("abababaca");
+        List<Integer> indices = SubStringFinder.findInFile(file.toString(), "ababa");
+        assertEquals(Arrays.asList(0, 2), indices);
+    }
+
+    @Test
+    void nonExistingFileThrowsIOException() {
+        String fileName = "non_existing_file_" + System.nanoTime() + ".txt";
+        assertThrows(IOException.class,
+                () -> SubStringFinder.findInFile(fileName, "test"));
     }
 }
