@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,7 +7,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SubStringTest {
 
@@ -46,9 +48,13 @@ public class SubStringTest {
     @Test
     void bigFileSingleMatchInMiddle() throws IOException {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 100_000; i++) sb.append('a');
+        for (int i = 0; i < 100_000; i++) {
+            sb.append('a');
+        }
         sb.append("XYZ");
-        for (int i = 0; i < 100_000; i++) sb.append('a');
+        for (int i = 0; i < 100_000; i++) {
+            sb.append('a');
+        }
 
         Path file = createTempFileWithContent(sb.toString());
         List<Integer> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
