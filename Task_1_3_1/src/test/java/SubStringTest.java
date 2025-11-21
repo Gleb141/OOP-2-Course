@@ -94,7 +94,7 @@ public class SubStringTest {
     }
 
     @Test
-    void nonExistingFileThrowsIOException() {
+    void nonExistingFileThrowsIoException() {
         String fileName = "non_existing_file_" + System.nanoTime() + ".txt";
         assertThrows(IOException.class,
                 () -> SubStringFinder.findInFile(fileName, "test"));
