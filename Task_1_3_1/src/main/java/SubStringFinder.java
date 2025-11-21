@@ -14,7 +14,7 @@ import java.util.List;
 public class SubStringFinder {
     private final String fileName;
     private final String pattern;
-    public SubStringFinder(String fileName, String pattern){
+    public SubStringFinder(String fileName, String pattern) {
         if (pattern == null || pattern.isEmpty()) {
             throw new IllegalArgumentException("Искомая строка не должна быть пустой");
         }
@@ -26,7 +26,7 @@ public class SubStringFinder {
      * Find the needed substring in file.
      */
 
-    public static List<Integer> findInFile(String fileName, String pattern) throws IOException{
+    public static List<Integer> findInFile(String fileName, String pattern) throws IOException {
         SubStringFinder finder = new SubStringFinder(fileName, pattern);
         return finder.find();
     }
@@ -40,8 +40,8 @@ public class SubStringFinder {
         int patternLength = pattern.length();
         List<Integer> result = new ArrayList<>();
 
-        try(BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))){
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
             int positionInText = 0;
             int j = 0;
             char[] buffer = new char[4096];
@@ -49,13 +49,13 @@ public class SubStringFinder {
             while ((charsRead = reader.read(buffer)) != -1) {
                 for (int i = 0; i < charsRead; i++) {
                     char currentChar = buffer[i];
-                    while (j > 0 && currentChar != pattern.charAt(j)){
-                        j = prefixFunction[j-1];
+                    while (j > 0 && currentChar != pattern.charAt(j)) {
+                        j = prefixFunction[j - 1];
                     }
                     if (currentChar == pattern.charAt(j)) {
                         j++;
                     }
-                    if (j == patternLength){
+                    if (j == patternLength) {
                         int startIndex = positionInText - patternLength + 1;
                         result.add(startIndex);
                         j = prefixFunction[j - 1];
@@ -71,7 +71,7 @@ public class SubStringFinder {
      * Function to build a prefix.
      */
 
-    private int[] buildPrefixFunction(String pattern){
+    private int[] buildPrefixFunction(String pattern) {
         int m = pattern.length();
         int[] pi = new int[m];
         pi[0] = 0;
