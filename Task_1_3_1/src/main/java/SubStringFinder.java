@@ -15,7 +15,7 @@ public class SubStringFinder {
     private final String fileName;
     private final String pattern;
     public SubStringFinder(String fileName, String pattern){
-        if(pattern == null || pattern.isEmpty()){
+        if (pattern == null || pattern.isEmpty()) {
             throw new IllegalArgumentException("Искомая строка не должна быть пустой");
         }
         this.fileName = fileName;
@@ -46,16 +46,16 @@ public class SubStringFinder {
             int j = 0;
             char[] buffer = new char[4096];
             int charsRead;
-            while((charsRead = reader.read(buffer)) != -1){
-                for(int i = 0; i < charsRead; i++){
+            while ((charsRead = reader.read(buffer)) != -1) {
+                for (int i = 0; i < charsRead; i++) {
                     char currentChar = buffer[i];
-                    while(j > 0 && currentChar != pattern.charAt(j)){
+                    while (j > 0 && currentChar != pattern.charAt(j)){
                         j = prefixFunction[j-1];
                     }
-                    if(currentChar == pattern.charAt(j)){
+                    if (currentChar == pattern.charAt(j)) {
                         j++;
                     }
-                    if(j == patternLength){
+                    if (j == patternLength){
                         int startIndex = positionInText - patternLength + 1;
                         result.add(startIndex);
                         j = prefixFunction[j - 1];
@@ -76,11 +76,11 @@ public class SubStringFinder {
         int[] pi = new int[m];
         pi[0] = 0;
         int j = 0;
-        for(int i = 1; i < m; i++){
-            while(j > 0 && pattern.charAt(i) != pattern.charAt(j)){
+        for (int i = 1; i < m; i++) {
+            while (j > 0 && pattern.charAt(i) != pattern.charAt(j)) {
                 j = pi[j - 1];
             }
-            if(pattern.charAt(i) == pattern.charAt(j)){
+            if (pattern.charAt(i) == pattern.charAt(j)) {
                 j++;
             }
             pi[i] = j;
