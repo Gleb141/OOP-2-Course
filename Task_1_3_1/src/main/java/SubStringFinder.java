@@ -14,6 +14,11 @@ import java.util.List;
 public class SubStringFinder {
     private final String fileName;
     private final String pattern;
+
+    /**
+     * Function that finds the required substring.
+     */
+
     public SubStringFinder(String fileName, String pattern) {
         if (pattern == null || pattern.isEmpty()) {
             throw new IllegalArgumentException("Искомая строка не должна быть пустой");

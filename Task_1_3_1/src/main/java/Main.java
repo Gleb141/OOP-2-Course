@@ -4,7 +4,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Main demo file.
+ */
+
 public class Main {
+
+    /**
+     * Demo itself.
+     */
 
     public static void main(String[] args) {
         String fileName = "input.txt";
