@@ -98,4 +98,35 @@ public class SubStringTest {
         assertThrows(IOException.class,
                 () -> SubStringFinder.findInFile(fileName, "test"));
     }
+    @Test
+    void hugeFileLargerThanHeapSingleMatchAtEnd() throws IOException {
+        long heapMaxBytes = Runtime.getRuntime().maxMemory();
+        long targetSizeBytes = heapMaxBytes + 10_000_000L;
+
+        Path file = Files.createTempFile("substring_finder_huge_", ".txt");
+
+        char[] block = new char[8192];
+        Arrays.fill(block, 'a');
+
+        long written = 0;
+        long matchIndex;
+
+        try (java.io.BufferedWriter writer =
+                     Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+
+            while (written + block.length < targetSizeBytes) {
+                writer.write(block);
+                written += block.length;
+            }
+
+            matchIndex = written;
+            writer.write("XYZ");
+            written += 3;
+        }
+        List<Integer> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
+
+        assertEquals(1, indices.size(), "Должно быть ровно одно совпадение");
+        assertEquals((int) matchIndex, indices.get(0));
+    }
+
 }
