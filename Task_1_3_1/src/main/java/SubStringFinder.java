@@ -31,7 +31,7 @@ public class SubStringFinder {
      * Find the needed substring in file.
      */
 
-    public static List<Integer> findInFile(String fileName, String pattern) throws IOException {
+    public static List<Long> findInFile(String fileName, String pattern) throws IOException {
         SubStringFinder finder = new SubStringFinder(fileName, pattern);
         return finder.find();
     }
@@ -40,14 +40,14 @@ public class SubStringFinder {
      * Find function.
      */
 
-    public List<Integer> find() throws IOException {
+    public List<Long> find() throws IOException {
         int[] prefixFunction = buildPrefixFunction(pattern);
         int patternLength = pattern.length();
-        List<Integer> result = new ArrayList<>();
+        List<Long> result = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8))) {
-            int positionInText = 0;
+            long positionInText = 0;
             int j = 0;
             char[] buffer = new char[4096];
             int charsRead;
@@ -61,7 +61,7 @@ public class SubStringFinder {
                         j++;
                     }
                     if (j == patternLength) {
-                        int startIndex = positionInText - patternLength + 1;
+                        Long startIndex = positionInText - patternLength + 1;
                         result.add(startIndex);
                         j = prefixFunction[j - 1];
                     }

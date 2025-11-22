@@ -22,7 +22,7 @@ public class Main {
 
             ensureExampleFileExists(fileName);
 
-            List<Integer> indices = SubStringFinder.findInFile(fileName, pattern);
+            List<Long> indices = SubStringFinder.findInFile(fileName, pattern);
             System.out.println("Искомая подстрока: \"" + pattern + "\"");
             System.out.println("Файл: " + fileName);
             System.out.println("Вхождения (индексы с нуля): " + indices);
