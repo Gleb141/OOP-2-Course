@@ -26,7 +26,7 @@ public class SubStringTest {
     void exampleFromTask() throws IOException {
         Path file = createTempFileWithContent("абракадабра");
         List<Long> indices = SubStringFinder.findInFile(file.toString(), "бра");
-        assertEquals(Arrays.asList((long)1, (long)8), indices);
+        assertEquals(Arrays.asList((long) 1, (long) 8), indices);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class SubStringTest {
     void overlappingMatches() throws IOException {
         Path file = createTempFileWithContent("aaaa");
         List<Long> indices = SubStringFinder.findInFile(file.toString(), "aa");
-        assertEquals(Arrays.asList((long)0, (long)1, (long)2), indices);
+        assertEquals(Arrays.asList((long) 0, (long) 1, (long) 2), indices);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class SubStringTest {
 
         Path file = createTempFileWithContent(sb.toString());
         List<Long> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
-        assertEquals(Collections.singletonList((long)100_000), indices);
+        assertEquals(Collections.singletonList((long) 100_000), indices);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SubStringTest {
     void patternAtBeginningAndEnd() throws IOException {
         Path file = createTempFileWithContent("XYZ---XYZ");
         List<Long> indices = SubStringFinder.findInFile(file.toString(), "XYZ");
-        assertEquals(Arrays.asList((long)0, (long)6), indices);
+        assertEquals(Arrays.asList((long) 0, (long) 6), indices);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class SubStringTest {
     void patternWithSelfOverlap() throws IOException {
         Path file = createTempFileWithContent("abababaca");
         List<Long> indices = SubStringFinder.findInFile(file.toString(), "ababa");
-        assertEquals(Arrays.asList((long)0, (long)2), indices);
+        assertEquals(Arrays.asList((long) 0, (long) 2), indices);
     }
 
     @Test
