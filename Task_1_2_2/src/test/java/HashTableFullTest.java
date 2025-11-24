@@ -71,6 +71,7 @@ public class HashTableFullTest {
         public int hashCode() {
             return 42;
         } // all collide
+
         @Override
         public boolean equals(Object o) {
 

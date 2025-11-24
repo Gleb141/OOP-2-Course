@@ -8,6 +8,7 @@ public class HashTableEntry<K, V> {
     /**
      * Creates a new entry.
      */
+
     public HashTableEntry(K key, V value) {
         this.key = key;
         this.value = value;
@@ -16,6 +17,7 @@ public class HashTableEntry<K, V> {
     /**
      * Auto-generated.
      */
+
     @Override
     public String toString() {
         return key + "=" + value;
