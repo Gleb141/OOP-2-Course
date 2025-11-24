@@ -5,11 +5,13 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Full coverage tests for {@link SubStringFinder}.
@@ -98,6 +100,7 @@ public class SubStringTest {
         assertThrows(IOException.class,
                 () -> SubStringFinder.findInFile(fileName, "test"));
     }
+
     @Test
     void hugeFileLargerThanHeapSingleMatchAtEnd() throws IOException {
         long heapMaxBytes = Runtime.getRuntime().maxMemory();
