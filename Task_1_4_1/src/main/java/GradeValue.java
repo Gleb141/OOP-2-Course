@@ -12,7 +12,7 @@ enum GradeValue {
     private final String displayName;
 
     /**
-     * Gradevalue
+     * Gradevalue.
      */
 
     GradeValue(int numericValue, String displayName) {
@@ -21,7 +21,7 @@ enum GradeValue {
     }
 
     /**
-     * returns a numeric value
+     * returns a numeric value.
      */
 
     public int getNumericValue() {
@@ -33,7 +33,7 @@ enum GradeValue {
     }
 
     /**
-     * string conversion
+     * string conversion.
      */
 
     @Override

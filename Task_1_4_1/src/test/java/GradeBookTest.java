@@ -1,11 +1,11 @@
 /**
- * Tests for Task 141
+ * Tests for Task 141.
  */
 
 public class GradeBookTest {
 
     /**
-     * main demo
+     * main demo.
      */
 
     public static void main(String[] args) {
@@ -15,7 +15,7 @@ public class GradeBookTest {
     }
 
     /**
-     * transfer to budget tests
+     * transfer to budget tests.
      */
 
     private static void testTransferToBudget() {
@@ -41,7 +41,7 @@ public class GradeBookTest {
     }
 
     /**
-     * red diploma tests
+     * red diploma tests.
      */
 
     private static void testRedDiplomaPossible() {
@@ -85,7 +85,7 @@ public class GradeBookTest {
     }
 
     /**
-     * tests for increased scholarship
+     * tests for increased scholarship.
      */
 
     private static void testIncreasedScholarship() {

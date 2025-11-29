@@ -10,7 +10,7 @@ public class CourseResult {
     private final GradeValue grade;
 
     /**
-     * gets the course results
+     * gets the course results.
      */
 
     public CourseResult(String courseName,
@@ -28,7 +28,7 @@ public class CourseResult {
     }
 
     /**
-     * gets the semester
+     * gets the semester.
      */
 
     public int getSemester() {
@@ -36,7 +36,7 @@ public class CourseResult {
     }
 
     /**
-     * returns the assessment type
+     * returns the assessment type.
      */
 
     public AssessmentType getAssessmentType() {
@@ -44,7 +44,7 @@ public class CourseResult {
     }
 
     /**
-     * gets the grade
+     * gets the grade.
      */
 
     public GradeValue getGrade() {
@@ -52,7 +52,7 @@ public class CourseResult {
     }
 
     /**
-     * convert and output as a string
+     * convert and output as a string.
      */
 
     @Override

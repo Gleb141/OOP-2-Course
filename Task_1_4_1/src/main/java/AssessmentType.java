@@ -1,5 +1,5 @@
 /**
- * Type of assessment
+ * Type of assessment.
  */
 
 enum AssessmentType {

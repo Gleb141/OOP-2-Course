@@ -3,7 +3,7 @@ import java.util.List;
 
 
 /**
- * Gradebook
+ * Gradebook.
  */
 
 public class GradeBook {
@@ -15,7 +15,7 @@ public class GradeBook {
     private GradeValue qualificationWorkGrade;
 
     /**
-     * Gradebook methods
+     * Gradebook methods.
      */
 
     public GradeBook(String studentName,
@@ -27,7 +27,7 @@ public class GradeBook {
     }
 
     /**
-     * Method that adds course results for a student
+     * Method that adds course results for a student.
      */
 
     public void addCourseResult(CourseResult result) {
@@ -35,7 +35,7 @@ public class GradeBook {
     }
 
     /**
-     * Set qualification work grade
+     * Set qualification work grade.
      */
 
     public void setQualificationWorkGrade(GradeValue grade) {
@@ -51,7 +51,7 @@ public class GradeBook {
     }
 
     /**
-     * Calculates average mark
+     * Calculates average mark.
      */
 
     public double calculateGpa() {
@@ -68,7 +68,7 @@ public class GradeBook {
     }
 
     /**
-     * determines if a student can study on state budget
+     * determines if a student can study on state budget.
      */
 
     public boolean canTransferToBudget() {
@@ -99,8 +99,8 @@ public class GradeBook {
                 continue;
             }
 
-            if (result.getAssessmentType() == AssessmentType.EXAM &&
-                    result.getGrade() == GradeValue.SATISFACTORY) {
+            if (result.getAssessmentType() == AssessmentType.EXAM
+                    && result.getGrade() == GradeValue.SATISFACTORY) {
                 return false;
             }
         }
@@ -109,7 +109,7 @@ public class GradeBook {
     }
 
     /**
-     * Can student get a red diploma
+     * Can student get a red diploma.
      */
 
     public boolean isRedDiplomaPossible() {
@@ -145,7 +145,7 @@ public class GradeBook {
     }
 
     /**
-     * Can a student get an increase in scholarship
+     * Can a student get an increase in scholarship.
      */
 
     public boolean canGetIncreasedScholarship() {
@@ -166,8 +166,8 @@ public class GradeBook {
                 continue;
             }
 
-            if (result.getAssessmentType() == AssessmentType.EXAM ||
-                    result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT) {
+            if (result.getAssessmentType() == AssessmentType.EXAM
+                    || result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT) {
 
                 hasAnyControl = true;
 
@@ -187,7 +187,7 @@ public class GradeBook {
     @Override
 
     /**
-     * String conversion and output
+     * String conversion and output.
      */
 
     public String toString() {

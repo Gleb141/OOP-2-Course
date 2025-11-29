@@ -5,7 +5,7 @@
 public class Main {
 
     /**
-     * main demo
+     * main demo.
      */
 
     public static void main(String[] args) {
