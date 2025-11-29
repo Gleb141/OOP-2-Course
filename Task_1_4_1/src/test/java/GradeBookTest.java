@@ -1,130 +1,229 @@
-/**
- * Tests for Task 141.
- */
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Tests for GradeBook.
+ */
 public class GradeBookTest {
 
-    /**
-     * main demo.
-     */
-
-    public static void main(String[] args) {
-        testTransferToBudget();
-        testRedDiplomaPossible();
-        testIncreasedScholarship();
+    @Test
+    void gpaOfEmptyGradeBookIsZero() {
+        GradeBook gb = new GradeBook("Студент", true, 10);
+        assertEquals(0.0, gb.calculateGpa(), 1e-9);
     }
 
-    /**
-     * transfer to budget tests.
-     */
-
-    private static void testTransferToBudget() {
-        GradeBook gb = new GradeBook("Студент Платный", true, 10);
+    @Test
+    void gpaIsAverageOfNumericGrades() {
+        GradeBook gb = new GradeBook("Студент", true, 10);
 
         gb.addCourseResult(new CourseResult(
-                "Предмет 1",
-                1,
-                AssessmentType.EXAM,
-                GradeValue.EXCELLENT
-        ));
-
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT));   // 5
         gb.addCourseResult(new CourseResult(
-                "Предмет 2",
-                2,
-                AssessmentType.EXAM,
-                GradeValue.SATISFACTORY
-        ));
+                "Физика", 1, AssessmentType.EXAM, GradeValue.GOOD));            // 4
+        gb.addCourseResult(new CourseResult(
+                "Философия", 1, AssessmentType.EXAM, GradeValue.SATISFACTORY)); // 3
 
-        boolean canTransfer = gb.canTransferToBudget();
-        System.out.println("[testTransferToBudget] Ожидаем false, получили: "
-                + canTransfer);
+        assertEquals((5 + 4 + 3) / 3.0, gb.calculateGpa(), 1e-9);
     }
 
-    /**
-     * red diploma tests.
-     */
-
-    private static void testRedDiplomaPossible() {
-        GradeBook gb = new GradeBook("Отличник", true, 8);
-
+    @Test
+    void canTransferToBudgetFalseWhenEducationIsNotPaid() {
+        GradeBook gb = new GradeBook("Студент", false, 10);
         gb.addCourseResult(new CourseResult(
-                "Математика",
-                1,
-                AssessmentType.EXAM,
-                GradeValue.EXCELLENT
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
         ));
 
-        gb.addCourseResult(new CourseResult(
-                "Физика",
-                1,
-                AssessmentType.EXAM,
-                GradeValue.GOOD
-        ));
-
-        gb.addCourseResult(new CourseResult(
-                "Программирование",
-                2,
-                AssessmentType.EXAM,
-                GradeValue.EXCELLENT
-        ));
-
-        boolean possible = gb.isRedDiplomaPossible();
-        System.out.println("[testRedDiplomaPossible] Ожидаем true, получили: "
-                + possible);
-
-        gb.addCourseResult(new CourseResult(
-                "Философия",
-                2,
-                AssessmentType.EXAM,
-                GradeValue.SATISFACTORY
-        ));
-
-        possible = gb.isRedDiplomaPossible();
-        System.out.println("[testRedDiplomaPossible] После '3' ожидаем false, получили: "
-                + possible);
+        assertFalse(gb.canTransferToBudget());
     }
 
-    /**
-     * tests for increased scholarship.
-     */
+    @Test
+    void canTransferToBudgetFalseWhenNoCourses() {
+        GradeBook gb = new GradeBook("Студент", true, 10);
+        assertFalse(gb.canTransferToBudget());
+    }
 
-    private static void testIncreasedScholarship() {
-        GradeBook gb = new GradeBook("Стипендиат", false, 6);
+    @Test
+    void canTransferToBudgetTrueWhenNoSatisfactoryExamsInLastTwoSemesters() {
+        GradeBook gb = new GradeBook("Студент", true, 10);
 
+        // Старый семестр с "3" — не должен влиять (не входит в последние два)
         gb.addCourseResult(new CourseResult(
-                "Предмет 1",
-                1,
-                AssessmentType.EXAM,
-                GradeValue.GOOD
+                "История", 1, AssessmentType.EXAM, GradeValue.SATISFACTORY
         ));
 
+        // Последние два семестра: 2 и 3
         gb.addCourseResult(new CourseResult(
-                "Предмет 2",
-                2,
-                AssessmentType.EXAM,
-                GradeValue.EXCELLENT
+                "Математика", 2, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Физика", 3, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        // Дифф. зачёт с "3" не запрещает перевод, метод смотрит только на экзамены
+        gb.addCourseResult(new CourseResult(
+                "Практика", 3, AssessmentType.DIFFERENTIATED_CREDIT, GradeValue.SATISFACTORY
         ));
 
-        gb.addCourseResult(new CourseResult(
-                "Предмет 3",
-                2,
-                AssessmentType.DIFFERENTIATED_CREDIT,
-                GradeValue.EXCELLENT
-        ));
+        assertTrue(gb.canTransferToBudget());
+    }
 
-        boolean scholarship = gb.canGetIncreasedScholarship();
-        System.out.println("[testIncreasedScholarship] Ожидаем true, получили: "
-                + scholarship);
+    @Test
+    void canTransferToBudgetFalseWhenSatisfactoryExamInLastTwoSemesters() {
+        GradeBook gb = new GradeBook("Студент", true, 10);
 
         gb.addCourseResult(new CourseResult(
-                "Предмет 4",
-                2,
-                AssessmentType.EXAM,
-                GradeValue.GOOD
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Физика", 2, AssessmentType.EXAM, GradeValue.SATISFACTORY
         ));
 
-        scholarship = gb.canGetIncreasedScholarship();
-        System.out.println("[testIncreasedScholarship] После '4' ожидаем false, получили: "
-                + scholarship);
+        assertFalse(gb.canTransferToBudget());
+    }
+
+    @Test
+    void redDiplomaPossibleWhenEnoughExcellentMarksAndNoThrees() {
+        GradeBook gb = new GradeBook("Студент", true, 8);
+
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Физика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Программирование", 2, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Философия", 2, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+
+        // ВКР ещё нет, по формуле 75% "5" достижимы
+        assertTrue(gb.isRedDiplomaPossible());
+    }
+
+    @Test
+    void redDiplomaImpossibleIfThereIsSatisfactory() {
+        GradeBook gb = new GradeBook("Студент", true, 4);
+
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.SATISFACTORY
+        ));
+
+        assertFalse(gb.isRedDiplomaPossible());
+    }
+
+    @Test
+    void redDiplomaImpossibleIfQualificationWorkIsNotExcellent() {
+        GradeBook gb = new GradeBook("Студент", true, 4);
+
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.setQualificationWorkGrade(GradeValue.GOOD);
+
+        assertFalse(gb.isRedDiplomaPossible());
+    }
+
+    @Test
+    void redDiplomaImpossibleIfNotEnoughExcellentEvenInBestCase() {
+        GradeBook gb = new GradeBook("Студент", true, 4);
+
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Физика", 1, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Программирование", 2, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Философия", 2, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+
+        // Сейчас 1 "5" из 4, в идеале максимум 1 "5" из 4 — до 75% не дотянуться
+        assertFalse(gb.isRedDiplomaPossible());
+    }
+
+    @Test
+    void increasedScholarshipFalseForEmptyGradeBook() {
+        GradeBook gb = new GradeBook("Студент", true, 6);
+        assertFalse(gb.canGetIncreasedScholarship());
+    }
+
+    @Test
+    void increasedScholarshipTrueIfAllControlsInCurrentSemesterAreExcellent() {
+        GradeBook gb = new GradeBook("Студент", true, 6);
+
+        // Предыдущий семестр – просто шум
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.GOOD
+        ));
+
+        // Текущий семестр (2): все экзамены/дифф. зачёты на "5"
+        gb.addCourseResult(new CourseResult(
+                "Физика", 2, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Программирование", 2, AssessmentType.DIFFERENTIATED_CREDIT, GradeValue.EXCELLENT
+        ));
+
+        assertTrue(gb.canGetIncreasedScholarship());
+    }
+
+    @Test
+    void increasedScholarshipFalseIfAnyControlInCurrentSemesterIsNotExcellent() {
+        GradeBook gb = new GradeBook("Студент", true, 6);
+
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Физика", 2, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+        gb.addCourseResult(new CourseResult(
+                "Программирование", 2, AssessmentType.DIFFERENTIATED_CREDIT, GradeValue.GOOD
+        ));
+
+        assertFalse(gb.canGetIncreasedScholarship());
+    }
+
+    @Test
+    void increasedScholarshipFalseIfNoControlsInCurrentSemester() {
+        GradeBook gb = new GradeBook("Студент", true, 6);
+
+        // Семестр 1 – обычный экзамен
+        gb.addCourseResult(new CourseResult(
+                "Математика", 1, AssessmentType.EXAM, GradeValue.EXCELLENT
+        ));
+
+        // Семестр 2 – текущий, но тип контроля null, hasAnyControl останется false
+        gb.addCourseResult(new CourseResult(
+                "Практика", 2, null, GradeValue.EXCELLENT
+        ));
+
+        assertFalse(gb.canGetIncreasedScholarship());
+    }
+
+    @Test
+    void setPaidEducationAndIsPaidEducationWork() {
+        GradeBook gb = new GradeBook("Студент", true, 4);
+        assertTrue(gb.isPaidEducation());
+
+        gb.setPaidEducation(false);
+        assertFalse(gb.isPaidEducation());
+    }
+
+    @Test
+    void toStringContainsKeyFields() {
+        GradeBook gb = new GradeBook("Студент", true, 4);
+
+        String str = gb.toString();
+        assertTrue(str.contains("Студент"));
+        assertTrue(str.contains("paidEducation=true"));
+        assertTrue(str.contains("totalPlannedCourses=4"));
     }
 }
