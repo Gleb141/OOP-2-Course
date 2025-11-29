@@ -1,4 +1,12 @@
+/**
+ * Demo.
+ */
+
 public class Main {
+
+    /**
+     * main demo
+     */
 
     public static void main(String[] args) {
         GradeBook gradeBook = new GradeBook(

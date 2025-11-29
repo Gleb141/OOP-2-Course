@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Gradebook
+ */
+
 public class GradeBook {
 
     private final String studentName;
@@ -8,6 +13,10 @@ public class GradeBook {
     private final List<CourseResult> courseResults = new ArrayList<>();
     private final int totalPlannedCourses;
     private GradeValue qualificationWorkGrade;
+
+    /**
+     * Gradebook methods
+     */
 
     public GradeBook(String studentName,
                      boolean paidEducation,
@@ -17,9 +26,17 @@ public class GradeBook {
         this.totalPlannedCourses = totalPlannedCourses;
     }
 
+    /**
+     * Method that adds course results for a student
+     */
+
     public void addCourseResult(CourseResult result) {
         courseResults.add(result);
     }
+
+    /**
+     * Set qualification work grade
+     */
 
     public void setQualificationWorkGrade(GradeValue grade) {
         this.qualificationWorkGrade = grade;
@@ -33,6 +50,10 @@ public class GradeBook {
         return paidEducation;
     }
 
+    /**
+     * Calculates average mark
+     */
+
     public double calculateGpa() {
         if (courseResults.isEmpty()) {
             return 0.0;
@@ -45,6 +66,10 @@ public class GradeBook {
 
         return (double) sum / courseResults.size();
     }
+
+    /**
+     * determines if a student can study on state budget
+     */
 
     public boolean canTransferToBudget() {
         if (!paidEducation) {
@@ -66,9 +91,9 @@ public class GradeBook {
         for (CourseResult result : courseResults) {
             int sem = result.getSemester();
 
-            boolean isLastTwo =
-                    sem == lastSemester
-                            || (previousSemester > 0 && sem == previousSemester);
+            boolean isLastTwo = sem == lastSemester
+                    || (previousSemester > 0
+                    && sem == previousSemester);
 
             if (!isLastTwo) {
                 continue;
@@ -82,6 +107,10 @@ public class GradeBook {
 
         return true;
     }
+
+    /**
+     * Can student get a red diploma
+     */
 
     public boolean isRedDiplomaPossible() {
         for (CourseResult result : courseResults) {
@@ -114,6 +143,10 @@ public class GradeBook {
 
         return maxPossibleExcellent >= requiredExcellent;
     }
+
+    /**
+     * Can a student get an increase in scholarship
+     */
 
     public boolean canGetIncreasedScholarship() {
         if (courseResults.isEmpty()) {
@@ -152,6 +185,11 @@ public class GradeBook {
     }
 
     @Override
+
+    /**
+     * String conversion and output
+     */
+
     public String toString() {
         return "GradeBook{"
                 + "studentName='" + studentName + '\''

@@ -1,10 +1,22 @@
+/**
+ * Tests for Task 141
+ */
+
 public class GradeBookTest {
+
+    /**
+     * main demo
+     */
 
     public static void main(String[] args) {
         testTransferToBudget();
         testRedDiplomaPossible();
         testIncreasedScholarship();
     }
+
+    /**
+     * transfer to budget tests
+     */
 
     private static void testTransferToBudget() {
         GradeBook gb = new GradeBook("Студент Платный", true, 10);
@@ -27,6 +39,10 @@ public class GradeBookTest {
         System.out.println("[testTransferToBudget] Ожидаем false, получили: "
                 + canTransfer);
     }
+
+    /**
+     * red diploma tests
+     */
 
     private static void testRedDiplomaPossible() {
         GradeBook gb = new GradeBook("Отличник", true, 8);
@@ -67,6 +83,10 @@ public class GradeBookTest {
         System.out.println("[testRedDiplomaPossible] После '3' ожидаем false, получили: "
                 + possible);
     }
+
+    /**
+     * tests for increased scholarship
+     */
 
     private static void testIncreasedScholarship() {
         GradeBook gb = new GradeBook("Стипендиат", false, 6);
