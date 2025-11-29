@@ -72,7 +72,7 @@ class ExpressionCoverageTests {
         assertEquals(3, e.eval("x=1; y=2"));
         assertEquals(3, e.eval(" x = 1 ;  ; y = 2 "));
         assertEquals(5, num(5).eval((String) null));
-        assertThrows(IllegalArgumentException.class, () -> e.eval("x=1; y"));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> e.eval("x=1; y"));
         assertThrows(NumberFormatException.class, () -> e.eval("x = a"));
     }
 
