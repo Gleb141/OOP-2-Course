@@ -3,6 +3,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests for Course results.
+ */
+
 public class CourseResultTest {
 
     @Test
