@@ -184,12 +184,11 @@ public class GradeBook {
         return true;
     }
 
-    @Override
-
     /**
      * String conversion and output.
      */
 
+    @Override
     public String toString() {
         return "GradeBook{"
                 + "studentName='" + studentName + '\''
