@@ -1,39 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-enum GradeValue {
-    UNSATISFACTORY(2, "неудовлетворительно"),
-    SATISFACTORY(3, "удовлетворительно"),
-    GOOD(4, "хорошо"),
-    EXCELLENT(5, "отлично");
-
-    private final int numericValue;
-    private final String displayName;
-
-    GradeValue(int numericValue, String displayName) {
-        this.numericValue = numericValue;
-        this.displayName = displayName;
-    }
-
-    public int getNumericValue() {
-        return numericValue;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    @Override
-    public String toString() {
-        return displayName;
-    }
-}
-
-enum AssessmentType {
-    EXAM,
-    DIFFERENTIATED_CREDIT
-}
-
 public class GradeBook {
 
     private final String studentName;
@@ -66,7 +33,7 @@ public class GradeBook {
         return paidEducation;
     }
 
-    public double calculateGPA() {
+    public double calculateGpa() {
         if (courseResults.isEmpty()) {
             return 0.0;
         }
@@ -100,8 +67,8 @@ public class GradeBook {
             int sem = result.getSemester();
 
             boolean isLastTwo =
-                    sem == lastSemester ||
-                            (previousSemester > 0 && sem == previousSemester);
+                    sem == lastSemester
+                            || (previousSemester > 0 && sem == previousSemester);
 
             if (!isLastTwo) {
                 continue;
@@ -123,8 +90,8 @@ public class GradeBook {
             }
         }
 
-        if (qualificationWorkGrade != null &&
-                qualificationWorkGrade != GradeValue.EXCELLENT) {
+        if (qualificationWorkGrade != null
+                && qualificationWorkGrade != GradeValue.EXCELLENT) {
             return false;
         }
 
@@ -186,13 +153,13 @@ public class GradeBook {
 
     @Override
     public String toString() {
-        return "GradeBook{" +
-                "studentName='" + studentName + '\'' +
-                ", paidEducation=" + paidEducation +
-                ", totalPlannedCourses=" + totalPlannedCourses +
-                ", qualificationWorkGrade=" + qualificationWorkGrade +
-                ", courseResults=" + courseResults +
-                '}';
+        return "GradeBook{"
+                + "studentName='" + studentName + '\''
+                + ", paidEducation=" + paidEducation
+                + ", totalPlannedCourses=" + totalPlannedCourses
+                + ", qualificationWorkGrade=" + qualificationWorkGrade
+                + ", courseResults=" + courseResults
+                + '}';
     }
 }
 

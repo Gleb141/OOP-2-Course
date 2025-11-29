@@ -33,12 +33,12 @@ public class CourseResult {
 
     @Override
     public String toString() {
-        return "CourseResult{" +
-                "courseName='" + courseName + '\'' +
-                ", semester=" + semester +
-                ", assessmentType=" + assessmentType +
-                ", grade=" + grade +
-                '}';
+        return "CourseResult{"
+                + "courseName='" + courseName + '\''
+                + ", semester=" + semester
+                + ", assessmentType=" + assessmentType
+                + ", grade=" + grade
+                + '}';
     }
 }
 

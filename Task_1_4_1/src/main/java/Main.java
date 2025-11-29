@@ -35,7 +35,7 @@ public class Main {
                 GradeValue.EXCELLENT
         ));
 
-        System.out.printf("Средний балл: %.2f%n", gradeBook.calculateGPA());
+        System.out.printf("Средний балл: %.2f%n", gradeBook.calculateGpa());
         System.out.println("Можно перевестись на бюджет? "
                 + gradeBook.canTransferToBudget());
         System.out.println("Красный диплом ещё возможен? "
