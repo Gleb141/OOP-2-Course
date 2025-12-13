@@ -161,8 +161,8 @@ public class GradeBook {
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
                         result.getAssessmentType() == AssessmentType.EXAM
-                                || result.getAssessmentType() ==
-                                AssessmentType.DIFFERENTIATED_CREDIT)
+                                || result.getAssessmentType()
+                                == AssessmentType.DIFFERENTIATED_CREDIT)
                 .findAny()
                 .isPresent();
 
@@ -174,8 +174,8 @@ public class GradeBook {
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
                         result.getAssessmentType() == AssessmentType.EXAM
-                                || result.getAssessmentType() ==
-                                AssessmentType.DIFFERENTIATED_CREDIT)
+                                || result.getAssessmentType()
+                                == AssessmentType.DIFFERENTIATED_CREDIT)
                 .allMatch(result -> result.getGrade() == GradeValue.EXCELLENT);
     }
 
