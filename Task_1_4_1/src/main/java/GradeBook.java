@@ -104,9 +104,11 @@ public class GradeBook {
 
         return !hasBadExam;
     }
+
     /**
      * Checks if a red diploma is possible.
      */
+
     public boolean isRedDiplomaPossible() {
 
         boolean hasThree = courseResults.stream()
@@ -159,7 +161,8 @@ public class GradeBook {
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
                         result.getAssessmentType() == AssessmentType.EXAM
-                                || result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT)
+                                || result.getAssessmentType() ==
+                                AssessmentType.DIFFERENTIATED_CREDIT)
                 .findAny()
                 .isPresent();
 
@@ -171,7 +174,8 @@ public class GradeBook {
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
                         result.getAssessmentType() == AssessmentType.EXAM
-                                || result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT)
+                                || result.getAssessmentType() ==
+                                AssessmentType.DIFFERENTIATED_CREDIT)
                 .allMatch(result -> result.getGrade() == GradeValue.EXCELLENT);
     }
 
