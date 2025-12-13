@@ -263,7 +263,9 @@ class ListElement extends Element {
         for (int i = 0; i < items.size(); i++) {
             sb.append(ordered ? (i + 1) + ". " : "- ");
             sb.append(items.get(i).toMarkdown());
-            if (i + 1 < items.size()) sb.append("\n");
+            if (i + 1 < items.size()) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
