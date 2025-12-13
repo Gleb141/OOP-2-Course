@@ -128,7 +128,9 @@ class BlockQuote extends Element {
         for (String line : body.toMarkdown().split("\\r?\\n")) {
             sb.append("> ").append(line).append("\n");
         }
-        if (!sb.isEmpty()) sb.setLength(sb.length() - 1);
+        if (!sb.isEmpty()) {
+            sb.setLength(sb.length() - 1);
+        }
         return sb.toString();
     }
 
