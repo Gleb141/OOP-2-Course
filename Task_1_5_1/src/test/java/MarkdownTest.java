@@ -10,6 +10,7 @@ public class MarkdownTest {
         assert new Text.Strike("d").toMarkdown().equals("~~d~~");
         assert new Text.Code("e").toMarkdown().equals("`e`");
     }
+
     @Test
     void testHeading() {
         assert new Heading(1, new Text.Plain("Hi"))
@@ -17,6 +18,7 @@ public class MarkdownTest {
         assert new Heading(6, new Text.Bold("X"))
                 .toMarkdown().equals("###### **X**");
     }
+
     @Test
     void testLists() {
         Element ul = new ListElement(false,
@@ -33,6 +35,7 @@ public class MarkdownTest {
 
         assert ol.toMarkdown().equals("1. x\n2. y");
     }
+
     @Test
     void testBlockQuote() {
         Element quote = new BlockQuote(
@@ -41,6 +44,7 @@ public class MarkdownTest {
 
         assert quote.toMarkdown().equals("> line1\n> line2");
     }
+
     @Test
     void testLinksAndImages() {
         assert new Link("A", "url")
@@ -49,6 +53,7 @@ public class MarkdownTest {
         assert new ImageElement("img", "src")
                 .toMarkdown().equals("![img](src)");
     }
+
     @Test
     void testTaskItem() {
         assert new TaskItem(true, new Text.Plain("done"))
@@ -57,6 +62,7 @@ public class MarkdownTest {
         assert new TaskItem(false, new Text.Plain("todo"))
                 .toMarkdown().equals("- [ ] todo");
     }
+
     @Test
     void testCodeBlock() {
         assert new CodeBlock(null, "x")
@@ -65,6 +71,7 @@ public class MarkdownTest {
         assert new CodeBlock("java", "int a;")
                 .toMarkdown().equals("```java\nint a;\n```");
     }
+
     @Test
     void testEquals() {
         assert new Text.Bold("a").equals(new Text.Bold("a"));
@@ -79,6 +86,7 @@ public class MarkdownTest {
         assert new TaskItem(true, new Text.Plain("x"))
                 .equals(new TaskItem(true, new Text.Plain("x")));
     }
+
     @Test
     void testNegative() {
         boolean thrown = false;

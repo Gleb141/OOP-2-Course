@@ -1,7 +1,9 @@
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 abstract class Element {
     public abstract String toMarkdown();
+
     @Override
     public String toString() {
         return toMarkdown();
@@ -30,8 +32,12 @@ class Text extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Text text = (Text) o;
         return Objects.equals(prefix, text.prefix)
                 && Objects.equals(value, text.value)
@@ -44,23 +50,33 @@ class Text extends Element {
     }
 
     static final class Plain extends Text {
-        Plain(String value) { super(value); }
+        Plain(String value) {
+            super(value);
+        }
     }
 
     static final class Bold extends Text {
-        Bold(String value) { super("**", value, "**"); }
+        Bold(String value) {
+            super("**", value, "**");
+        }
     }
 
     static final class Italic extends Text {
-        Italic(String value) { super("*", value, "*"); }
+        Italic(String value) {
+            super("*", value, "*");
+        }
     }
 
     static final class Strike extends Text {
-        Strike(String value) { super("~~", value, "~~"); }
+        Strike(String value) {
+            super("~~", value, "~~");
+        }
     }
 
     static final class Code extends Text {
-        Code(String value) { super("`", value, "`"); }
+        Code(String value) {
+            super("`", value, "`");
+        }
     }
 }
 
@@ -69,7 +85,9 @@ class Heading extends Element {
     private final Element text;
 
     Heading(int level, Element text) {
-        if (level < 1 || level > 6) throw new IllegalArgumentException();
+        if (level < 1 || level > 6) {
+            throw new IllegalArgumentException();
+        }
         this.level = level;
         this.text = text;
     }
@@ -81,8 +99,12 @@ class Heading extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Heading heading = (Heading) o;
         return level == heading.level && Objects.equals(text, heading.text);
     }
@@ -112,8 +134,12 @@ class BlockQuote extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BlockQuote that = (BlockQuote) o;
         return Objects.equals(body, that.body);
     }
@@ -140,8 +166,12 @@ class Link extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Link link = (Link) o;
         return Objects.equals(label, link.label)
                 && Objects.equals(url, link.url);
@@ -169,8 +199,12 @@ class ImageElement extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ImageElement that = (ImageElement) o;
         return Objects.equals(alt, that.alt)
                 && Objects.equals(url, that.url);
@@ -198,8 +232,12 @@ class TaskItem extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TaskItem taskItem = (TaskItem) o;
         return done == taskItem.done && Objects.equals(text, taskItem.text);
     }
