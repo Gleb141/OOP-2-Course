@@ -1,4 +1,14 @@
+
+/**
+ * Main class.
+ */
+
 public class Main {
+
+    /**
+     * Main demo.
+     */
+
     public static void main(String[] args) {
 
         Element title = new Heading(1, new Text.Bold("Markdown Generator"));
