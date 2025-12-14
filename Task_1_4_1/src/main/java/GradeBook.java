@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gradebook class.
+ */
+
+
 public class GradeBook {
 
     private final String studentName;
@@ -8,6 +13,10 @@ public class GradeBook {
     private final List<CourseResult> courseResults = new ArrayList<>();
     private final int totalPlannedCourses;
     private GradeValue qualificationWorkGrade;
+
+    /**
+     * Gets information about the student.
+     */
 
     public GradeBook(String studentName,
                      boolean paidEducation,
@@ -17,21 +26,42 @@ public class GradeBook {
         this.totalPlannedCourses = totalPlannedCourses;
     }
 
+    /**
+     * Adds course results.
+     */
+
     public void addCourseResult(CourseResult result) {
         courseResults.add(result);
     }
+
+    /**
+     * Checks qualification grade.
+     */
 
     public void setQualificationWorkGrade(GradeValue grade) {
         this.qualificationWorkGrade = grade;
     }
 
+    /**
+     * Sets paid education.
+     */
+
     public void setPaidEducation(boolean paidEducation) {
         this.paidEducation = paidEducation;
     }
 
+    /**
+     * Determines if student's education is paid for or not.
+     */
+
     public boolean isPaidEducation() {
         return paidEducation;
     }
+
+
+    /**
+     * Calculates student's GPA.
+     */
 
     public double calculateGpa() {
         return courseResults.stream()
@@ -39,6 +69,10 @@ public class GradeBook {
                 .average()
                 .orElse(0.0);
     }
+
+    /**
+     * Checks if a student can transfer to a state-funded education.
+     */
 
     public boolean canTransferToBudget() {
         if (!paidEducation) {
@@ -71,6 +105,10 @@ public class GradeBook {
         return !hasBadExam;
     }
 
+    /**
+     * Checks if a red diploma is possible.
+     */
+
     public boolean isRedDiplomaPossible() {
 
         boolean hasThree = courseResults.stream()
@@ -80,8 +118,8 @@ public class GradeBook {
             return false;
         }
 
-        if (qualificationWorkGrade != null &&
-                qualificationWorkGrade != GradeValue.EXCELLENT) {
+        if (qualificationWorkGrade != null
+                && qualificationWorkGrade != GradeValue.EXCELLENT) {
             return false;
         }
 
@@ -101,6 +139,10 @@ public class GradeBook {
         return maxPossibleExcellent >= requiredExcellent;
     }
 
+    /**
+     * Checks if a student can get an increase in scholarship.
+     */
+
     public boolean canGetIncreasedScholarship() {
         if (courseResults.isEmpty()) {
             return false;
@@ -118,8 +160,9 @@ public class GradeBook {
         boolean hasAnyControl = courseResults.stream()
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
-                        result.getAssessmentType() == AssessmentType.EXAM ||
-                                result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT)
+                        result.getAssessmentType() == AssessmentType.EXAM
+                                || result.getAssessmentType()
+                                == AssessmentType.DIFFERENTIATED_CREDIT)
                 .findAny()
                 .isPresent();
 
@@ -130,8 +173,9 @@ public class GradeBook {
         return courseResults.stream()
                 .filter(result -> result.getSemester() == currentSemester)
                 .filter(result ->
-                        result.getAssessmentType() == AssessmentType.EXAM ||
-                                result.getAssessmentType() == AssessmentType.DIFFERENTIATED_CREDIT)
+                        result.getAssessmentType() == AssessmentType.EXAM
+                                || result.getAssessmentType()
+                                == AssessmentType.DIFFERENTIATED_CREDIT)
                 .allMatch(result -> result.getGrade() == GradeValue.EXCELLENT);
     }
 
