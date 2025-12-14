@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Full coverage tests for {@link SubStringFinder}.
  */
+
 public class SubStringTest {
 
     private Path createTempFileWithContent(String content) throws IOException {
