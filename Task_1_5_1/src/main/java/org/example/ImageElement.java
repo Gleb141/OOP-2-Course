@@ -1,15 +1,14 @@
+package org.example;
+
 import java.util.Objects;
 
-
-/**
- * Image element url.
- */
-
-class ImageElement extends Element {
+public final class ImageElement extends Element {
     private final String alt;
     private final String url;
 
-    ImageElement(String alt, String url) {
+    public ImageElement(String alt, String url) {
+        requireNonBlank(alt, "alt");
+        requireNonBlank(url, "url");
         this.alt = alt;
         this.url = url;
     }
@@ -21,15 +20,10 @@ class ImageElement extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         ImageElement that = (ImageElement) o;
-        return Objects.equals(alt, that.alt)
-                && Objects.equals(url, that.url);
+        return Objects.equals(alt, that.alt) && Objects.equals(url, that.url);
     }
 
     @Override

@@ -1,16 +1,14 @@
+package org.example;
+
 import java.util.Objects;
 
-/**
- * Task is done and its text.
- */
-
-class TaskItem extends Element {
+public final class TaskItem extends Element {
     private final boolean done;
     private final Element text;
 
-    TaskItem(boolean done, Element text) {
+    public TaskItem(boolean done, Element text) {
         this.done = done;
-        this.text = text;
+        this.text = requireNonNull(text, "text");
     }
 
     @Override
@@ -20,12 +18,8 @@ class TaskItem extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         TaskItem taskItem = (TaskItem) o;
         return done == taskItem.done && Objects.equals(text, taskItem.text);
     }
