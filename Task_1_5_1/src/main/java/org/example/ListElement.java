@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Element extension for lists.
+ */
+
 public final class ListElement extends Element {
     private final boolean ordered;
     private final List<Element> items;

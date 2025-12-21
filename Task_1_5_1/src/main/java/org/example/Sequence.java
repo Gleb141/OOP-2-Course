@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Element extension for sequences.
+ */
+
 public final class Sequence extends Element {
     private final String separator;
     private final List<Element> elements;

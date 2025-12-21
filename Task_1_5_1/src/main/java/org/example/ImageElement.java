@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Extension of element for image elements.
+ */
+
 public final class ImageElement extends Element {
     private final String alt;
     private final String url;

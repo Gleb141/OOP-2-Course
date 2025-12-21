@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Extension of element for quoted blocks.
+ */
+
 public final class BlockQuote extends Element {
     private final Element body;
 

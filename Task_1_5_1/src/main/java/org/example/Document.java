@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Element extension for documents.
+ */
+
 public final class Document extends Element {
     private final List<Element> blocks;
 

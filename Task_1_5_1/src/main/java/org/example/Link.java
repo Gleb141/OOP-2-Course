@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Element extensions for links.
+ */
+
 public final class Link extends Element {
     private final Element label;
     private final String url;

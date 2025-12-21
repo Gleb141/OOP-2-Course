@@ -28,16 +28,24 @@ public final class TextStyle extends Element {
     }
 
     public static TextStyle bold(Element content) {
+
         return new TextStyle(Kind.BOLD, content);
+
     }
     public static TextStyle italic(Element content) {
+
         return new TextStyle(Kind.ITALIC, content);
+
     }
     public static TextStyle strike(Element content) {
+
         return new TextStyle(Kind.STRIKE, content);
+
     }
     public static TextStyle code(Element content) {
+
         return new TextStyle(Kind.CODE, content);
+
     }
 
     @Override

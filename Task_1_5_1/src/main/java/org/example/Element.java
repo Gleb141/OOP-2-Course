@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Main element class.
+ */
+
 public abstract class Element {
     public abstract String toMarkdown();
 

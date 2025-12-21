@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Element extension for tasks.
+ */
+
 public final class TaskItem extends Element {
     private final boolean done;
     private final Element text;

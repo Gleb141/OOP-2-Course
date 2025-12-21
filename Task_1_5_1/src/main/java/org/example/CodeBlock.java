@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Extension of element for blocks of code.
+ */
+
 public final class CodeBlock extends Element {
     private final String language;
     private final String code;

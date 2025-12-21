@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Element extension for headlines.
+ */
+
 public final class Heading extends Element {
     private final int level;
     private final Element text;

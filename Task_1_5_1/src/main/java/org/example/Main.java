@@ -1,5 +1,9 @@
 package org.example;
 
+/**
+ * Main demo class.
+ */
+
 public class Main {
     public static void main(String[] args) {
         Element title = new Heading(1, TextStyle.bold(new PlainText("Markdown Generator")));

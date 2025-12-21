@@ -14,7 +14,8 @@ public final class Table extends Element {
     private final List<Align> aligns;
     private final int rowLimit;
 
-    private Table(List<Element> headers, List<List<Element>> rows, List<Align> aligns, int rowLimit) {
+    private Table(List<Element> headers, List<List<Element>> rows,
+                  List<Align> aligns, int rowLimit) {
         this.headers = List.copyOf(headers);
         this.rows = List.copyOf(rows);
         this.aligns = List.copyOf(aligns);

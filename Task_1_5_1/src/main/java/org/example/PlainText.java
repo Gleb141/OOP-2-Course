@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.Objects;
 
+/**
+ * Element extension for plain text.
+ */
+
 public final class PlainText extends Element {
     private final String value;
 

@@ -10,6 +10,7 @@ abstract class Text extends Element {
     }
 
     protected abstract String prefix();
+
     protected abstract String suffix();
 
     @Override
