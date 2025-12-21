@@ -3,14 +3,15 @@ package org.example;
 import java.util.Objects;
 
 public final class TextStyle extends Element {
-    public enum Kind {
-        BOLD("", ""),
-        ITALIC("*", "*"),
-        STRIKE("", ""),
-        CODE("", "");
 
-        private final String prefix;
-        private final String suffix;
+    public enum Kind {
+        BOLD("**", "**"),
+        ITALIC("*", "*"),
+        STRIKE("~~", "~~"),
+        CODE("`", "`");
+
+        final String prefix;
+        final String suffix;
 
         Kind(String prefix, String suffix) {
             this.prefix = prefix;
@@ -22,14 +23,14 @@ public final class TextStyle extends Element {
     private final Element content;
 
     private TextStyle(Kind kind, Element content) {
-        this.kind = requireNonNull(kind, "kind");
-        this.content = requireNonNull(content, "content");
+        this.kind = Objects.requireNonNull(kind, "kind");
+        this.content = Objects.requireNonNull(content, "content");
     }
 
-    public static TextStyle bold(Element content)   { return new TextStyle(Kind.BOLD, content); }
+    public static TextStyle bold(Element content) { return new TextStyle(Kind.BOLD, content); }
     public static TextStyle italic(Element content) { return new TextStyle(Kind.ITALIC, content); }
     public static TextStyle strike(Element content) { return new TextStyle(Kind.STRIKE, content); }
-    public static TextStyle code(Element content)   { return new TextStyle(Kind.CODE, content); }
+    public static TextStyle code(Element content) { return new TextStyle(Kind.CODE, content); }
 
     @Override
     public String toMarkdown() {

@@ -11,7 +11,7 @@ public final class BlockQuote extends Element {
 
     @Override
     public String toMarkdown() {
-        String[] lines = body.toMarkdown().split("\\R", -1); // -1 сохраняет пустые строки
+        String[] lines = body.toMarkdown().split("\\R", -1);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lines.length; i++) {
             sb.append("> ").append(lines[i]);

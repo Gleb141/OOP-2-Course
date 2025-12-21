@@ -3,18 +3,17 @@ package org.example;
 import java.util.Objects;
 
 public final class CodeBlock extends Element {
-    private final String language; // может быть null/blank
+    private final String language;
     private final String code;
 
     public CodeBlock(String language, String code) {
-        this.language = (language == null || language.isBlank()) ? null : language;
-        this.code = requireNonNull(code, "code");
+        this.language = (language == null || language.isBlank()) ? "" : language;
+        this.code = Objects.requireNonNull(code, "code");
     }
 
     @Override
     public String toMarkdown() {
-        String lang = (language == null) ? "" : language;
-        return "```" + lang + "\n" + code + "\n```";
+        return "```" + language + "\n" + code + "\n```";
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -12,28 +11,33 @@ public final class ListElement extends Element {
     public ListElement(boolean ordered, Element... items) {
         this.ordered = ordered;
         this.items = List.copyOf(Arrays.asList(items));
+        for (Element e : this.items) {
+            requireNonNull(e, "item");
+        }
     }
 
     @Override
     public String toMarkdown() {
+        if (items.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < items.size(); i++) {
-            String marker = ordered ? (i + 1) + ". " : "- ";
-            String indent = " ".repeat(marker.length());
+            Element item = items.get(i);
 
-            String itemMd = items.get(i).toMarkdown();
-            String[] lines = itemMd.split("\\R", -1);
+            if (!ordered && item instanceof TaskItem) {
+                sb.append(item.toMarkdown());
+            } else {
+                String marker = ordered ? (i + 1) + ". " : "- ";
+                String indent = " ".repeat(marker.length());
+                String[] lines = item.toMarkdown().split("\\R", -1);
 
-            sb.append(marker).append(lines[0]);
-
-            for (int l = 1; l < lines.length; l++) {
-                sb.append("\n").append(indent).append(lines[l]);
+                sb.append(marker).append(lines[0]);
+                for (int l = 1; l < lines.length; l++) {
+                    sb.append("\n").append(indent).append(lines[l]);
+                }
             }
 
             if (i + 1 < items.size()) sb.append("\n");
         }
-
         return sb.toString();
     }
 

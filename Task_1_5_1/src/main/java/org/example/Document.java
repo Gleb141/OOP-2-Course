@@ -9,6 +9,9 @@ public final class Document extends Element {
 
     public Document(List<Element> blocks) {
         this.blocks = List.copyOf(blocks);
+        for (Element b : this.blocks) {
+            requireNonNull(b, "block");
+        }
     }
 
     public static Document of(Element... blocks) {
@@ -17,7 +20,12 @@ public final class Document extends Element {
 
     @Override
     public String toMarkdown() {
-        return String.join("\n\n", blocks.stream().map(Element::toMarkdown).toList());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < blocks.size(); i++) {
+            if (i > 0) sb.append("\n\n");
+            sb.append(blocks.get(i).toMarkdown());
+        }
+        return sb.toString();
     }
 
     @Override

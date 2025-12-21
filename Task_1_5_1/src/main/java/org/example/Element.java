@@ -10,7 +10,6 @@ public abstract class Element {
         return toMarkdown();
     }
 
-    // Вспомогалка для валидаций
     protected static void requireNonBlank(String s, String name) {
         if (s == null || s.isBlank()) {
             throw new IllegalArgumentException(name + " must be non-blank");

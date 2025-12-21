@@ -6,8 +6,7 @@ public final class PlainText extends Element {
     private final String value;
 
     public PlainText(String value) {
-        requireNonNull(value, "value");
-        this.value = value;
+        this.value = Objects.requireNonNull(value, "value");
     }
 
     @Override
