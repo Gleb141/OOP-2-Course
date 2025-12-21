@@ -16,8 +16,12 @@ public final class PlainText extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PlainText plainText = (PlainText) o;
         return Objects.equals(value, plainText.value);
     }

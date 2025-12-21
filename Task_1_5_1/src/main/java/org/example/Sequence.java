@@ -28,7 +28,9 @@ public final class Sequence extends Element {
     public String toMarkdown() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < elements.size(); i++) {
-            if (i > 0) sb.append(separator);
+            if (i > 0) {
+                sb.append(separator);
+            }
             sb.append(elements.get(i).toMarkdown());
         }
         return sb.toString();
@@ -36,10 +38,15 @@ public final class Sequence extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Sequence sequence = (Sequence) o;
-        return Objects.equals(separator, sequence.separator) && Objects.equals(elements, sequence.elements);
+        return Objects.equals(separator, sequence.separator)
+                && Objects.equals(elements, sequence.elements);
     }
 
     @Override

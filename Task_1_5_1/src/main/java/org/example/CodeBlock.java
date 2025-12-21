@@ -18,8 +18,12 @@ public final class CodeBlock extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CodeBlock codeBlock = (CodeBlock) o;
         return Objects.equals(language, codeBlock.language) && Objects.equals(code, codeBlock.code);
     }

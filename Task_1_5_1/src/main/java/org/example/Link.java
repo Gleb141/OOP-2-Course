@@ -19,8 +19,12 @@ public final class Link extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Link link = (Link) o;
         return Objects.equals(label, link.label) && Objects.equals(url, link.url);
     }

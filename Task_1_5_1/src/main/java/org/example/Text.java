@@ -19,8 +19,12 @@ abstract class Text extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Text text = (Text) o;
         return Objects.equals(content, text.content);
     }
@@ -44,8 +48,12 @@ abstract class Text extends Element {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Plain plain = (Plain) o;
             return Objects.equals(value, plain.value);
         }

@@ -18,8 +18,12 @@ public final class TaskItem extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TaskItem taskItem = (TaskItem) o;
         return done == taskItem.done && Objects.equals(text, taskItem.text);
     }

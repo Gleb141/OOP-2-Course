@@ -199,10 +199,12 @@ class MarkdownElementsTest {
         ListElement multi = new ListElement(false, new PlainText("A\nB"));
         assertEquals("- A\n  B", multi.toMarkdown());
 
-        ListElement withTask = new ListElement(false, new PlainText("A"), new TaskItem(true, new PlainText("T")));
+        ListElement withTask = new ListElement(false, new PlainText("A"),
+                new TaskItem(true, new PlainText("T")));
         assertEquals("- A\n- [x] T", withTask.toMarkdown());
 
-        assertThrows(NullPointerException.class, () -> new ListElement(false, new PlainText("A"), null));
+        assertThrows(NullPointerException.class, () ->
+                new ListElement(false, new PlainText("A"), null));
 
         ListElement x1 = new ListElement(false, new PlainText("A"));
         ListElement x2 = new ListElement(false, new PlainText("A"));
@@ -236,7 +238,8 @@ class MarkdownElementsTest {
         assertNotEquals(a, new PlainText("A"));
 
         assertThrows(NullPointerException.class, () -> new Sequence(null, new PlainText("X")));
-        assertThrows(NullPointerException.class, () -> new Sequence(",", new PlainText("X"), null));
+        assertThrows(NullPointerException.class, () ->
+                new Sequence(",", new PlainText("X"), null));
     }
 
     @Test
@@ -248,10 +251,10 @@ class MarkdownElementsTest {
                 .build();
 
         String expected =
-                "| Index | Random |\n" +
-                        "| ----: | ------ |\n" +
-                        "|     1 | **8**  |\n" +
-                        "|     2 | 2      |";
+                "| Index | Random |\n"
+                        + "| ----: | ------ |\n"
+                        + "|     1 | **8**  |\n"
+                        + "|     2 | 2      |";
 
         assertEquals(expected, t.toMarkdown());
 
@@ -262,9 +265,9 @@ class MarkdownElementsTest {
                 .build();
 
         String expectedLimited =
-                "| A | B |\n" +
-                        "| --- | --- |\n" +
-                        "| 1 | 2 |";
+                "| A | B |\n"
+                        + "| --- | --- |\n"
+                        + "| 1 | 2 |";
 
         assertEquals(expectedLimited, limited.toMarkdown());
 
@@ -276,10 +279,14 @@ class MarkdownElementsTest {
         assertTrue(center.toMarkdown().contains(":"));
 
         assertThrows(IllegalArgumentException.class, () -> Table.builder());
-        assertThrows(IndexOutOfBoundsException.class, () -> Table.builder(new PlainText("A")).align(1, Table.Align.LEFT));
-        assertThrows(NullPointerException.class, () -> Table.builder(new PlainText("A")).align(0, null));
-        assertThrows(IllegalArgumentException.class, () -> Table.builder(new PlainText("A")).rowLimit(-1));
-        assertThrows(IllegalArgumentException.class, () -> Table.builder(new PlainText("A")).addRow(new PlainText("1"), new PlainText("2")));
+        assertThrows(IndexOutOfBoundsException.class, () ->
+                Table.builder(new PlainText("A")).align(1, Table.Align.LEFT));
+        assertThrows(NullPointerException.class, () ->
+                Table.builder(new PlainText("A")).align(0, null));
+        assertThrows(IllegalArgumentException.class, () ->
+                Table.builder(new PlainText("A")).rowLimit(-1));
+        assertThrows(IllegalArgumentException.class, () ->
+                Table.builder(new PlainText("A")).addRow(new PlainText("1"), new PlainText("2")));
 
         Table e1 = Table.builder(new PlainText("A")).addRow(new PlainText("1")).build();
         Table e2 = Table.builder(new PlainText("A")).addRow(new PlainText("1")).build();
@@ -301,7 +308,8 @@ class MarkdownElementsTest {
         Document a = Document.of(new PlainText("A"), new PlainText("B"));
         assertEquals("A\n\nB", a.toMarkdown());
 
-        Document b = new MarkdownBuilder().add(new PlainText("A")).add(new PlainText("B")).build();
+        Document b =
+                new MarkdownBuilder().add(new PlainText("A")).add(new PlainText("B")).build();
         assertEquals("A\n\nB", b.toMarkdown());
 
         assertEquals(a, a);
@@ -309,7 +317,8 @@ class MarkdownElementsTest {
         assertEquals(a.hashCode(), b.hashCode());
 
         assertThrows(NullPointerException.class, () -> new MarkdownBuilder().add(null));
-        assertThrows(NullPointerException.class, () -> new Document(java.util.List.of(new PlainText("X"), null)));
+        assertThrows(NullPointerException.class, () ->
+                new Document(java.util.List.of(new PlainText("X"), null)));
 
         assertDoesNotThrow(() -> Main.main(new String[0]));
     }

@@ -20,8 +20,12 @@ public final class ImageElement extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ImageElement that = (ImageElement) o;
         return Objects.equals(alt, that.alt) && Objects.equals(url, that.url);
     }

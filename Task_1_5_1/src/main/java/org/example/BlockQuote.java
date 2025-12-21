@@ -15,15 +15,21 @@ public final class BlockQuote extends Element {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lines.length; i++) {
             sb.append("> ").append(lines[i]);
-            if (i + 1 < lines.length) sb.append("\n");
+            if (i + 1 < lines.length) {
+                sb.append("\n");
+            }
         }
         return sb.toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BlockQuote blockQuote = (BlockQuote) o;
         return Objects.equals(body, blockQuote.body);
     }

@@ -28,10 +28,14 @@ public final class Table extends Element {
     @Override
     public String toMarkdown() {
         int cols = headers.size();
-        if (cols == 0) return "";
+        if (cols == 0) {
+            return "";
+        }
 
         List<String> headerStr = new ArrayList<>();
-        for (Element h : headers) headerStr.add(cell(h));
+        for (Element h : headers) {
+            headerStr.add(cell(h));
+        }
 
         int maxRows = Math.min(rows.size(), rowLimit);
 
@@ -39,7 +43,9 @@ public final class Table extends Element {
         for (int r = 0; r < maxRows; r++) {
             List<Element> row = rows.get(r);
             List<String> converted = new ArrayList<>();
-            for (Element c : row) converted.add(cell(c));
+            for (Element c : row) {
+                converted.add(cell(c));
+            }
             rowStr.add(converted);
         }
 
@@ -85,8 +91,12 @@ public final class Table extends Element {
 
     private static String separatorCell(int width, Align align) {
         int dashCount = Math.max(width, 3);
-        if (align == Align.RIGHT) return "-".repeat(dashCount - 1) + ":";
-        if (align == Align.CENTER) return ":" + "-".repeat(dashCount - 2) + ":";
+        if (align == Align.RIGHT) {
+            return "-".repeat(dashCount - 1) + ":";
+        }
+        if (align == Align.CENTER) {
+            return ":" + "-".repeat(dashCount - 2) + ":";
+        }
         return "-".repeat(dashCount);
     }
 
@@ -115,13 +125,17 @@ public final class Table extends Element {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Table table = (Table) o;
-        return rowLimit == table.rowLimit &&
-                Objects.equals(headers, table.headers) &&
-                Objects.equals(rows, table.rows) &&
-                Objects.equals(aligns, table.aligns);
+        return rowLimit == table.rowLimit
+                && Objects.equals(headers, table.headers)
+                && Objects.equals(rows, table.rows)
+                && Objects.equals(aligns, table.aligns);
     }
 
     @Override
@@ -158,7 +172,9 @@ public final class Table extends Element {
         }
 
         public Builder rowLimit(int limit) {
-            if (limit < 0) throw new IllegalArgumentException("rowLimit must be >= 0");
+            if (limit < 0) {
+                throw new IllegalArgumentException("rowLimit must be >= 0");
+            }
             this.rowLimit = limit;
             return this;
         }
