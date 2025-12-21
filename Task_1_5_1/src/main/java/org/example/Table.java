@@ -102,7 +102,9 @@ public final class Table extends Element {
 
     private static String pad(String s, int width, Align align) {
         int diff = width - s.length();
-        if (diff <= 0) return s;
+        if (diff <= 0) {
+            return s;
+        }
 
         if (align == Align.RIGHT) {
             return " ".repeat(diff) + s;

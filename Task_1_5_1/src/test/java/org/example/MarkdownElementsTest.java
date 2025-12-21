@@ -1,22 +1,30 @@
 package org.example;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class MarkdownElementsTest {
 
     @Test
     void plainText_toMarkdown_toString_equals_hash() {
         PlainText a = new PlainText("Hello");
-        PlainText b = new PlainText("Hello");
-        PlainText c = new PlainText("World");
 
         assertEquals("Hello", a.toMarkdown());
         assertEquals("Hello", a.toString());
+
+        PlainText b = new PlainText("Hello");
+
         assertEquals(a, a);
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        PlainText c = new PlainText("World");
+
         assertNotEquals(a, c);
         assertNotEquals(a, null);
         assertNotEquals(a, new Object());
@@ -36,11 +44,13 @@ class MarkdownElementsTest {
 
         TextStyle s1 = TextStyle.bold(new PlainText("A"));
         TextStyle s2 = TextStyle.bold(new PlainText("A"));
-        TextStyle s3 = TextStyle.italic(new PlainText("A"));
 
         assertEquals(s1, s1);
         assertEquals(s1, s2);
         assertEquals(s1.hashCode(), s2.hashCode());
+
+        TextStyle s3 = TextStyle.italic(new PlainText("A"));
+
         assertNotEquals(s1, s3);
         assertNotEquals(s1, null);
 
@@ -58,12 +68,16 @@ class MarkdownElementsTest {
         assertThrows(NullPointerException.class, () -> new Heading(1, null));
 
         Heading h1 = new Heading(1, new PlainText("X"));
-        Heading h2 = new Heading(1, new PlainText("X"));
-        Heading h3 = new Heading(2, new PlainText("X"));
 
         assertEquals(h1, h1);
+
+        Heading h2 = new Heading(1, new PlainText("X"));
+
         assertEquals(h1, h2);
         assertEquals(h1.hashCode(), h2.hashCode());
+
+        Heading h3 = new Heading(2, new PlainText("X"));
+
         assertNotEquals(h1, h3);
         assertNotEquals(h1, null);
         assertNotEquals(h1, new PlainText("X"));
@@ -80,14 +94,20 @@ class MarkdownElementsTest {
         assertThrows(NullPointerException.class, () -> new Link(null, "u"));
 
         Link a = new Link(new PlainText("x"), "u");
-        Link b = new Link(new PlainText("x"), "u");
-        Link c = new Link(new PlainText("y"), "u");
-        Link d = new Link(new PlainText("x"), "v");
 
         assertEquals(a, a);
+
+        Link b = new Link(new PlainText("x"), "u");
+
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        Link c = new Link(new PlainText("y"), "u");
+
         assertNotEquals(a, c);
+
+        Link d = new Link(new PlainText("x"), "v");
+
         assertNotEquals(a, d);
         assertNotEquals(a, null);
         assertNotEquals(a, new PlainText("x"));
@@ -106,12 +126,16 @@ class MarkdownElementsTest {
         assertThrows(IllegalArgumentException.class, () -> new ImageElement("alt", null));
 
         ImageElement a = new ImageElement("a", "u");
-        ImageElement b = new ImageElement("a", "u");
-        ImageElement c = new ImageElement("b", "u");
 
         assertEquals(a, a);
+
+        ImageElement b = new ImageElement("a", "u");
+
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        ImageElement c = new ImageElement("b", "u");
+
         assertNotEquals(a, c);
         assertNotEquals(a, null);
         assertNotEquals(a, new PlainText("a"));
@@ -148,12 +172,16 @@ class MarkdownElementsTest {
         assertEquals("> > X", nested.toMarkdown());
 
         BlockQuote a = new BlockQuote(new PlainText("X"));
-        BlockQuote b = new BlockQuote(new PlainText("X"));
-        BlockQuote c = new BlockQuote(new PlainText("Y"));
 
         assertEquals(a, a);
+
+        BlockQuote b = new BlockQuote(new PlainText("X"));
+
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        BlockQuote c = new BlockQuote(new PlainText("Y"));
+
         assertNotEquals(a, c);
         assertNotEquals(a, null);
         assertNotEquals(a, new PlainText("X"));
@@ -170,14 +198,20 @@ class MarkdownElementsTest {
         assertEquals("- [ ] Todo", todo.toMarkdown());
 
         TaskItem a = new TaskItem(true, new PlainText("A"));
-        TaskItem b = new TaskItem(true, new PlainText("A"));
-        TaskItem c = new TaskItem(false, new PlainText("A"));
-        TaskItem d = new TaskItem(true, new PlainText("B"));
 
         assertEquals(a, a);
+
+        TaskItem b = new TaskItem(true, new PlainText("A"));
+
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        TaskItem c = new TaskItem(false, new PlainText("A"));
+
         assertNotEquals(a, c);
+
+        TaskItem d = new TaskItem(true, new PlainText("B"));
+
         assertNotEquals(a, d);
         assertNotEquals(a, null);
         assertNotEquals(a, new PlainText("A"));
@@ -207,12 +241,18 @@ class MarkdownElementsTest {
                 new ListElement(false, new PlainText("A"), null));
 
         ListElement x1 = new ListElement(false, new PlainText("A"));
-        ListElement x2 = new ListElement(false, new PlainText("A"));
-        ListElement x3 = new ListElement(true, new PlainText("A"));
+
+
 
         assertEquals(x1, x1);
+
+        ListElement x2 = new ListElement(false, new PlainText("A"));
+
         assertEquals(x1, x2);
         assertEquals(x1.hashCode(), x2.hashCode());
+
+        ListElement x3 = new ListElement(true, new PlainText("A"));
+
         assertNotEquals(x1, x3);
         assertNotEquals(x1, null);
         assertNotEquals(x1, new PlainText("A"));
@@ -227,12 +267,16 @@ class MarkdownElementsTest {
         assertEquals("AB", s2.toMarkdown());
 
         Sequence a = new Sequence(",", new PlainText("A"), new PlainText("B"));
-        Sequence b = new Sequence(",", new PlainText("A"), new PlainText("B"));
-        Sequence c = new Sequence(";", new PlainText("A"), new PlainText("B"));
 
         assertEquals(a, a);
+
+        Sequence b = new Sequence(",", new PlainText("A"), new PlainText("B"));
+
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
+
+        Sequence c = new Sequence(";", new PlainText("A"), new PlainText("B"));
+
         assertNotEquals(a, c);
         assertNotEquals(a, null);
         assertNotEquals(a, new PlainText("A"));
@@ -289,12 +333,16 @@ class MarkdownElementsTest {
                 Table.builder(new PlainText("A")).addRow(new PlainText("1"), new PlainText("2")));
 
         Table e1 = Table.builder(new PlainText("A")).addRow(new PlainText("1")).build();
-        Table e2 = Table.builder(new PlainText("A")).addRow(new PlainText("1")).build();
-        Table e3 = Table.builder(new PlainText("A")).addRow(new PlainText("2")).build();
 
         assertEquals(e1, e1);
+
+        Table e2 = Table.builder(new PlainText("A")).addRow(new PlainText("1")).build();
+
         assertEquals(e1, e2);
         assertEquals(e1.hashCode(), e2.hashCode());
+
+        Table e3 = Table.builder(new PlainText("A")).addRow(new PlainText("2")).build();
+
         assertNotEquals(e1, e3);
         assertNotEquals(e1, null);
         assertNotEquals(e1, new PlainText("A"));

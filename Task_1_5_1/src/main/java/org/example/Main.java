@@ -6,7 +6,8 @@ public class Main {
         Element nested = TextStyle.bold(TextStyle.italic(new PlainText("Bold+Italic nested")));
         Element link = new Link(new PlainText("click me"), "https://example.com");
 
-        Element nestedOrdered = new ListElement(true, new PlainText("Nested 1"), new PlainText("Nested 2"));
+        Element nestedOrdered = new ListElement(true,
+                new PlainText("Nested 1"), new PlainText("Nested 2"));
         Element nestedItem = Sequence.lines(new PlainText("Nested"), nestedOrdered);
 
         Element list = new ListElement(false,
