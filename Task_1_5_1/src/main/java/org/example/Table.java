@@ -11,6 +11,10 @@ import java.util.Objects;
 
 public final class Table extends Element {
 
+    /**
+     * Alignment of table creation.
+     */
+
     public enum Align { LEFT, RIGHT, CENTER }
 
     private final List<Element> headers;
@@ -177,6 +181,10 @@ public final class Table extends Element {
     public int hashCode() {
         return Objects.hash(headers, rows, aligns, rowLimit);
     }
+
+    /**
+     * Builder class.
+     */
 
     public static final class Builder {
         private final List<Element> headers;

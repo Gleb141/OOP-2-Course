@@ -12,6 +12,10 @@ public final class ListElement extends Element {
     private final boolean ordered;
     private final List<Element> items;
 
+    /**
+     * Element of list method.
+     */
+
     public ListElement(boolean ordered, Element... items) {
         this.ordered = ordered;
         this.items = List.copyOf(Arrays.asList(items));
