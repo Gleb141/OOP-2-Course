@@ -78,6 +78,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">TextStyle</span>
 <span class="extends-implements">extends <a href="Element.html" title="class in org.example">Element</a></span></div>
+<div class="block">Element extension for styles of texts.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -92,7 +93,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="TextStyle.Kind.html" class="type-name-link" title="enum class in org.example">TextStyle.Kind</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Text style methods.</div>
+</div>
 </div>
 </section>
 </li>
@@ -109,10 +112,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextStyle.html" title="class in org.example">TextStyle</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#bold(org.example.Element)" class="member-name-link">bold</a><wbr>(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Bold text.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextStyle.html" title="class in org.example">TextStyle</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#code(org.example.Element)" class="member-name-link">code</a><wbr>(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">code text.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -121,10 +128,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextStyle.html" title="class in org.example">TextStyle</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#italic(org.example.Element)" class="member-name-link">italic</a><wbr>(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Italic text.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextStyle.html" title="class in org.example">TextStyle</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#strike(org.example.Element)" class="member-name-link">strike</a><wbr>(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">stike a text.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toMarkdown()" class="member-name-link">toMarkdown</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -152,24 +163,28 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="bold(org.example.Element)">
 <h3>bold</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextStyle.html" title="class in org.example">TextStyle</a></span>&nbsp;<span class="element-name">bold</span><wbr><span class="parameters">(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</span></div>
+<div class="block">Bold text.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="italic(org.example.Element)">
 <h3>italic</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextStyle.html" title="class in org.example">TextStyle</a></span>&nbsp;<span class="element-name">italic</span><wbr><span class="parameters">(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</span></div>
+<div class="block">Italic text.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="strike(org.example.Element)">
 <h3>strike</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextStyle.html" title="class in org.example">TextStyle</a></span>&nbsp;<span class="element-name">strike</span><wbr><span class="parameters">(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</span></div>
+<div class="block">stike a text.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="code(org.example.Element)">
 <h3>code</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextStyle.html" title="class in org.example">TextStyle</a></span>&nbsp;<span class="element-name">code</span><wbr><span class="parameters">(<a href="Element.html" title="class in org.example">Element</a>&nbsp;content)</span></div>
+<div class="block">code text.</div>
 </section>
 </li>
 <li>
