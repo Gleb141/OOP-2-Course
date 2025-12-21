@@ -10,6 +10,10 @@ public final class Heading extends Element {
     private final int level;
     private final Element text;
 
+    /**
+     * Headlines method.
+     */
+
     public Heading(int level, Element text) {
         if (level < 1 || level > 6) {
             throw new IllegalArgumentException("Heading level must be 1..6");

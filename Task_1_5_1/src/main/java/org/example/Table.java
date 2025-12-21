@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Extension of element for tables.
+ */
+
 public final class Table extends Element {
 
     public enum Align { LEFT, RIGHT, CENTER }
@@ -14,6 +18,10 @@ public final class Table extends Element {
     private final List<Align> aligns;
     private final int rowLimit;
 
+    /**
+     * Table method.
+     */
+
     private Table(List<Element> headers, List<List<Element>> rows,
                   List<Align> aligns, int rowLimit) {
         this.headers = List.copyOf(headers);
@@ -21,6 +29,10 @@ public final class Table extends Element {
         this.aligns = List.copyOf(aligns);
         this.rowLimit = rowLimit;
     }
+
+    /**
+     * Builder method.
+     */
 
     public static Builder builder(Element... headers) {
         return new Builder(headers);
@@ -71,6 +83,10 @@ public final class Table extends Element {
         return sb.toString();
     }
 
+    /**
+     * Renders a table row.
+     */
+
     private static String renderRow(List<String> cells, int[] widths, List<Align> aligns) {
         StringBuilder sb = new StringBuilder();
         sb.append("|");
@@ -81,6 +97,10 @@ public final class Table extends Element {
         return sb.toString();
     }
 
+    /**
+     * Renders a separator.
+     */
+
     private static String renderSeparator(int[] widths, List<Align> aligns) {
         StringBuilder sb = new StringBuilder();
         sb.append("|");
@@ -89,6 +109,10 @@ public final class Table extends Element {
         }
         return sb.toString();
     }
+
+    /**
+     * Calls for a separator.
+     */
 
     private static String separatorCell(int width, Align align) {
         int dashCount = Math.max(width, 3);
@@ -100,6 +124,10 @@ public final class Table extends Element {
         }
         return "-".repeat(dashCount);
     }
+
+    /**
+     * Provides padding.
+     */
 
     private static String pad(String s, int width, Align align) {
         int diff = width - s.length();
@@ -117,6 +145,10 @@ public final class Table extends Element {
         }
         return s + " ".repeat(diff);
     }
+
+    /**
+     * Cell of a table.
+     */
 
     private static String cell(Element e) {
         String s = e.toMarkdown();
@@ -152,6 +184,10 @@ public final class Table extends Element {
         private final List<Align> aligns;
         private int rowLimit = Integer.MAX_VALUE;
 
+        /**
+         * Builder method.
+         */
+
         public Builder(Element... headers) {
             this.headers = List.copyOf(Arrays.asList(headers));
             if (this.headers.isEmpty()) {
@@ -166,6 +202,10 @@ public final class Table extends Element {
             }
         }
 
+        /**
+         * Alignment of table.
+         */
+
         public Builder align(int col, Align align) {
             if (col < 0 || col >= headers.size()) {
                 throw new IndexOutOfBoundsException("column index out of range");
@@ -174,6 +214,10 @@ public final class Table extends Element {
             return this;
         }
 
+        /**
+         * Row limit.
+         */
+
         public Builder rowLimit(int limit) {
             if (limit < 0) {
                 throw new IllegalArgumentException("rowLimit must be >= 0");
@@ -181,6 +225,10 @@ public final class Table extends Element {
             this.rowLimit = limit;
             return this;
         }
+
+        /**
+         * Adding a row.
+         */
 
         public Builder addRow(Element... cells) {
             List<Element> row = List.copyOf(Arrays.asList(cells));
@@ -193,6 +241,10 @@ public final class Table extends Element {
             rows.add(row);
             return this;
         }
+
+        /**
+         * builds the table.
+         */
 
         public Table build() {
             return new Table(headers, rows, aligns, rowLimit);

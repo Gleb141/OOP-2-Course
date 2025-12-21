@@ -11,6 +11,10 @@ import java.util.Objects;
 public final class Document extends Element {
     private final List<Element> blocks;
 
+    /**
+     * Document methods.
+     */
+
     public Document(List<Element> blocks) {
         this.blocks = List.copyOf(blocks);
         for (Element b : this.blocks) {

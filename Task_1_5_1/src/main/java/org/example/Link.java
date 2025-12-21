@@ -10,6 +10,10 @@ public final class Link extends Element {
     private final Element label;
     private final String url;
 
+    /**
+     * Link methods.
+     */
+
     public Link(Element label, String url) {
         this.label = requireNonNull(label, "label");
         requireNonBlank(url, "url");

@@ -5,6 +5,11 @@ package org.example;
  */
 
 public class Main {
+
+    /**
+     * Main demo method.
+     */
+
     public static void main(String[] args) {
         Element title = new Heading(1, TextStyle.bold(new PlainText("Markdown Generator")));
         Element nested = TextStyle.bold(TextStyle.italic(new PlainText("Bold+Italic nested")));

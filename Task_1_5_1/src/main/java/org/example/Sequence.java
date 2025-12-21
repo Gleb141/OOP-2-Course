@@ -12,6 +12,10 @@ public final class Sequence extends Element {
     private final String separator;
     private final List<Element> elements;
 
+    /**
+     * Sequence methods.
+     */
+
     public Sequence(String separator, Element... elements) {
         this.separator = requireNonNull(separator, "separator");
         this.elements = List.copyOf(Arrays.asList(elements));

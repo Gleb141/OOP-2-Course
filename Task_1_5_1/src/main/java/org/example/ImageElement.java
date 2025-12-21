@@ -10,6 +10,10 @@ public final class ImageElement extends Element {
     private final String alt;
     private final String url;
 
+    /**
+     * Extension of element for image elements.
+     */
+
     public ImageElement(String alt, String url) {
         requireNonBlank(alt, "alt");
         requireNonBlank(url, "url");
